@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaTesterCli", "MediaTester\MediaTesterCli.csproj", "{82DBB478-8EF7-45B1-8200-F28BEF178019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaTesterLib", "MediaTesterLib\MediaTesterLib.csproj", "{D684ACBC-9D01-4515-8CB1-969C15B22C4D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediaTesterGui", "MediaTesterGui\MediaTesterGui.csproj", "{CBC3129F-F13E-4BAD-BEFE-00EBF57D2C09}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82DBB478-8EF7-45B1-8200-F28BEF178019}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82DBB478-8EF7-45B1-8200-F28BEF178019}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82DBB478-8EF7-45B1-8200-F28BEF178019}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82DBB478-8EF7-45B1-8200-F28BEF178019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D684ACBC-9D01-4515-8CB1-969C15B22C4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D684ACBC-9D01-4515-8CB1-969C15B22C4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D684ACBC-9D01-4515-8CB1-969C15B22C4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D684ACBC-9D01-4515-8CB1-969C15B22C4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBC3129F-F13E-4BAD-BEFE-00EBF57D2C09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC3129F-F13E-4BAD-BEFE-00EBF57D2C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC3129F-F13E-4BAD-BEFE-00EBF57D2C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC3129F-F13E-4BAD-BEFE-00EBF57D2C09}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

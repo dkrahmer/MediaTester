@@ -1,3 +1,9 @@
+bin/
+obj/
+packages/
+.vs/
+*.suo
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
