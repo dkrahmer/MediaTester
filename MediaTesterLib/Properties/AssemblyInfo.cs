@@ -8,7 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MediaTesterLib")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("KrahmerSoft")]
 [assembly: AssemblyProduct("MediaTesterLib")]
+[assembly: AssemblyCopyright("Copyright © KrahmerSoft 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
