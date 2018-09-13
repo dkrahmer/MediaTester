@@ -168,8 +168,8 @@
 			this.WriteAndVerifyButton.Size = new System.Drawing.Size(129, 34);
 			this.WriteAndVerifyButton.TabIndex = 9;
 			this.WriteAndVerifyButton.Text = "Write and Verify";
-			this.toolTip1.SetToolTip(this.WriteAndVerifyButton, "Write test data to media then check for correctness. Non-destructive. Only availa" +
-        "ble space will be used.");
+			this.toolTip1.SetToolTip(this.WriteAndVerifyButton, "Write test data to media then read back to verify data was stored correctly. Only" +
+        " available space will be used. Non-destructive.");
 			this.WriteAndVerifyButton.UseVisualStyleBackColor = true;
 			this.WriteAndVerifyButton.Click += new System.EventHandler(this.WriteAndVerifyButton_Click);
 			// 
