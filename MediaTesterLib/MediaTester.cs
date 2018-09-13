@@ -13,7 +13,7 @@ namespace MediaTesterLib
 		const FileOptions FileFlagNoBuffering = (FileOptions)0x20000000;
 		public const int DATA_BLOCK_SIZE = 8 * 1024 * 1024;
 		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
-		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GB == 1024 * 1024 * 1024 == 1,073,741,824
+		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
 		public const string TempSubDirectoryName = "MediaTester";
 
 		public WriteBlockCompleteHandler AfterWriteBlock;
@@ -106,15 +106,15 @@ namespace MediaTesterLib
 			TotalGeneratedTestFileBytes = 0;
 			try
 			{
-				if (Options.TotalBytesToTest < 0)
+				if (Options.MaxBytesToTest < 0)
 				{
-					Options.TotalBytesToTest = GetAvailableBytes();
+					Options.MaxBytesToTest = GetAvailableBytes();
 				}
 
-				int lastFileIndex = (int)((Options.TotalBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
+				int lastFileIndex = (int)((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					int testFileSize = (testFileIndex == lastFileIndex) ? (int)(Options.TotalBytesToTest % FILE_SIZE) : FILE_SIZE;
+					int testFileSize = (testFileIndex == lastFileIndex) ? (int)(Options.MaxBytesToTest % FILE_SIZE) : FILE_SIZE;
 					if (testFileSize == 0)
 						testFileSize = FILE_SIZE;
 
@@ -128,7 +128,7 @@ namespace MediaTesterLib
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, checkIndex);
 						int bytesVerified, bytesFailed;
 						long readBytesPerSecond;
-						SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)DATA_BLOCK_SIZE)) / (decimal)Options.TotalBytesToTest, 1);
+						SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)DATA_BLOCK_SIZE)) / (decimal)Options.MaxBytesToTest, 1);
 						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 						IsSuccess &= success;
 						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed);
@@ -153,29 +153,50 @@ namespace MediaTesterLib
 			}
 		}
 
-		private string GenerateTestFile(int testFileIndex, int testFileSize, out int finalTestFileSize)
+		private string GenerateTestFile(int testFileIndex, int testFileSize, out int actualTestFileSize)
 		{
-			long freeSpace = GetAvailableBytes();
-			finalTestFileSize = testFileSize;
-			if (finalTestFileSize > freeSpace)
-				finalTestFileSize = (int)freeSpace;
+			long freeSpace = GetAvailableBytes(actual: true);
+			actualTestFileSize = testFileSize;
+			if (actualTestFileSize > freeSpace)
+				actualTestFileSize = (int)freeSpace;
 
-			if (finalTestFileSize == 0)
+			if (actualTestFileSize == 0)
 				return null;
 
 			string testFilePath = GetTestFilePath(testFileIndex);
 			Directory.CreateDirectory(GetTestDirectory());
 
-			if (File.Exists(testFilePath))
+			do
 			{
-				var fileInfo = new FileInfo(testFilePath);
-				if (finalTestFileSize <= fileInfo.Length && fileInfo.Length <= FILE_SIZE)
+				if (File.Exists(testFilePath))
 				{
-					// File already exists. Leaving in place.
-					TotalBytesWritten += finalTestFileSize;
-					return testFilePath;
+					var fileInfo = new FileInfo(testFilePath);
+					if (fileInfo.Length > FILE_SIZE)
+					{
+						break; // Overwrite the file
+					}
+
+					if (fileInfo.Length == FILE_SIZE)
+					{
+						// File already exists. Leaving in place.
+						TotalBytesWritten += actualTestFileSize;
+						return testFilePath;
+					}
+
+					if (actualTestFileSize <= fileInfo.Length)
+					{
+						// File already exists but needs to be bigger.
+						if (freeSpace < FILE_SIZE)
+						{
+							actualTestFileSize = actualTestFileSize + (int)freeSpace;
+							if (actualTestFileSize > FILE_SIZE)
+								actualTestFileSize = FILE_SIZE;
+						}
+						if (actualTestFileSize > FILE_SIZE || freeSpace > FILE_SIZE)
+							actualTestFileSize = FILE_SIZE;
+					}
 				}
-			}
+			} while (false);
 
 			try
 			{
@@ -184,11 +205,11 @@ namespace MediaTesterLib
 					FileFlagNoBuffering | FileOptions.WriteThrough))
 				using (var fileWriter = new BinaryWriter(file))
 				{
-					int lastDataBlockIndex = GetLastDataBlockIndex(finalTestFileSize);
+					int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
 					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 					{
-						int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && finalTestFileSize % DATA_BLOCK_SIZE != 0)
-							? (int)(finalTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
+						int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
+							? (int)(actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
 
@@ -202,7 +223,7 @@ namespace MediaTesterLib
 							stopwatch.Stop();
 							long writeBytesPerSecond = (long)((decimal)dataBlockSize / ((decimal)stopwatch.Elapsed.Ticks / (decimal)TimeSpan.TicksPerMillisecond / 1000M));
 							TotalBytesWritten += dataBlockSize;
-							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.TotalBytesToTest, 1);
+							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 1);
 							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0);
 						}
 						catch (Exception ex)
@@ -241,17 +262,20 @@ namespace MediaTesterLib
 			return Path.Combine(testDirectory);
 		}
 
-		static public long GetAvailableBytes(string directory)
+		static public long GetAvailableBytes(string directory, bool actual = false)
 		{
 			long totalSize;
-			return GetAvailableBytes(directory, out totalSize);
+			return GetAvailableBytes(directory, out totalSize, actual: actual);
 		}
 
-		static public long GetAvailableBytes(string directory, out long totalSize)
+		static public long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
 		{
 			var driveInfo = new DriveInfo(directory);
 			totalSize = driveInfo.TotalSize;
 			long freeSpace = driveInfo.AvailableFreeSpace;
+			if (actual)
+				return freeSpace;
+
 			int skippedFiles = 0;
 
 			// Add the space taken by existing TestMedia files
@@ -270,10 +294,10 @@ namespace MediaTesterLib
 
 			return freeSpace;
 		}
-		private long GetAvailableBytes()
+		private long GetAvailableBytes(bool actual = false)
 		{
 			long totalSize;
-			return GetAvailableBytes(GetTestDirectory(), out totalSize);
+			return GetAvailableBytes(GetTestDirectory(), out totalSize, actual: actual);
 		}
 
 		private int GetLastDataBlockIndex(int testFileSize)
@@ -290,8 +314,8 @@ namespace MediaTesterLib
 				IsSuccess = true;
 
 			bool allFilesSuccess = true;
-			if (Options.TotalBytesToTest < 0)
-				Options.TotalBytesToTest = GetTotalDataFileBytes();
+			if (Options.MaxBytesToTest < 0)
+				Options.MaxBytesToTest = GetTotalDataFileBytes();
 
 			for (int testFileIndex = 0; ; testFileIndex++)
 			{
@@ -307,7 +331,7 @@ namespace MediaTesterLib
 				if (Options.StopProcessingOnFailure && !success)
 					return success;
 
-				if (TotalBytesVerified + TotalBytesFailed >= Options.TotalBytesToTest)
+				if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
 					return success; // The requested number of bytes has been verified
 			}
 
@@ -346,7 +370,7 @@ namespace MediaTesterLib
 							}
 
 							int dataBlockSize = blockBytesVerified + blockBytesFailed;
-							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.TotalBytesToTest, 2);
+							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 2);
 							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed);
 						}
 						catch (Exception ex)
@@ -363,7 +387,7 @@ namespace MediaTesterLib
 						if (Options.StopProcessingOnFailure && !success)
 							return success;
 
-						if (TotalBytesVerified + TotalBytesFailed + bytesVerified + bytesFailed >= Options.TotalBytesToTest)
+						if (TotalBytesVerified + TotalBytesFailed + bytesVerified + bytesFailed >= Options.MaxBytesToTest)
 							return success; // The requested number of bytes has been verified
 					}
 				}

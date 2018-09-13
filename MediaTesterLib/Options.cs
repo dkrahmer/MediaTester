@@ -14,7 +14,7 @@ namespace MediaTesterLib
 		public bool QuickTestAfterEachFile { get; set; } = true;
 		public string TestDirectory { get; set; }
 		public bool QuickFirstFailingByteMethod { get; set; } = true;
-		public long TotalBytesToTest { get; set; } = -1;
+		public long MaxBytesToTest { get; set; } = -1;
 
 		public const string CONFIG_FILENAME = "MediaTesterOptions.json";
 

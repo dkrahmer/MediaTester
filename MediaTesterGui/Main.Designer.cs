@@ -33,7 +33,7 @@
 			this.ChooseTargetButton = new System.Windows.Forms.Button();
 			this.StopProcessingOnFailureCheckBox = new System.Windows.Forms.CheckBox();
 			this.TotalBytesToTestLabel = new System.Windows.Forms.Label();
-			this.TotalBytesToTestComboBox = new System.Windows.Forms.ComboBox();
+			this.MaxBytesToTestComboBox = new System.Windows.Forms.ComboBox();
 			this.QuickTestAfterEachFileCheckBox = new System.Windows.Forms.CheckBox();
 			this.QuickFirstFailingByteMethodCheckBox = new System.Windows.Forms.CheckBox();
 			this.WriteAndVerifyButton = new System.Windows.Forms.Button();
@@ -63,6 +63,10 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
+			this.ElapsedTimeLabel = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.TotalTimeRemainingLabel = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
 			this.TestOptionsGgroupBox.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.StatisticsGroupBox.SuspendLayout();
@@ -119,24 +123,24 @@
 			this.TotalBytesToTestLabel.Text = "Total Bytes To Test";
 			this.TotalBytesToTestLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
-			// TotalBytesToTestComboBox
+			// MaxBytesToTestComboBox
 			// 
-			this.TotalBytesToTestComboBox.FormattingEnabled = true;
-			this.TotalBytesToTestComboBox.Items.AddRange(new object[] {
+			this.MaxBytesToTestComboBox.FormattingEnabled = true;
+			this.MaxBytesToTestComboBox.Items.AddRange(new object[] {
             "All Available Bytes"});
-			this.TotalBytesToTestComboBox.Location = new System.Drawing.Point(146, 97);
-			this.TotalBytesToTestComboBox.Name = "TotalBytesToTestComboBox";
-			this.TotalBytesToTestComboBox.Size = new System.Drawing.Size(155, 24);
-			this.TotalBytesToTestComboBox.TabIndex = 6;
+			this.MaxBytesToTestComboBox.Location = new System.Drawing.Point(146, 97);
+			this.MaxBytesToTestComboBox.Name = "MaxBytesToTestComboBox";
+			this.MaxBytesToTestComboBox.Size = new System.Drawing.Size(155, 24);
+			this.MaxBytesToTestComboBox.TabIndex = 6;
 			// 
 			// QuickTestAfterEachFileCheckBox
 			// 
 			this.QuickTestAfterEachFileCheckBox.AutoSize = true;
 			this.QuickTestAfterEachFileCheckBox.Location = new System.Drawing.Point(9, 155);
 			this.QuickTestAfterEachFileCheckBox.Name = "QuickTestAfterEachFileCheckBox";
-			this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(316, 21);
+			this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(319, 21);
 			this.QuickTestAfterEachFileCheckBox.TabIndex = 7;
-			this.QuickTestAfterEachFileCheckBox.Text = "Quick test after writing each 1 GB of test data";
+			this.QuickTestAfterEachFileCheckBox.Text = "Quick test after writing each 1 GiB of test data";
 			this.QuickTestAfterEachFileCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// QuickFirstFailingByteMethodCheckBox
@@ -181,7 +185,7 @@
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetTotalBytesLabelLabel);
 			this.TestOptionsGgroupBox.Controls.Add(this.TotalBytesToTestLabel);
 			this.TestOptionsGgroupBox.Controls.Add(this.StopProcessingOnFailureCheckBox);
-			this.TestOptionsGgroupBox.Controls.Add(this.TotalBytesToTestComboBox);
+			this.TestOptionsGgroupBox.Controls.Add(this.MaxBytesToTestComboBox);
 			this.TestOptionsGgroupBox.Controls.Add(this.QuickFirstFailingByteMethodCheckBox);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetTextBox);
 			this.TestOptionsGgroupBox.Controls.Add(this.ChooseTargetButton);
@@ -321,6 +325,10 @@
 			// StatisticsGroupBox
 			// 
 			this.StatisticsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.StatisticsGroupBox.Controls.Add(this.TotalTimeRemainingLabel);
+			this.StatisticsGroupBox.Controls.Add(this.label9);
+			this.StatisticsGroupBox.Controls.Add(this.ElapsedTimeLabel);
+			this.StatisticsGroupBox.Controls.Add(this.label7);
 			this.StatisticsGroupBox.Controls.Add(this.FailedBytesLabel);
 			this.StatisticsGroupBox.Controls.Add(this.VerifiedBytesLabel);
 			this.StatisticsGroupBox.Controls.Add(this.WrittenBytesLabel);
@@ -359,7 +367,7 @@
 			// WrittenBytesLabel
 			// 
 			this.WrittenBytesLabel.AutoSize = true;
-			this.WrittenBytesLabel.Location = new System.Drawing.Point(79, 75);
+			this.WrittenBytesLabel.Location = new System.Drawing.Point(79, 51);
 			this.WrittenBytesLabel.Name = "WrittenBytesLabel";
 			this.WrittenBytesLabel.Size = new System.Drawing.Size(23, 17);
 			this.WrittenBytesLabel.TabIndex = 7;
@@ -368,7 +376,7 @@
 			// ReadSpeedLabel
 			// 
 			this.ReadSpeedLabel.AutoSize = true;
-			this.ReadSpeedLabel.Location = new System.Drawing.Point(79, 51);
+			this.ReadSpeedLabel.Location = new System.Drawing.Point(79, 75);
 			this.ReadSpeedLabel.Name = "ReadSpeedLabel";
 			this.ReadSpeedLabel.Size = new System.Drawing.Size(23, 17);
 			this.ReadSpeedLabel.TabIndex = 6;
@@ -404,7 +412,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(7, 75);
+			this.label3.Location = new System.Drawing.Point(7, 52);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(53, 17);
 			this.label3.TabIndex = 2;
@@ -413,7 +421,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(7, 51);
+			this.label2.Location = new System.Drawing.Point(7, 76);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(70, 17);
 			this.label2.TabIndex = 1;
@@ -427,6 +435,42 @@
 			this.label1.Size = new System.Drawing.Size(69, 17);
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Write Avg";
+			// 
+			// ElapsedTimeLabel
+			// 
+			this.ElapsedTimeLabel.AutoSize = true;
+			this.ElapsedTimeLabel.Location = new System.Drawing.Point(79, 147);
+			this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
+			this.ElapsedTimeLabel.Size = new System.Drawing.Size(23, 17);
+			this.ElapsedTimeLabel.TabIndex = 11;
+			this.ElapsedTimeLabel.Text = "---";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(7, 147);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(59, 17);
+			this.label7.TabIndex = 10;
+			this.label7.Text = "Elapsed";
+			// 
+			// TotalTimeRemainingLabel
+			// 
+			this.TotalTimeRemainingLabel.AutoSize = true;
+			this.TotalTimeRemainingLabel.Location = new System.Drawing.Point(79, 171);
+			this.TotalTimeRemainingLabel.Name = "TotalTimeRemainingLabel";
+			this.TotalTimeRemainingLabel.Size = new System.Drawing.Size(23, 17);
+			this.TotalTimeRemainingLabel.TabIndex = 13;
+			this.TotalTimeRemainingLabel.Text = "---";
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(7, 171);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(75, 17);
+			this.label9.TabIndex = 12;
+			this.label9.Text = "Remaining";
 			// 
 			// Main
 			// 
@@ -465,7 +509,7 @@
 		private System.Windows.Forms.Button ChooseTargetButton;
 		private System.Windows.Forms.CheckBox StopProcessingOnFailureCheckBox;
 		private System.Windows.Forms.Label TotalBytesToTestLabel;
-		private System.Windows.Forms.ComboBox TotalBytesToTestComboBox;
+		private System.Windows.Forms.ComboBox MaxBytesToTestComboBox;
 		private System.Windows.Forms.CheckBox QuickTestAfterEachFileCheckBox;
 		private System.Windows.Forms.CheckBox QuickFirstFailingByteMethodCheckBox;
 		private System.Windows.Forms.Button WriteAndVerifyButton;
@@ -495,6 +539,10 @@
 		private System.Windows.Forms.Label ReadSpeedLabel;
 		private System.Windows.Forms.Label WriteSpeedLabel;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label TotalTimeRemainingLabel;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Label ElapsedTimeLabel;
+		private System.Windows.Forms.Label label7;
 	}
 }
 

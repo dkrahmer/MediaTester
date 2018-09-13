@@ -20,6 +20,8 @@ namespace MediaTesterGui
 		const string BYTES = " Bytes";
 		const string BYTES_PER_SECOND = BYTES + "/sec";
 
+		DateTime? _startDateTime;
+
 		public Main()
 		{
 			InitializeComponent();
@@ -29,13 +31,13 @@ namespace MediaTesterGui
 
 		private void UpdateUiFromOptions()
 		{
-			if (_mediaTesterOptions.TotalBytesToTest < 0)
+			if (_mediaTesterOptions.MaxBytesToTest < 0)
 			{
-				TotalBytesToTestComboBox.SelectedIndex = 0;
+				MaxBytesToTestComboBox.SelectedIndex = 0;
 			}
 			else
 			{
-				TotalBytesToTestComboBox.Text = _mediaTesterOptions.TotalBytesToTest.ToString("#,##0");
+				MaxBytesToTestComboBox.Text = _mediaTesterOptions.MaxBytesToTest.ToString("#,##0");
 			}
 			TargetTextBox.Text = _mediaTesterOptions.TestDirectory;
 			StopProcessingOnFailureCheckBox.Checked = _mediaTesterOptions.StopProcessingOnFailure;
@@ -52,15 +54,15 @@ namespace MediaTesterGui
 			_mediaTesterOptions.QuickTestAfterEachFile = QuickTestAfterEachFileCheckBox.Checked;
 			_mediaTesterOptions.QuickFirstFailingByteMethod = QuickFirstFailingByteMethodCheckBox.Checked;
 
-			long lTotalBytesToTest;
-			if (long.TryParse(TotalBytesToTestComboBox.Text.Replace(",", string.Empty).Replace(".", string.Empty), out lTotalBytesToTest))
+			long lMaxBytesToTest;
+			if (long.TryParse(MaxBytesToTestComboBox.Text.Replace(",", string.Empty).Replace(".", string.Empty), out lMaxBytesToTest))
 			{
-				_mediaTesterOptions.TotalBytesToTest = lTotalBytesToTest;
+				_mediaTesterOptions.MaxBytesToTest = lMaxBytesToTest;
 			}
 			else
 			{
-				_mediaTesterOptions.TotalBytesToTest = -1;
-				TotalBytesToTestComboBox.SelectedIndex = 0;
+				_mediaTesterOptions.MaxBytesToTest = -1;
+				MaxBytesToTestComboBox.SelectedIndex = 0;
 			}
 		}
 
@@ -206,6 +208,7 @@ namespace MediaTesterGui
 
 			ClearLog(null, null);
 			WriteLog(_mediaTester, $"Test data path: '{_mediaTester.GetTestDirectory()}'...");
+			_startDateTime = DateTime.Now;
 		}
 
 		private void FinishMediaTesterRun()
@@ -218,7 +221,10 @@ namespace MediaTesterGui
 
 		private void AfterWriteBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
 		{
-			UpdateStatus(writeBytesPerSecond: writeBytesPerSecond);
+			UpdateStatus(writeBytesPerSecond: writeBytesPerSecond,
+				writeBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesWritten,
+				readBytesRemaining: mediaTester.Options.MaxBytesToTest);
+
 			if (bytesFailedWrite == 0)
 			{
 				//WriteLog(mediaTester, $"Successfully wrote block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}.");
@@ -237,7 +243,9 @@ namespace MediaTesterGui
 		private void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
-				UpdateStatus(readBytesPerSecond: readBytesPerSecond);
+				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
+					writeBytesRemaining: 0,
+					readBytesRemaining: mediaTester.Options.MaxBytesToTest);
 
 			if (bytesFailed == 0)
 			{
@@ -288,17 +296,45 @@ namespace MediaTesterGui
 			WriteLog(null, null);
 		}
 
-		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond);
-		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1)
+		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining);
+		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0)
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
 				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
-				this.Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond });
+				this.Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining });
 				return;
 			}
 
 			UpdateSpeedAverage(readBytesPerSecond, writeBytesPerSecond);
+
+			decimal bytesPerSecond = 0;
+
+			if (writeBytesPerSecond > 0)
+			{
+				bytesPerSecond = _averageWriteBytesPerSecond;
+			}
+			else if (readBytesPerSecond > 0)
+			{
+				bytesPerSecond = _averageReadBytesPerSecond;
+			}
+
+			TimeSpan? elapsedTime = null;
+			TimeSpan? writeTimeRemaining = null;
+			TimeSpan? readTimeRemaining = null;
+			TimeSpan? totalTimeRemaining = null;
+
+			if (_startDateTime != null)
+			{
+				elapsedTime = new TimeSpan(0, 0, (int)((DateTime.Now - _startDateTime.Value).TotalSeconds));
+				writeTimeRemaining = new TimeSpan(0, 0, (int)((decimal)writeBytesRemaining / bytesPerSecond));
+				readTimeRemaining = new TimeSpan(0, 0, (int)((decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
+			}
+
+			// TODO: display to the user...
+			ElapsedTimeLabel.Text = (elapsedTime?.ToString() ?? PALCEHOLDER_VALUE);
+			TotalTimeRemainingLabel.Text = (totalTimeRemaining?.ToString() ?? PALCEHOLDER_VALUE);
 
 			if (_mediaTester != null)
 			{
@@ -360,6 +396,7 @@ namespace MediaTesterGui
 			try
 			{
 				_mediaTesterThread?.Abort();
+				_startDateTime = null;
 			}
 			catch (Exception ex)
 			{
