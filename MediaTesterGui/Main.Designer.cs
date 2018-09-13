@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.TargetLabel = new System.Windows.Forms.Label();
 			this.TargetTextBox = new System.Windows.Forms.TextBox();
 			this.ChooseTargetButton = new System.Windows.Forms.Button();
@@ -53,6 +54,10 @@
 			this.DefaultOptionsButton = new System.Windows.Forms.Button();
 			this.AbortButton = new System.Windows.Forms.Button();
 			this.StatisticsGroupBox = new System.Windows.Forms.GroupBox();
+			this.TotalTimeRemainingLabel = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.ElapsedTimeLabel = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
 			this.FailedBytesLabel = new System.Windows.Forms.Label();
 			this.VerifiedBytesLabel = new System.Windows.Forms.Label();
 			this.WrittenBytesLabel = new System.Windows.Forms.Label();
@@ -63,10 +68,7 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.ElapsedTimeLabel = new System.Windows.Forms.Label();
-			this.label7 = new System.Windows.Forms.Label();
-			this.TotalTimeRemainingLabel = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.TestOptionsGgroupBox.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.StatisticsGroupBox.SuspendLayout();
@@ -111,6 +113,7 @@
 			this.StopProcessingOnFailureCheckBox.Size = new System.Drawing.Size(222, 21);
 			this.StopProcessingOnFailureCheckBox.TabIndex = 3;
 			this.StopProcessingOnFailureCheckBox.Text = "Stop processing on first failure";
+			this.toolTip1.SetToolTip(this.StopProcessingOnFailureCheckBox, "Stop the test process after a single failure. (recommended)");
 			this.StopProcessingOnFailureCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// TotalBytesToTestLabel
@@ -138,9 +141,11 @@
 			this.QuickTestAfterEachFileCheckBox.AutoSize = true;
 			this.QuickTestAfterEachFileCheckBox.Location = new System.Drawing.Point(9, 155);
 			this.QuickTestAfterEachFileCheckBox.Name = "QuickTestAfterEachFileCheckBox";
-			this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(319, 21);
+			this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(307, 21);
 			this.QuickTestAfterEachFileCheckBox.TabIndex = 7;
-			this.QuickTestAfterEachFileCheckBox.Text = "Quick test after writing each 1 GiB of test data";
+			this.QuickTestAfterEachFileCheckBox.Text = "Quick test after writing each GiB of test data";
+			this.toolTip1.SetToolTip(this.QuickTestAfterEachFileCheckBox, "Performs brief spot checks as data is written. Enabling this will detect common f" +
+        "ailures much faster. (recommended)");
 			this.QuickTestAfterEachFileCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// QuickFirstFailingByteMethodCheckBox
@@ -151,6 +156,8 @@
 			this.QuickFirstFailingByteMethodCheckBox.Size = new System.Drawing.Size(192, 21);
 			this.QuickFirstFailingByteMethodCheckBox.TabIndex = 8;
 			this.QuickFirstFailingByteMethodCheckBox.Text = "Quick find first failing byte";
+			this.toolTip1.SetToolTip(this.QuickFirstFailingByteMethodCheckBox, "If a failure is encountered, skip testing all written files from the beginning. S" +
+        "earch for the last successful byte in reverse instead. (recommended)");
 			this.QuickFirstFailingByteMethodCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// WriteAndVerifyButton
@@ -161,6 +168,8 @@
 			this.WriteAndVerifyButton.Size = new System.Drawing.Size(129, 34);
 			this.WriteAndVerifyButton.TabIndex = 9;
 			this.WriteAndVerifyButton.Text = "Write and Verify";
+			this.toolTip1.SetToolTip(this.WriteAndVerifyButton, "Write test data to media then check for correctness. Non-destructive. Only availa" +
+        "ble space will be used.");
 			this.WriteAndVerifyButton.UseVisualStyleBackColor = true;
 			this.WriteAndVerifyButton.Click += new System.EventHandler(this.WriteAndVerifyButton_Click);
 			// 
@@ -172,6 +181,7 @@
 			this.VerifyOnlyButton.Size = new System.Drawing.Size(129, 34);
 			this.VerifyOnlyButton.TabIndex = 10;
 			this.VerifyOnlyButton.Text = "Verify Only";
+			this.toolTip1.SetToolTip(this.VerifyOnlyButton, "Verify previous written test data. Will not write anything to media.");
 			this.VerifyOnlyButton.UseVisualStyleBackColor = true;
 			this.VerifyOnlyButton.Click += new System.EventHandler(this.VerifyOnlyButton_Click);
 			// 
@@ -346,6 +356,42 @@
 			this.StatisticsGroupBox.TabStop = false;
 			this.StatisticsGroupBox.Text = "Statistics";
 			// 
+			// TotalTimeRemainingLabel
+			// 
+			this.TotalTimeRemainingLabel.AutoSize = true;
+			this.TotalTimeRemainingLabel.Location = new System.Drawing.Point(79, 171);
+			this.TotalTimeRemainingLabel.Name = "TotalTimeRemainingLabel";
+			this.TotalTimeRemainingLabel.Size = new System.Drawing.Size(23, 17);
+			this.TotalTimeRemainingLabel.TabIndex = 13;
+			this.TotalTimeRemainingLabel.Text = "---";
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(7, 171);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(75, 17);
+			this.label9.TabIndex = 12;
+			this.label9.Text = "Remaining";
+			// 
+			// ElapsedTimeLabel
+			// 
+			this.ElapsedTimeLabel.AutoSize = true;
+			this.ElapsedTimeLabel.Location = new System.Drawing.Point(79, 147);
+			this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
+			this.ElapsedTimeLabel.Size = new System.Drawing.Size(23, 17);
+			this.ElapsedTimeLabel.TabIndex = 11;
+			this.ElapsedTimeLabel.Text = "---";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Location = new System.Drawing.Point(7, 147);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(59, 17);
+			this.label7.TabIndex = 10;
+			this.label7.Text = "Elapsed";
+			// 
 			// FailedBytesLabel
 			// 
 			this.FailedBytesLabel.AutoSize = true;
@@ -436,42 +482,6 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Write Avg";
 			// 
-			// ElapsedTimeLabel
-			// 
-			this.ElapsedTimeLabel.AutoSize = true;
-			this.ElapsedTimeLabel.Location = new System.Drawing.Point(79, 147);
-			this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
-			this.ElapsedTimeLabel.Size = new System.Drawing.Size(23, 17);
-			this.ElapsedTimeLabel.TabIndex = 11;
-			this.ElapsedTimeLabel.Text = "---";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Location = new System.Drawing.Point(7, 147);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(59, 17);
-			this.label7.TabIndex = 10;
-			this.label7.Text = "Elapsed";
-			// 
-			// TotalTimeRemainingLabel
-			// 
-			this.TotalTimeRemainingLabel.AutoSize = true;
-			this.TotalTimeRemainingLabel.Location = new System.Drawing.Point(79, 171);
-			this.TotalTimeRemainingLabel.Name = "TotalTimeRemainingLabel";
-			this.TotalTimeRemainingLabel.Size = new System.Drawing.Size(23, 17);
-			this.TotalTimeRemainingLabel.TabIndex = 13;
-			this.TotalTimeRemainingLabel.Text = "---";
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(7, 171);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(75, 17);
-			this.label9.TabIndex = 12;
-			this.label9.Text = "Remaining";
-			// 
 			// Main
 			// 
 			this.AcceptButton = this.WriteAndVerifyButton;
@@ -543,6 +553,7 @@
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label ElapsedTimeLabel;
 		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.ToolTip toolTip1;
 	}
 }
 

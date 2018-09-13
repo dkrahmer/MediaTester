@@ -199,6 +199,7 @@ namespace MediaTesterLib
 					FileFlagNoBuffering | FileOptions.WriteThrough))
 				using (var fileWriter = new BinaryWriter(file))
 				{
+					long lastWriteBytesPerSecond = 0;
 					int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
 					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 					{
@@ -215,7 +216,18 @@ namespace MediaTesterLib
 							stopwatch.Start();
 							fileWriter.Write(dataBlock);
 							stopwatch.Stop();
-							long writeBytesPerSecond = (long)((decimal)dataBlockSize / ((decimal)stopwatch.Elapsed.Ticks / (decimal)TimeSpan.TicksPerMillisecond / 1000M));
+							long writeBytesPerSecond;
+							if (dataBlockSize == DATA_BLOCK_SIZE)
+							{
+								writeBytesPerSecond = (long)((decimal)dataBlockSize / ((decimal)stopwatch.Elapsed.Ticks / (decimal)TimeSpan.TicksPerMillisecond / 1000M));
+								lastWriteBytesPerSecond = writeBytesPerSecond;
+							}
+							else
+							{
+								writeBytesPerSecond = lastWriteBytesPerSecond; // prevent an artificial rate spike on the last block
+							}
+
+
 							TotalBytesWritten += dataBlockSize;
 							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 1);
 							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0);
@@ -343,6 +355,7 @@ namespace MediaTesterLib
 				using (var fileReader = new FileStream(testFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, DATA_BLOCK_SIZE,
 					FileFlagNoBuffering | FileOptions.SequentialScan))
 				{
+					long lastReadBytesPerSecond = 0;
 					int lastDataBlockIndex = GetLastDataBlockIndex((int)fileReader.Length);
 					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 					{
@@ -365,6 +378,16 @@ namespace MediaTesterLib
 
 							int dataBlockSize = blockBytesVerified + blockBytesFailed;
 							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 2);
+
+							if (dataBlockSize == DATA_BLOCK_SIZE)
+							{
+								lastReadBytesPerSecond = readBytesPerSecond;
+							}
+							else
+							{
+								readBytesPerSecond = lastReadBytesPerSecond; // prevent an artificial rate spike on the last block
+							}
+
 							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed);
 						}
 						catch (Exception ex)
