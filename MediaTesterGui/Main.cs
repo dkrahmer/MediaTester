@@ -327,8 +327,8 @@ namespace MediaTesterGui
 			if (_startDateTime != null)
 			{
 				elapsedTime = new TimeSpan(0, 0, (int)((DateTime.Now - _startDateTime.Value).TotalSeconds));
-				writeTimeRemaining = new TimeSpan(0, 0, (int)((decimal)writeBytesRemaining / bytesPerSecond));
-				readTimeRemaining = new TimeSpan(0, 0, (int)((decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)writeBytesRemaining / bytesPerSecond));
+				readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
 				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
 			}
 

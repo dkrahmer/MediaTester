@@ -114,12 +114,8 @@ namespace MediaTesterLib
 				int lastFileIndex = (int)((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					int testFileSize = (testFileIndex == lastFileIndex) ? (int)(Options.MaxBytesToTest % FILE_SIZE) : FILE_SIZE;
-					if (testFileSize == 0)
-						testFileSize = FILE_SIZE;
-
 					int actualTestFileSize;
-					string testFilePath = GenerateTestFile(testFileIndex, testFileSize, out actualTestFileSize);
+					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
 					{
@@ -160,9 +156,6 @@ namespace MediaTesterLib
 			if (actualTestFileSize > freeSpace)
 				actualTestFileSize = (int)freeSpace;
 
-			if (actualTestFileSize == 0)
-				return null;
-
 			string testFilePath = GetTestFilePath(testFileIndex);
 			Directory.CreateDirectory(GetTestDirectory());
 
@@ -176,10 +169,11 @@ namespace MediaTesterLib
 						break; // Overwrite the file
 					}
 
-					if (fileInfo.Length == FILE_SIZE)
+					if (fileInfo.Length == FILE_SIZE || actualTestFileSize == 0)
 					{
 						// File already exists. Leaving in place.
-						TotalBytesWritten += actualTestFileSize;
+						actualTestFileSize = (int)fileInfo.Length;
+						TotalBytesWritten += fileInfo.Length;
 						return testFilePath;
 					}
 
