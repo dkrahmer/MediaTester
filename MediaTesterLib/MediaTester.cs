@@ -91,7 +91,7 @@ namespace MediaTesterLib
 			{
 				success = false;
 				IsSuccess &= false;
-				OnException(this, new Exception($"Total bytes verified does not match total bytes written. Total Bytes Verified: {TotalBytesVerified.ToString("#,##0")} ; Total Bytes Written: {TotalGeneratedTestFileBytes.ToString("#,##0")}"));
+				OnException(this, new Exception($"Total bytes verified does not match total bytes written. Total Bytes Written: {TotalGeneratedTestFileBytes.ToString("#,##0")} ; Total Bytes Verified: {TotalBytesVerified.ToString("#,##0")}"));
 			}
 			if (Options.StopProcessingOnFailure && !success)
 				return success;
@@ -404,8 +404,11 @@ namespace MediaTesterLib
 						if (Options.StopProcessingOnFailure && !success)
 							return success;
 
-						if (TotalBytesVerified + TotalBytesFailed + bytesVerified + bytesFailed >= Options.MaxBytesToTest)
-							return success; // The requested number of bytes has been verified
+						if (updateTotalBytes)
+						{
+							if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
+								return success; // The requested number of bytes has been verified
+						}
 					}
 				}
 			}
@@ -415,6 +418,7 @@ namespace MediaTesterLib
 				success = false;
 				IsSuccess &= success;
 			}
+
 			return success;
 		}
 

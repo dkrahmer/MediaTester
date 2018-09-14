@@ -133,6 +133,7 @@ namespace MediaTesterGui
 				return;
 			}
 
+			UpdateTargetInformation();
 			UpdateStatus(0, 0);
 
 			TestOptionsGgroupBox.Enabled = enable;
@@ -299,6 +300,7 @@ namespace MediaTesterGui
 		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining);
 		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0)
 		{
+			const decimal EstimatedReadVsWriteSpeedRatio = 1.5M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
 				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
@@ -328,7 +330,8 @@ namespace MediaTesterGui
 			{
 				elapsedTime = new TimeSpan(0, 0, (int)((DateTime.Now - _startDateTime.Value).TotalSeconds));
 				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)writeBytesRemaining / bytesPerSecond));
-				readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+				readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
+									* (decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
 				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
 			}
 
