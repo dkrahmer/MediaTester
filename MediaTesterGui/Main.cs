@@ -96,7 +96,7 @@ namespace MediaTesterGui
 				if (Directory.Exists(targetDirectory))
 				{
 					long lTargetTotalBytes;
-					long lTargetAvailableBytes = MediaTester.GetAvailableBytes(targetDirectory, out lTargetTotalBytes);
+					long lTargetAvailableBytes = MediaTester.GetAvailableBytes(targetDirectory, out lTargetTotalBytes, actual: true);
 					targetTotalBytes = $"{lTargetTotalBytes.ToString("#,##0")}{BYTES}";
 					targetAvailableBytes = $"{lTargetAvailableBytes.ToString("#,##0")}{BYTES}";
 				}
@@ -178,7 +178,8 @@ namespace MediaTesterGui
 		{
 			try
 			{
-				bool result = _mediaTester.FullTest();
+				bool success = _mediaTester.FullTest();
+				LogTestCompletion(success);
 			}
 			finally
 			{
@@ -190,12 +191,27 @@ namespace MediaTesterGui
 		{
 			try
 			{
-				bool result = _mediaTester.VerifyTestFiles();
+				bool success = _mediaTester.VerifyTestFiles();
+				LogTestCompletion(success);
 			}
 			finally
 			{
 				FinishMediaTesterRun();
 			}
+		}
+
+		private void LogTestCompletion(bool success)
+		{
+			if (success)
+			{
+				WriteLog(_mediaTester, $"Media test PASSED! Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")} bytes.");
+			}
+			else
+			{
+				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")} bytes.");
+			}
+
+			WriteLog(_mediaTester, $"You should delete the temporary directory before using your media. '{_mediaTester.GetTestDirectory()}'");
 		}
 
 		private void InitializeMediaTester()
@@ -208,7 +224,7 @@ namespace MediaTesterGui
 			_mediaTester.AfterWriteBlock += AfterWriteBlock;
 
 			ClearLog(null, null);
-			WriteLog(_mediaTester, $"Test data path: '{_mediaTester.GetTestDirectory()}'...");
+			WriteLog(_mediaTester, $"Testing media. Temporary data path: '{_mediaTester.GetTestDirectory()}'");
 			_startDateTime = DateTime.Now;
 		}
 
