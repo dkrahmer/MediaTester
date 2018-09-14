@@ -316,7 +316,7 @@ namespace MediaTesterGui
 		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining);
 		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0)
 		{
-			const decimal EstimatedReadVsWriteSpeedRatio = 1.5M;
+			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
 				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
@@ -351,7 +351,7 @@ namespace MediaTesterGui
 				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
 			}
 
-			// TODO: display to the user...
+			// Display to the user...
 			ElapsedTimeLabel.Text = (elapsedTime?.ToString() ?? PALCEHOLDER_VALUE);
 			TotalTimeRemainingLabel.Text = (totalTimeRemaining?.ToString() ?? PALCEHOLDER_VALUE);
 
