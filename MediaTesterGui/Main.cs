@@ -211,7 +211,7 @@ namespace MediaTesterGui
 				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")} bytes.");
 			}
 
-			WriteLog(_mediaTester, $"You should delete the temporary directory before using your media. '{_mediaTester.GetTestDirectory()}'");
+			WriteLog(_mediaTester, $"NOTE: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
 		}
 
 		private void InitializeMediaTester()
