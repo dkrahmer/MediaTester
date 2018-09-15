@@ -202,16 +202,21 @@ namespace MediaTesterGui
 
 		private void LogTestCompletion(bool success)
 		{
+			if (_averageWriteBytesPerSecond > 0)
+				WriteLog(_mediaTester, $"Averge write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+
+			if (_averageReadBytesPerSecond > 0)
+				WriteLog(_mediaTester, $"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+
 			if (success)
 			{
-				WriteLog(_mediaTester, $"Media test PASSED! Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")} bytes.");
+				WriteLog(_mediaTester, $"Media test PASSED! Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
+				WriteLog(_mediaTester, $"NOTE: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
 			}
 			else
 			{
-				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")} bytes.");
+				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
 			}
-
-			WriteLog(_mediaTester, $"NOTE: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
 		}
 
 		private void InitializeMediaTester()
