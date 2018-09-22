@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,6 +44,7 @@ namespace MediaTester
 			StopProcessingOnFailureCheckBox.Checked = _mediaTesterOptions.StopProcessingOnFailure;
 			QuickTestAfterEachFileCheckBox.Checked = _mediaTesterOptions.QuickTestAfterEachFile;
 			QuickFirstFailingByteMethodCheckBox.Checked = _mediaTesterOptions.QuickFirstFailingByteMethod;
+			RemoveTempDataFilesUponSuccessCheckBox.Checked = _mediaTesterOptions.RemoveTempDataFilesUponSuccess;
 
 			UpdateTargetInformation();
 		}
@@ -53,6 +55,7 @@ namespace MediaTester
 			_mediaTesterOptions.StopProcessingOnFailure = StopProcessingOnFailureCheckBox.Checked;
 			_mediaTesterOptions.QuickTestAfterEachFile = QuickTestAfterEachFileCheckBox.Checked;
 			_mediaTesterOptions.QuickFirstFailingByteMethod = QuickFirstFailingByteMethodCheckBox.Checked;
+			_mediaTesterOptions.RemoveTempDataFilesUponSuccess = RemoveTempDataFilesUponSuccessCheckBox.Checked;
 
 			long lMaxBytesToTest;
 			if (long.TryParse(MaxBytesToTestComboBox.Text.Replace(",", string.Empty).Replace(".", string.Empty), out lMaxBytesToTest))
@@ -137,6 +140,7 @@ namespace MediaTester
 			UpdateStatus(0, 0);
 
 			TestOptionsGgroupBox.Enabled = enable;
+			RemoveTempDataFilesButton.Enabled = enable;
 			SaveOptionsButton.Enabled = enable;
 			DefaultOptionsButton.Enabled = enable;
 			WriteAndVerifyButton.Visible = enable;
@@ -156,8 +160,26 @@ namespace MediaTester
 			EnableControls(false);
 		}
 
+		private void RemoveTempDataFilesButton_Click(object sender, EventArgs e)
+		{
+			if (!ValidateGui())
+				return;
+
+			DisableControls();
+			SaveOptions();
+			InitializeMediaTester();
+			_mediaTesterThread = new Thread(new ThreadStart(RemoveTempDataFilesGui));
+			_mediaTesterThread.Start();
+		}
+
 		private void WriteAndVerifyButton_Click(object sender, EventArgs e)
 		{
+			if (!ValidateGui())
+				return;
+
+			if (MessageBox.Show("MediaTester works best if no existing data exists on the target media.\nContinue with non-destructive test?", "Start Test?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+				return;
+
 			DisableControls();
 			SaveOptions();
 			InitializeMediaTester();
@@ -167,11 +189,44 @@ namespace MediaTester
 
 		private void VerifyOnlyButton_Click(object sender, EventArgs e)
 		{
+			if (!ValidateGui())
+				return;
+
 			DisableControls();
 			SaveOptions();
 			InitializeMediaTester();
 			_mediaTesterThread = new Thread(new ThreadStart(MediaTesterVerifyTestFiles));
 			_mediaTesterThread.Start();
+		}
+
+		private bool ValidateGui()
+		{
+			if (string.IsNullOrWhiteSpace(TargetTextBox.Text) || !Directory.Exists(TargetTextBox.Text))
+			{
+				MessageBox.Show("The selected target is invalid or does not exist!", "Invalid target", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+				return false;
+			}
+
+			return true;
+		}
+
+		private void RemoveTempDataFilesGui()
+		{
+			try
+			{
+				RemoveTempDataFiles();
+			}
+			finally
+			{
+				ThreadCompleteEnableControls();
+			}
+		}
+
+		private void RemoveTempDataFiles()
+		{
+			WriteLog(_mediaTester, $"Removing temp data files...");
+			int filesDeleted = _mediaTester.RemoveTempDataFiles();
+			WriteLog(_mediaTester, $"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
 		}
 
 		private void MediaTesterFullTest()
@@ -183,7 +238,7 @@ namespace MediaTester
 			}
 			finally
 			{
-				FinishMediaTesterRun();
+				ThreadCompleteEnableControls();
 			}
 		}
 
@@ -196,7 +251,7 @@ namespace MediaTester
 			}
 			finally
 			{
-				FinishMediaTesterRun();
+				ThreadCompleteEnableControls();
 			}
 		}
 
@@ -210,8 +265,20 @@ namespace MediaTester
 
 			if (success)
 			{
-				WriteLog(_mediaTester, $"Media test PASSED! Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
-				WriteLog(_mediaTester, $"NOTE: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
+				long lTargetTotalBytes;
+				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true);
+				if (_mediaTesterOptions.RemoveTempDataFilesUponSuccess)
+				{
+					RemoveTempDataFiles();
+				}
+				WriteLog(_mediaTester, $"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
+				WriteLog(_mediaTester, $"Media test PASSED!");
+				// WriteLog(_mediaTester, $"Information: Not all bytes are directly testable because directory and filenames take up additional space on the media.");
+
+				if (!_mediaTesterOptions.RemoveTempDataFilesUponSuccess)
+				{
+					WriteLog(_mediaTester, $"Notice: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
+				}
 			}
 			else
 			{
@@ -229,11 +296,12 @@ namespace MediaTester
 			_mediaTester.AfterWriteBlock += AfterWriteBlock;
 
 			ClearLog(null, null);
-			WriteLog(_mediaTester, $"Testing media. Temporary data path: '{_mediaTester.GetTestDirectory()}'");
+			WriteLog(_mediaTester, $"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
+			WriteLog(_mediaTester, $"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
 			_startDateTime = DateTime.Now;
 		}
 
-		private void FinishMediaTesterRun()
+		private void ThreadCompleteEnableControls()
 		{
 			_mediaTesterThread = null;
 			_mediaTester = null;
@@ -425,6 +493,22 @@ namespace MediaTester
 			catch (Exception ex)
 			{
 			}
+		}
+
+		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			string aboutMessage = $"MediaTester will test any media, such as SD cards, \n"
+								+ $"and verify that the media stores the expected number \n"
+								+ $"of bytes. If you buy any storage media, you should \n"
+								+ $"use MediaTested to verify it or risk losing your data.\n"
+								+ $"\n"
+								+ $"Written by Doug Krahmer\n"
+								+ $"Released as plublic domain open source.\n"
+								+ $"https://github.com/dkrahmer/MediaTester (Click Help to view)\n\n"
+								+ $"\n"
+								+ $"Version: v{Assembly.GetEntryAssembly().GetName().Version}";
+
+			MessageBox.Show(aboutMessage, "About MediaTester", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, "https://github.com/dkrahmer/MediaTester/releases");
 		}
 	}
 }

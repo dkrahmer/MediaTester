@@ -40,6 +40,7 @@
 			this.WriteAndVerifyButton = new System.Windows.Forms.Button();
 			this.VerifyOnlyButton = new System.Windows.Forms.Button();
 			this.TestOptionsGgroupBox = new System.Windows.Forms.GroupBox();
+			this.RemoveTempDataFilesUponSuccessCheckBox = new System.Windows.Forms.CheckBox();
 			this.TargetAvailableBytesLabel = new System.Windows.Forms.Label();
 			this.TargetTotalBytesLabel = new System.Windows.Forms.Label();
 			this.TargetAvailableBytesLabelLabel = new System.Windows.Forms.Label();
@@ -69,6 +70,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+			this.RemoveTempDataFilesButton = new System.Windows.Forms.Button();
 			this.TestOptionsGgroupBox.SuspendLayout();
 			this.StatusStrip.SuspendLayout();
 			this.StatisticsGroupBox.SuspendLayout();
@@ -90,14 +92,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.TargetTextBox.Location = new System.Drawing.Point(62, 27);
 			this.TargetTextBox.Name = "TargetTextBox";
-			this.TargetTextBox.Size = new System.Drawing.Size(231, 22);
+			this.TargetTextBox.Size = new System.Drawing.Size(218, 22);
 			this.TargetTextBox.TabIndex = 1;
 			this.TargetTextBox.TextChanged += new System.EventHandler(this.TargetTextBox_TextChanged);
 			// 
 			// ChooseTargetButton
 			// 
 			this.ChooseTargetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.ChooseTargetButton.Location = new System.Drawing.Point(299, 26);
+			this.ChooseTargetButton.Location = new System.Drawing.Point(286, 26);
 			this.ChooseTargetButton.Name = "ChooseTargetButton";
 			this.ChooseTargetButton.Size = new System.Drawing.Size(28, 24);
 			this.ChooseTargetButton.TabIndex = 2;
@@ -163,7 +165,7 @@
 			// WriteAndVerifyButton
 			// 
 			this.WriteAndVerifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.WriteAndVerifyButton.Location = new System.Drawing.Point(351, 247);
+			this.WriteAndVerifyButton.Location = new System.Drawing.Point(338, 273);
 			this.WriteAndVerifyButton.Name = "WriteAndVerifyButton";
 			this.WriteAndVerifyButton.Size = new System.Drawing.Size(129, 34);
 			this.WriteAndVerifyButton.TabIndex = 9;
@@ -176,7 +178,7 @@
 			// VerifyOnlyButton
 			// 
 			this.VerifyOnlyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.VerifyOnlyButton.Location = new System.Drawing.Point(486, 247);
+			this.VerifyOnlyButton.Location = new System.Drawing.Point(473, 273);
 			this.VerifyOnlyButton.Name = "VerifyOnlyButton";
 			this.VerifyOnlyButton.Size = new System.Drawing.Size(129, 34);
 			this.VerifyOnlyButton.TabIndex = 10;
@@ -189,6 +191,7 @@
 			// 
 			this.TestOptionsGgroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.TestOptionsGgroupBox.Controls.Add(this.RemoveTempDataFilesUponSuccessCheckBox);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetAvailableBytesLabel);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetTotalBytesLabel);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetAvailableBytesLabelLabel);
@@ -203,10 +206,21 @@
 			this.TestOptionsGgroupBox.Controls.Add(this.QuickTestAfterEachFileCheckBox);
 			this.TestOptionsGgroupBox.Location = new System.Drawing.Point(12, 29);
 			this.TestOptionsGgroupBox.Name = "TestOptionsGgroupBox";
-			this.TestOptionsGgroupBox.Size = new System.Drawing.Size(333, 212);
+			this.TestOptionsGgroupBox.Size = new System.Drawing.Size(320, 238);
 			this.TestOptionsGgroupBox.TabIndex = 11;
 			this.TestOptionsGgroupBox.TabStop = false;
 			this.TestOptionsGgroupBox.Text = "Test Options";
+			// 
+			// RemoveTempDataFilesUponSuccessCheckBox
+			// 
+			this.RemoveTempDataFilesUponSuccessCheckBox.AutoSize = true;
+			this.RemoveTempDataFilesUponSuccessCheckBox.Location = new System.Drawing.Point(9, 210);
+			this.RemoveTempDataFilesUponSuccessCheckBox.Name = "RemoveTempDataFilesUponSuccessCheckBox";
+			this.RemoveTempDataFilesUponSuccessCheckBox.Size = new System.Drawing.Size(269, 21);
+			this.RemoveTempDataFilesUponSuccessCheckBox.TabIndex = 13;
+			this.RemoveTempDataFilesUponSuccessCheckBox.Text = "Remove temp data files upon success";
+			this.toolTip1.SetToolTip(this.RemoveTempDataFilesUponSuccessCheckBox, "Remove temporary data files after verification succeeds.");
+			this.RemoveTempDataFilesUponSuccessCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// TargetAvailableBytesLabel
 			// 
@@ -249,12 +263,12 @@
 			this.ActivityLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.ActivityLogTextBox.Location = new System.Drawing.Point(12, 287);
+			this.ActivityLogTextBox.Location = new System.Drawing.Point(12, 313);
 			this.ActivityLogTextBox.Multiline = true;
 			this.ActivityLogTextBox.Name = "ActivityLogTextBox";
 			this.ActivityLogTextBox.ReadOnly = true;
 			this.ActivityLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.ActivityLogTextBox.Size = new System.Drawing.Size(603, 124);
+			this.ActivityLogTextBox.Size = new System.Drawing.Size(590, 137);
 			this.ActivityLogTextBox.TabIndex = 12;
 			this.ActivityLogTextBox.WordWrap = false;
 			// 
@@ -265,9 +279,9 @@
             this.ProgressBar,
             this.ReadBytesPerSecondStatusLabel,
             this.WriteBytesPerSecondStatusLabel});
-			this.StatusStrip.Location = new System.Drawing.Point(0, 424);
+			this.StatusStrip.Location = new System.Drawing.Point(0, 463);
 			this.StatusStrip.Name = "StatusStrip";
-			this.StatusStrip.Size = new System.Drawing.Size(627, 25);
+			this.StatusStrip.Size = new System.Drawing.Size(614, 25);
 			this.StatusStrip.TabIndex = 13;
 			// 
 			// ProgressBar
@@ -292,19 +306,20 @@
 			// 
 			this.AboutLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.AboutLinkLabel.AutoSize = true;
-			this.AboutLinkLabel.Location = new System.Drawing.Point(558, 9);
+			this.AboutLinkLabel.Location = new System.Drawing.Point(545, 9);
 			this.AboutLinkLabel.Name = "AboutLinkLabel";
 			this.AboutLinkLabel.Size = new System.Drawing.Size(57, 17);
 			this.AboutLinkLabel.TabIndex = 15;
 			this.AboutLinkLabel.TabStop = true;
 			this.AboutLinkLabel.Text = "About...";
 			this.AboutLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.AboutLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutLinkLabel_LinkClicked);
 			// 
 			// SaveOptionsButton
 			// 
-			this.SaveOptionsButton.Location = new System.Drawing.Point(12, 248);
+			this.SaveOptionsButton.Location = new System.Drawing.Point(12, 273);
 			this.SaveOptionsButton.Name = "SaveOptionsButton";
-			this.SaveOptionsButton.Size = new System.Drawing.Size(129, 33);
+			this.SaveOptionsButton.Size = new System.Drawing.Size(129, 34);
 			this.SaveOptionsButton.TabIndex = 16;
 			this.SaveOptionsButton.Text = "Save Options";
 			this.SaveOptionsButton.UseVisualStyleBackColor = true;
@@ -312,9 +327,9 @@
 			// 
 			// DefaultOptionsButton
 			// 
-			this.DefaultOptionsButton.Location = new System.Drawing.Point(147, 248);
+			this.DefaultOptionsButton.Location = new System.Drawing.Point(147, 273);
 			this.DefaultOptionsButton.Name = "DefaultOptionsButton";
-			this.DefaultOptionsButton.Size = new System.Drawing.Size(129, 33);
+			this.DefaultOptionsButton.Size = new System.Drawing.Size(129, 34);
 			this.DefaultOptionsButton.TabIndex = 17;
 			this.DefaultOptionsButton.Text = "Default Options";
 			this.DefaultOptionsButton.UseVisualStyleBackColor = true;
@@ -323,7 +338,7 @@
 			// AbortButton
 			// 
 			this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.AbortButton.Location = new System.Drawing.Point(351, 247);
+			this.AbortButton.Location = new System.Drawing.Point(338, 273);
 			this.AbortButton.Name = "AbortButton";
 			this.AbortButton.Size = new System.Drawing.Size(264, 34);
 			this.AbortButton.TabIndex = 18;
@@ -349,9 +364,9 @@
 			this.StatisticsGroupBox.Controls.Add(this.label3);
 			this.StatisticsGroupBox.Controls.Add(this.label2);
 			this.StatisticsGroupBox.Controls.Add(this.label1);
-			this.StatisticsGroupBox.Location = new System.Drawing.Point(351, 29);
+			this.StatisticsGroupBox.Location = new System.Drawing.Point(338, 29);
 			this.StatisticsGroupBox.Name = "StatisticsGroupBox";
-			this.StatisticsGroupBox.Size = new System.Drawing.Size(264, 212);
+			this.StatisticsGroupBox.Size = new System.Drawing.Size(264, 197);
 			this.StatisticsGroupBox.TabIndex = 19;
 			this.StatisticsGroupBox.TabStop = false;
 			this.StatisticsGroupBox.Text = "Statistics";
@@ -482,12 +497,24 @@
 			this.label1.TabIndex = 0;
 			this.label1.Text = "Write Avg";
 			// 
+			// RemoveTempDataFilesButton
+			// 
+			this.RemoveTempDataFilesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.RemoveTempDataFilesButton.Location = new System.Drawing.Point(338, 231);
+			this.RemoveTempDataFilesButton.Name = "RemoveTempDataFilesButton";
+			this.RemoveTempDataFilesButton.Size = new System.Drawing.Size(264, 34);
+			this.RemoveTempDataFilesButton.TabIndex = 20;
+			this.RemoveTempDataFilesButton.Text = "Remove temp data files";
+			this.RemoveTempDataFilesButton.UseVisualStyleBackColor = true;
+			this.RemoveTempDataFilesButton.Click += new System.EventHandler(this.RemoveTempDataFilesButton_Click);
+			// 
 			// Main
 			// 
 			this.AcceptButton = this.WriteAndVerifyButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(627, 449);
+			this.ClientSize = new System.Drawing.Size(614, 488);
+			this.Controls.Add(this.RemoveTempDataFilesButton);
 			this.Controls.Add(this.StatisticsGroupBox);
 			this.Controls.Add(this.DefaultOptionsButton);
 			this.Controls.Add(this.SaveOptionsButton);
@@ -498,9 +525,9 @@
 			this.Controls.Add(this.VerifyOnlyButton);
 			this.Controls.Add(this.WriteAndVerifyButton);
 			this.Controls.Add(this.AbortButton);
-			this.MinimumSize = new System.Drawing.Size(645, 405);
+			this.MinimumSize = new System.Drawing.Size(632, 447);
 			this.Name = "Main";
-			this.Text = "Media Tester";
+			this.Text = "MediaTester";
 			this.TestOptionsGgroupBox.ResumeLayout(false);
 			this.TestOptionsGgroupBox.PerformLayout();
 			this.StatusStrip.ResumeLayout(false);
@@ -554,6 +581,8 @@
 		private System.Windows.Forms.Label ElapsedTimeLabel;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.CheckBox RemoveTempDataFilesUponSuccessCheckBox;
+		private System.Windows.Forms.Button RemoveTempDataFilesButton;
 	}
 }
 

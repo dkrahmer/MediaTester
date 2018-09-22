@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace MediaTesterLib
 {
@@ -199,6 +200,11 @@ namespace MediaTesterLib
 					FileFlagNoBuffering | FileOptions.WriteThrough))
 				using (var fileWriter = new BinaryWriter(file))
 				{
+					// Check if the free space changed after creating the file
+					freeSpace = GetAvailableBytes(actual: true);
+					if (actualTestFileSize > freeSpace)
+						actualTestFileSize = (int)freeSpace; // Adding a directory or file to the FAT can decrease available space.
+
 					long lastWriteBytesPerSecond = 0;
 					int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
 					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
@@ -227,7 +233,6 @@ namespace MediaTesterLib
 								writeBytesPerSecond = lastWriteBytesPerSecond; // prevent an artificial rate spike on the last block
 							}
 
-
 							TotalBytesWritten += dataBlockSize;
 							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 1);
 							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0);
@@ -250,6 +255,24 @@ namespace MediaTesterLib
 			}
 
 			return testFilePath;
+		}
+
+		public int RemoveTempDataFiles()
+		{
+			for (int testFileIndex = 0; ; testFileIndex++)
+			{
+				string testFilePath = GetTestFilePath(testFileIndex);
+				if (!File.Exists(testFilePath))
+				{
+					string testDirectory = GetTestDirectory();
+					if (Directory.Exists(testDirectory) && Directory.EnumerateFiles(testDirectory).FirstOrDefault() == null)
+						Directory.Delete(testDirectory); // Delete empty directory
+
+					return testFileIndex; // The number of files deleted
+				}
+
+				File.Delete(testFilePath);
+			}
 		}
 
 		public string GetTestDirectory()
