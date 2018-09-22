@@ -1,4 +1,4 @@
-﻿namespace MediaTesterGui
+﻿namespace MediaTester
 {
 	partial class Main
 	{

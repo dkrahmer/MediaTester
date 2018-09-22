@@ -9,12 +9,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MediaTesterGui
+namespace MediaTester
 {
 	public partial class Main : Form
 	{
 		MediaTesterLib.Options _mediaTesterOptions = Options.Deserialize();
-		MediaTester _mediaTester;
+		MediaTesterLib.MediaTester _mediaTester;
 		private Thread _mediaTesterThread;
 		const string PALCEHOLDER_VALUE = "---";
 		const string BYTES = " Bytes";
@@ -96,7 +96,7 @@ namespace MediaTesterGui
 				if (Directory.Exists(targetDirectory))
 				{
 					long lTargetTotalBytes;
-					long lTargetAvailableBytes = MediaTester.GetAvailableBytes(targetDirectory, out lTargetTotalBytes, actual: true);
+					long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(targetDirectory, out lTargetTotalBytes, actual: true);
 					targetTotalBytes = $"{lTargetTotalBytes.ToString("#,##0")}{BYTES}";
 					targetAvailableBytes = $"{lTargetAvailableBytes.ToString("#,##0")}{BYTES}";
 				}
@@ -222,7 +222,7 @@ namespace MediaTesterGui
 		private void InitializeMediaTester()
 		{
 			UpdateOptionsFromUi();
-			_mediaTester = new MediaTester(_mediaTesterOptions);
+			_mediaTester = new MediaTesterLib.MediaTester(_mediaTesterOptions);
 			_mediaTester.OnException += OnMediaTesterException;
 			_mediaTester.AfterQuickTest += AfterQuickTest;
 			_mediaTester.AfterVerifyBlock += AfterVerifyBlock;
@@ -241,7 +241,7 @@ namespace MediaTesterGui
 			EnableControls();
 		}
 
-		private void AfterWriteBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
+		private void AfterWriteBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
 		{
 			UpdateStatus(writeBytesPerSecond: writeBytesPerSecond,
 				writeBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesWritten,
@@ -257,12 +257,12 @@ namespace MediaTesterGui
 			}
 		}
 
-		private void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
+		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
 		{
 			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, false);
 		}
 
-		private void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
+		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
 				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
@@ -280,12 +280,12 @@ namespace MediaTesterGui
 			}
 		}
 
-		private void AfterQuickTest(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
+		private void AfterQuickTest(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
 		{
 			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, true);
 		}
 
-		private void OnMediaTesterException(MediaTester mediaTester, Exception exception)
+		private void OnMediaTesterException(MediaTesterLib.MediaTester mediaTester, Exception exception)
 		{
 			WriteLog(mediaTester, $"{exception.Message}");
 			if (exception.InnerException != null)
@@ -294,8 +294,8 @@ namespace MediaTesterGui
 			}
 		}
 
-		private delegate void WriteLogDelegate(MediaTester mediaTester, string message);
-		private void WriteLog(MediaTester mediaTester, string message)
+		private delegate void WriteLogDelegate(MediaTesterLib.MediaTester mediaTester, string message);
+		private void WriteLog(MediaTesterLib.MediaTester mediaTester, string message)
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{

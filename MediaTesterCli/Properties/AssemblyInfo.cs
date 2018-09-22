@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MediaTesterGui")]
+[assembly: AssemblyTitle("MediaTester")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KrahmerSoft")]
-[assembly: AssemblyProduct("MediaTesterGui")]
+[assembly: AssemblyProduct("MediaTester")]
 [assembly: AssemblyCopyright("Copyright © KrahmerSoft 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("a2a7c26e-7a5c-4f38-a5f3-1d71061ad025")]
+[assembly: Guid("654fd051-c611-406a-aa97-40d84f41afb1")]
 
 // Version information for an assembly consists of the following four values:
 //
