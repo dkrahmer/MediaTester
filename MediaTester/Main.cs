@@ -540,5 +540,10 @@ namespace MediaTester
 
 			MessageBox.Show(aboutMessage, "About MediaTester", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, "https://github.com/dkrahmer/MediaTester/releases");
 		}
+
+		private void Main_Load(object sender, EventArgs e)
+		{
+			this.Text += $" v{Assembly.GetEntryAssembly().GetName().Version}";
+		}
 	}
 }

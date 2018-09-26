@@ -231,7 +231,7 @@
 			this.RemoveTempDataFilesUponCompletionCheckBox.AutoSize = true;
 			this.RemoveTempDataFilesUponCompletionCheckBox.Location = new System.Drawing.Point(9, 190);
 			this.RemoveTempDataFilesUponCompletionCheckBox.Name = "RemoveTempDataFilesUponCompletionCheckBox";
-			this.RemoveTempDataFilesUponCompletionCheckBox.Size = new System.Drawing.Size(269, 21);
+			this.RemoveTempDataFilesUponCompletionCheckBox.Size = new System.Drawing.Size(286, 21);
 			this.RemoveTempDataFilesUponCompletionCheckBox.TabIndex = 13;
 			this.RemoveTempDataFilesUponCompletionCheckBox.Text = "Remove temp data files upon completion";
 			this.toolTip1.SetToolTip(this.RemoveTempDataFilesUponCompletionCheckBox, "Remove temporary data files after verification completion (pass or fail).");
@@ -543,6 +543,7 @@
 			this.MinimumSize = new System.Drawing.Size(632, 447);
 			this.Name = "Main";
 			this.Text = "MediaTester";
+			this.Load += new System.EventHandler(this.Main_Load);
 			this.TestOptionsGgroupBox.ResumeLayout(false);
 			this.TestOptionsGgroupBox.PerformLayout();
 			this.StatusStrip.ResumeLayout(false);
