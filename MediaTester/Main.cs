@@ -1,13 +1,8 @@
 ﻿using MediaTesterLib;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MediaTester
@@ -20,6 +15,8 @@ namespace MediaTester
 		const string PALCEHOLDER_VALUE = "---";
 		const string BYTES = " Bytes";
 		const string BYTES_PER_SECOND = BYTES + "/sec";
+		const string TEST_RESULTS_FILENAME_TEMPLATE = "MediaTesterResults_{0}_{1}.txt";
+		const string TEST_RESULTS_FILENAME_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
 
 		DateTime? _startDateTime;
 
@@ -44,7 +41,8 @@ namespace MediaTester
 			StopProcessingOnFailureCheckBox.Checked = _mediaTesterOptions.StopProcessingOnFailure;
 			QuickTestAfterEachFileCheckBox.Checked = _mediaTesterOptions.QuickTestAfterEachFile;
 			QuickFirstFailingByteMethodCheckBox.Checked = _mediaTesterOptions.QuickFirstFailingByteMethod;
-			RemoveTempDataFilesUponSuccessCheckBox.Checked = _mediaTesterOptions.RemoveTempDataFilesUponSuccess;
+			RemoveTempDataFilesUponCompletionCheckBox.Checked = _mediaTesterOptions.RemoveTempDataFilesUponCompletion;
+			SaveTestResultsFileToMediaCheckBox.Checked = _mediaTesterOptions.SaveTestResultsFileToMedia;
 
 			UpdateTargetInformation();
 		}
@@ -55,7 +53,8 @@ namespace MediaTester
 			_mediaTesterOptions.StopProcessingOnFailure = StopProcessingOnFailureCheckBox.Checked;
 			_mediaTesterOptions.QuickTestAfterEachFile = QuickTestAfterEachFileCheckBox.Checked;
 			_mediaTesterOptions.QuickFirstFailingByteMethod = QuickFirstFailingByteMethodCheckBox.Checked;
-			_mediaTesterOptions.RemoveTempDataFilesUponSuccess = RemoveTempDataFilesUponSuccessCheckBox.Checked;
+			_mediaTesterOptions.RemoveTempDataFilesUponCompletion = RemoveTempDataFilesUponCompletionCheckBox.Checked;
+			_mediaTesterOptions.SaveTestResultsFileToMedia = SaveTestResultsFileToMediaCheckBox.Checked;
 
 			long lMaxBytesToTest;
 			if (long.TryParse(MaxBytesToTestComboBox.Text.Replace(",", string.Empty).Replace(".", string.Empty), out lMaxBytesToTest))
@@ -263,19 +262,20 @@ namespace MediaTester
 			if (_averageReadBytesPerSecond > 0)
 				WriteLog(_mediaTester, $"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
+			if (_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
+			{
+				RemoveTempDataFiles();
+			}
+
 			if (success)
 			{
 				long lTargetTotalBytes;
 				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true);
-				if (_mediaTesterOptions.RemoveTempDataFilesUponSuccess)
-				{
-					RemoveTempDataFiles();
-				}
 				WriteLog(_mediaTester, $"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
 				WriteLog(_mediaTester, $"Media test PASSED!");
 				// WriteLog(_mediaTester, $"Information: Not all bytes are directly testable because directory and filenames take up additional space on the media.");
 
-				if (!_mediaTesterOptions.RemoveTempDataFilesUponSuccess)
+				if (!_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 				{
 					WriteLog(_mediaTester, $"Notice: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
 				}
@@ -283,6 +283,36 @@ namespace MediaTester
 			else
 			{
 				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
+			}
+
+			if (_mediaTesterOptions.SaveTestResultsFileToMedia && (success || _mediaTesterOptions.RemoveTempDataFilesUponCompletion))
+			{
+				string dateTime = DateTime.Now.ToString(TEST_RESULTS_FILENAME_DATETIME_FORMAT);
+				string testResultsFilePath = Path.Combine(_mediaTester.Options.TestDirectory, string.Format(TEST_RESULTS_FILENAME_TEMPLATE, dateTime, success ? "PASS" : "FAIL"));
+				string testResultsLog = ActivityLogTextBox.Text;
+				long lTargetTotalBytes;
+				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true);
+
+				int spaceNeeded = testResultsLog.Length + (int)Math.Pow(2, 16);
+				bool enoughSpace = true;
+				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true))
+				{
+					if (_mediaTester.RemoveTempDataFiles(1) < 1)
+					{
+						enoughSpace = false;
+						break; // No files deleted
+					}
+				}
+
+				if (enoughSpace)
+				{
+					File.WriteAllText(testResultsFilePath, testResultsLog);
+					WriteLog(_mediaTester, $"Wrote test results file '{testResultsFilePath}'");
+				}
+				else
+				{
+					WriteLog(_mediaTester, $"Not enough free space to write test results file '{testResultsFilePath}'");
+				}
 			}
 		}
 

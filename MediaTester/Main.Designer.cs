@@ -40,7 +40,8 @@
 			this.WriteAndVerifyButton = new System.Windows.Forms.Button();
 			this.VerifyOnlyButton = new System.Windows.Forms.Button();
 			this.TestOptionsGgroupBox = new System.Windows.Forms.GroupBox();
-			this.RemoveTempDataFilesUponSuccessCheckBox = new System.Windows.Forms.CheckBox();
+			this.SaveTestResultsFileToMediaCheckBox = new System.Windows.Forms.CheckBox();
+			this.RemoveTempDataFilesUponCompletionCheckBox = new System.Windows.Forms.CheckBox();
 			this.TargetAvailableBytesLabel = new System.Windows.Forms.Label();
 			this.TargetTotalBytesLabel = new System.Windows.Forms.Label();
 			this.TargetAvailableBytesLabelLabel = new System.Windows.Forms.Label();
@@ -110,7 +111,7 @@
 			// StopProcessingOnFailureCheckBox
 			// 
 			this.StopProcessingOnFailureCheckBox.AutoSize = true;
-			this.StopProcessingOnFailureCheckBox.Location = new System.Drawing.Point(9, 127);
+			this.StopProcessingOnFailureCheckBox.Location = new System.Drawing.Point(9, 119);
 			this.StopProcessingOnFailureCheckBox.Name = "StopProcessingOnFailureCheckBox";
 			this.StopProcessingOnFailureCheckBox.Size = new System.Drawing.Size(222, 21);
 			this.StopProcessingOnFailureCheckBox.TabIndex = 3;
@@ -121,7 +122,7 @@
 			// TotalBytesToTestLabel
 			// 
 			this.TotalBytesToTestLabel.AutoSize = true;
-			this.TotalBytesToTestLabel.Location = new System.Drawing.Point(6, 100);
+			this.TotalBytesToTestLabel.Location = new System.Drawing.Point(6, 94);
 			this.TotalBytesToTestLabel.Name = "TotalBytesToTestLabel";
 			this.TotalBytesToTestLabel.Size = new System.Drawing.Size(132, 17);
 			this.TotalBytesToTestLabel.TabIndex = 5;
@@ -133,7 +134,7 @@
 			this.MaxBytesToTestComboBox.FormattingEnabled = true;
 			this.MaxBytesToTestComboBox.Items.AddRange(new object[] {
             "All Available Bytes"});
-			this.MaxBytesToTestComboBox.Location = new System.Drawing.Point(146, 97);
+			this.MaxBytesToTestComboBox.Location = new System.Drawing.Point(146, 91);
 			this.MaxBytesToTestComboBox.Name = "MaxBytesToTestComboBox";
 			this.MaxBytesToTestComboBox.Size = new System.Drawing.Size(155, 24);
 			this.MaxBytesToTestComboBox.TabIndex = 6;
@@ -141,7 +142,7 @@
 			// QuickTestAfterEachFileCheckBox
 			// 
 			this.QuickTestAfterEachFileCheckBox.AutoSize = true;
-			this.QuickTestAfterEachFileCheckBox.Location = new System.Drawing.Point(9, 155);
+			this.QuickTestAfterEachFileCheckBox.Location = new System.Drawing.Point(9, 143);
 			this.QuickTestAfterEachFileCheckBox.Name = "QuickTestAfterEachFileCheckBox";
 			this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(307, 21);
 			this.QuickTestAfterEachFileCheckBox.TabIndex = 7;
@@ -153,7 +154,7 @@
 			// QuickFirstFailingByteMethodCheckBox
 			// 
 			this.QuickFirstFailingByteMethodCheckBox.AutoSize = true;
-			this.QuickFirstFailingByteMethodCheckBox.Location = new System.Drawing.Point(9, 183);
+			this.QuickFirstFailingByteMethodCheckBox.Location = new System.Drawing.Point(9, 167);
 			this.QuickFirstFailingByteMethodCheckBox.Name = "QuickFirstFailingByteMethodCheckBox";
 			this.QuickFirstFailingByteMethodCheckBox.Size = new System.Drawing.Size(192, 21);
 			this.QuickFirstFailingByteMethodCheckBox.TabIndex = 8;
@@ -191,7 +192,8 @@
 			// 
 			this.TestOptionsGgroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.TestOptionsGgroupBox.Controls.Add(this.RemoveTempDataFilesUponSuccessCheckBox);
+			this.TestOptionsGgroupBox.Controls.Add(this.SaveTestResultsFileToMediaCheckBox);
+			this.TestOptionsGgroupBox.Controls.Add(this.RemoveTempDataFilesUponCompletionCheckBox);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetAvailableBytesLabel);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetTotalBytesLabel);
 			this.TestOptionsGgroupBox.Controls.Add(this.TargetAvailableBytesLabelLabel);
@@ -211,21 +213,34 @@
 			this.TestOptionsGgroupBox.TabStop = false;
 			this.TestOptionsGgroupBox.Text = "Test Options";
 			// 
-			// RemoveTempDataFilesUponSuccessCheckBox
+			// SaveTestResultsFileToMediaCheckBox
 			// 
-			this.RemoveTempDataFilesUponSuccessCheckBox.AutoSize = true;
-			this.RemoveTempDataFilesUponSuccessCheckBox.Location = new System.Drawing.Point(9, 210);
-			this.RemoveTempDataFilesUponSuccessCheckBox.Name = "RemoveTempDataFilesUponSuccessCheckBox";
-			this.RemoveTempDataFilesUponSuccessCheckBox.Size = new System.Drawing.Size(269, 21);
-			this.RemoveTempDataFilesUponSuccessCheckBox.TabIndex = 13;
-			this.RemoveTempDataFilesUponSuccessCheckBox.Text = "Remove temp data files upon success";
-			this.toolTip1.SetToolTip(this.RemoveTempDataFilesUponSuccessCheckBox, "Remove temporary data files after verification succeeds.");
-			this.RemoveTempDataFilesUponSuccessCheckBox.UseVisualStyleBackColor = true;
+			this.SaveTestResultsFileToMediaCheckBox.AutoSize = true;
+			this.SaveTestResultsFileToMediaCheckBox.Location = new System.Drawing.Point(9, 213);
+			this.SaveTestResultsFileToMediaCheckBox.Name = "SaveTestResultsFileToMediaCheckBox";
+			this.SaveTestResultsFileToMediaCheckBox.Size = new System.Drawing.Size(244, 21);
+			this.SaveTestResultsFileToMediaCheckBox.TabIndex = 14;
+			this.SaveTestResultsFileToMediaCheckBox.Text = "Save test results file to media root";
+			this.toolTip1.SetToolTip(this.SaveTestResultsFileToMediaCheckBox, "Save test results file to media with full test log output. MediaTesterResults_YYY" +
+        "Y-MM-DD_hh-mm-ss.txt\nTemp test data files will be removed, if necessary, to crea" +
+        "te space for the test results file.");
+			this.SaveTestResultsFileToMediaCheckBox.UseVisualStyleBackColor = true;
+			// 
+			// RemoveTempDataFilesUponCompletionCheckBox
+			// 
+			this.RemoveTempDataFilesUponCompletionCheckBox.AutoSize = true;
+			this.RemoveTempDataFilesUponCompletionCheckBox.Location = new System.Drawing.Point(9, 190);
+			this.RemoveTempDataFilesUponCompletionCheckBox.Name = "RemoveTempDataFilesUponCompletionCheckBox";
+			this.RemoveTempDataFilesUponCompletionCheckBox.Size = new System.Drawing.Size(269, 21);
+			this.RemoveTempDataFilesUponCompletionCheckBox.TabIndex = 13;
+			this.RemoveTempDataFilesUponCompletionCheckBox.Text = "Remove temp data files upon completion";
+			this.toolTip1.SetToolTip(this.RemoveTempDataFilesUponCompletionCheckBox, "Remove temporary data files after verification completion (pass or fail).");
+			this.RemoveTempDataFilesUponCompletionCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// TargetAvailableBytesLabel
 			// 
 			this.TargetAvailableBytesLabel.AutoSize = true;
-			this.TargetAvailableBytesLabel.Location = new System.Drawing.Point(143, 77);
+			this.TargetAvailableBytesLabel.Location = new System.Drawing.Point(143, 73);
 			this.TargetAvailableBytesLabel.Name = "TargetAvailableBytesLabel";
 			this.TargetAvailableBytesLabel.Size = new System.Drawing.Size(23, 17);
 			this.TargetAvailableBytesLabel.TabIndex = 12;
@@ -234,7 +249,7 @@
 			// TargetTotalBytesLabel
 			// 
 			this.TargetTotalBytesLabel.AutoSize = true;
-			this.TargetTotalBytesLabel.Location = new System.Drawing.Point(143, 56);
+			this.TargetTotalBytesLabel.Location = new System.Drawing.Point(143, 54);
 			this.TargetTotalBytesLabel.Name = "TargetTotalBytesLabel";
 			this.TargetTotalBytesLabel.Size = new System.Drawing.Size(23, 17);
 			this.TargetTotalBytesLabel.TabIndex = 11;
@@ -243,7 +258,7 @@
 			// TargetAvailableBytesLabelLabel
 			// 
 			this.TargetAvailableBytesLabelLabel.AutoSize = true;
-			this.TargetAvailableBytesLabelLabel.Location = new System.Drawing.Point(6, 77);
+			this.TargetAvailableBytesLabelLabel.Location = new System.Drawing.Point(6, 73);
 			this.TargetAvailableBytesLabelLabel.Name = "TargetAvailableBytesLabelLabel";
 			this.TargetAvailableBytesLabelLabel.Size = new System.Drawing.Size(109, 17);
 			this.TargetAvailableBytesLabelLabel.TabIndex = 10;
@@ -252,7 +267,7 @@
 			// TargetTotalBytesLabelLabel
 			// 
 			this.TargetTotalBytesLabelLabel.AutoSize = true;
-			this.TargetTotalBytesLabelLabel.Location = new System.Drawing.Point(6, 54);
+			this.TargetTotalBytesLabelLabel.Location = new System.Drawing.Point(6, 52);
 			this.TargetTotalBytesLabelLabel.Name = "TargetTotalBytesLabelLabel";
 			this.TargetTotalBytesLabelLabel.Size = new System.Drawing.Size(71, 17);
 			this.TargetTotalBytesLabelLabel.TabIndex = 9;
@@ -581,8 +596,9 @@
 		private System.Windows.Forms.Label ElapsedTimeLabel;
 		private System.Windows.Forms.Label label7;
 		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.CheckBox RemoveTempDataFilesUponSuccessCheckBox;
+		private System.Windows.Forms.CheckBox RemoveTempDataFilesUponCompletionCheckBox;
 		private System.Windows.Forms.Button RemoveTempDataFilesButton;
+		private System.Windows.Forms.CheckBox SaveTestResultsFileToMediaCheckBox;
 	}
 }
 

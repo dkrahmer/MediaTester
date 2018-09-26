@@ -257,22 +257,40 @@ namespace MediaTesterLib
 			return testFilePath;
 		}
 
-		public int RemoveTempDataFiles()
+		public int RemoveTempDataFiles(int filesToRemove = int.MaxValue)
 		{
-			for (int testFileIndex = 0; ; testFileIndex++)
+			// Find the last file index that exists
+			int fileCount = 0;
+			while (true)
 			{
-				string testFilePath = GetTestFilePath(testFileIndex);
+				string testFilePath = GetTestFilePath(fileCount);
 				if (!File.Exists(testFilePath))
-				{
-					string testDirectory = GetTestDirectory();
-					if (Directory.Exists(testDirectory) && Directory.EnumerateFiles(testDirectory).FirstOrDefault() == null)
-						Directory.Delete(testDirectory); // Delete empty directory
+					break;
 
-					return testFileIndex; // The number of files deleted
-				}
+				fileCount++;
+			}
+
+			// Delete files in reverse order
+			int filesRemoved = 0;
+			string testDirectory = GetTestDirectory();
+			for (int testFileIndex = fileCount - 1; testFileIndex >= 0; testFileIndex--)
+			{
+				if (filesToRemove <= 0)
+					break;
+
+				string testFilePath = GetTestFilePath(testFileIndex);
 
 				File.Delete(testFilePath);
+				filesToRemove--;
+				filesRemoved++;
 			}
+
+			if (Directory.Exists(testDirectory) 
+				&& Directory.EnumerateFiles(testDirectory).FirstOrDefault() == null
+				&& Directory.EnumerateDirectories(testDirectory).FirstOrDefault() == null)
+				Directory.Delete(testDirectory); // Delete empty directory
+
+			return filesRemoved;
 		}
 
 		public string GetTestDirectory()
