@@ -355,15 +355,16 @@ namespace MediaTester
 			}
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
+		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, false);
+			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
+		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
 				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
+					verifyBytesPerSecond: verifyBytesPerSecond,
 					writeBytesRemaining: 0,
 					readBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
 
@@ -378,9 +379,9 @@ namespace MediaTester
 			}
 		}
 
-		private void AfterQuickTest(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
+		private void AfterQuickTest(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, true);
+			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
 		}
 
 		private void OnMediaTesterException(MediaTesterLib.MediaTester mediaTester, Exception exception)
@@ -416,14 +417,14 @@ namespace MediaTester
 			WriteLog(null, null);
 		}
 
-		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining);
-		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0)
+		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining, long verifyBytesPerSecond);
+		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0, long verifyBytesPerSecond = 0)
 		{
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
 				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
-				this.Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining });
+				this.Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond });
 				return;
 			}
 
@@ -449,8 +450,15 @@ namespace MediaTester
 			{
 				elapsedTime = new TimeSpan(0, 0, (int)((DateTime.Now - _startDateTime.Value).TotalSeconds));
 				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)writeBytesRemaining / bytesPerSecond));
-				readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
-									* (decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+				if (verifyBytesPerSecond > 1000)
+				{
+					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)readBytesRemaining / verifyBytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+				}
+				else
+				{
+					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
+										* (decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+				}
 				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
 			}
 
@@ -478,7 +486,7 @@ namespace MediaTester
 			if (writeBytesPerSecond > 0)
 			{
 				WriteBytesPerSecondStatusLabel.Text = "Write: " + writeBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
-				UpdateAverage(ref _averageWriteBytesPerSecond, ref _totalWriteSpeedSamples, ref writeBytesPerSecond);
+				Helpers.UpdateAverage(ref _averageWriteBytesPerSecond, ref _totalWriteSpeedSamples, ref writeBytesPerSecond);
 				WriteSpeedLabel.Text = _averageWriteBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
 			else
@@ -490,26 +498,13 @@ namespace MediaTester
 			if (readBytesPerSecond > 0)
 			{
 				ReadBytesPerSecondStatusLabel.Text = "Read: " + readBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
-				UpdateAverage(ref _averageReadBytesPerSecond, ref _totalReadSpeedSamples, ref readBytesPerSecond);
+				Helpers.UpdateAverage(ref _averageReadBytesPerSecond, ref _totalReadSpeedSamples, ref readBytesPerSecond);
 				ReadSpeedLabel.Text = _averageReadBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
 			else
 			{
 				ReadBytesPerSecondStatusLabel.Text = string.Empty;
 				_totalReadSpeedSamples = 0;
-			}
-		}
-
-		private void UpdateAverage(ref decimal runningAverage, ref long totalSamples, ref long newValue)
-		{
-			if (totalSamples > 0)
-			{
-				runningAverage = ((decimal)totalSamples * runningAverage + (decimal)newValue) / (decimal)(++totalSamples);
-			}
-			else
-			{
-				runningAverage = newValue;
-				totalSamples++;
 			}
 		}
 

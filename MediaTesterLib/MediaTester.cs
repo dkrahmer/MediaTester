@@ -6,7 +6,7 @@ using System.Linq;
 namespace MediaTesterLib
 {
 	public delegate void WriteBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite);
-	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed);
+	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond);
 	public delegate void ExceptionHandler(MediaTester mediaTester, Exception exception);
 
 	public class MediaTester
@@ -24,6 +24,9 @@ namespace MediaTesterLib
 
 		private bool _isBatchMode = false;
 		private Options _options;
+		private decimal _averageVerifyBytesPerSecond;
+		private long _totalVerifySpeedSamples;
+
 		public Options Options
 		{
 			get
@@ -128,7 +131,7 @@ namespace MediaTesterLib
 						SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)DATA_BLOCK_SIZE)) / (decimal)Options.MaxBytesToTest, 1);
 						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 						IsSuccess &= success;
-						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed);
+						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
 						if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 						{
 							success = false;
@@ -225,7 +228,7 @@ namespace MediaTesterLib
 							long writeBytesPerSecond;
 							if (dataBlockSize == DATA_BLOCK_SIZE)
 							{
-								writeBytesPerSecond = (long)((decimal)dataBlockSize / ((decimal)stopwatch.Elapsed.Ticks / (decimal)TimeSpan.TicksPerMillisecond / 1000M));
+								writeBytesPerSecond = (long)((double)dataBlockSize / stopwatch.Elapsed.TotalSeconds);
 								lastWriteBytesPerSecond = writeBytesPerSecond;
 							}
 							else
@@ -285,7 +288,7 @@ namespace MediaTesterLib
 				filesRemoved++;
 			}
 
-			if (Directory.Exists(testDirectory) 
+			if (Directory.Exists(testDirectory)
 				&& Directory.EnumerateFiles(testDirectory).FirstOrDefault() == null
 				&& Directory.EnumerateDirectories(testDirectory).FirstOrDefault() == null)
 				Directory.Delete(testDirectory); // Delete empty directory
@@ -398,6 +401,9 @@ namespace MediaTesterLib
 				{
 					long lastReadBytesPerSecond = 0;
 					int lastDataBlockIndex = GetLastDataBlockIndex((int)fileReader.Length);
+					var stopwatch = new Stopwatch();
+					stopwatch.Start();
+					double lastElapsedSeconds = 0;
 					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 					{
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
@@ -429,7 +435,12 @@ namespace MediaTesterLib
 								readBytesPerSecond = lastReadBytesPerSecond; // prevent an artificial rate spike on the last block
 							}
 
-							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed);
+							double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
+							long verifyBytesPerSecond = (long)((double)dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
+							Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
+
+							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long)_averageVerifyBytesPerSecond);
+							lastElapsedSeconds = elapsedSeconds;
 						}
 						catch (Exception ex)
 						{
@@ -439,7 +450,7 @@ namespace MediaTesterLib
 							if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
 								exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
 
-							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int)exceptionBlockBytesFailed);
+							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int)exceptionBlockBytesFailed, 0);
 						}
 
 						if (Options.StopProcessingOnFailure && !success)
@@ -451,6 +462,7 @@ namespace MediaTesterLib
 								return success; // The requested number of bytes has been verified
 						}
 					}
+					stopwatch.Stop();
 				}
 			}
 			catch (Exception ex)
@@ -498,27 +510,28 @@ namespace MediaTesterLib
 
 		private byte[] ReadDataBlock(FileStream fileReader, int dataBlockIndex, out long readBytesPerSecond)
 		{
-			int dataBlockStartIndex = dataBlockIndex * DATA_BLOCK_SIZE;
-			long dataBlockSize = fileReader.Length - dataBlockStartIndex;
-			if (dataBlockSize > DATA_BLOCK_SIZE)
-				dataBlockSize = DATA_BLOCK_SIZE;
+				int dataBlockStartIndex = dataBlockIndex * DATA_BLOCK_SIZE;
+				long dataBlockSize = fileReader.Length - dataBlockStartIndex;
+				if (dataBlockSize > DATA_BLOCK_SIZE)
+					dataBlockSize = DATA_BLOCK_SIZE;
 
-			var dataBlock = new byte[(int)dataBlockSize];
-			if (fileReader.Position != dataBlockStartIndex)
-				fileReader.Seek(dataBlockStartIndex, SeekOrigin.Begin);
+				var dataBlock = new byte[(int)dataBlockSize];
 
-			var stopwatch = new Stopwatch();
-			stopwatch.Start();
-			int readBytes = fileReader.Read(dataBlock, 0, dataBlock.Length);
-			stopwatch.Stop();
-			readBytesPerSecond = (long)((decimal)readBytes / ((decimal)stopwatch.Elapsed.Ticks / (decimal)TimeSpan.TicksPerMillisecond / 1000M));
+				if (fileReader.Position != dataBlockStartIndex)
+					fileReader.Seek(dataBlockStartIndex, SeekOrigin.Begin);
 
-			if (readBytes != dataBlock.Length)
-			{
-				Array.Resize(ref dataBlock, readBytes);
-			}
+				var stopwatch = new Stopwatch();
+				stopwatch.Start();
+				int readBytes = fileReader.Read(dataBlock, 0, dataBlock.Length);
+				stopwatch.Stop();
+				readBytesPerSecond = (long)((double)readBytes / stopwatch.Elapsed.TotalSeconds);
 
-			return dataBlock;
+				if (readBytes != dataBlock.Length)
+				{
+					Array.Resize(ref dataBlock, readBytes);
+				}
+
+				return dataBlock;
 		}
 
 		private bool VerifyDataBlock(byte[] dataBlock, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed)
