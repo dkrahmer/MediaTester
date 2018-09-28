@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MediaTesterLib
 {
@@ -504,41 +506,58 @@ namespace MediaTesterLib
 
 		private bool VerifyTestFileDataBlock(FileStream fileReader, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
 		{
+			byte[] knownGoodDataBlock = null;
+			var thread = new Thread(() =>
+			{
+				knownGoodDataBlock = GenerateDataBlock(fileIndex, dataBlockIndex, DATA_BLOCK_SIZE);
+			})
+			{
+				IsBackground = true
+			};
+			thread.Start();
+
 			var dataBlock = ReadDataBlock(fileReader, dataBlockIndex, out readBytesPerSecond);
-			return VerifyDataBlock(dataBlock, fileIndex, dataBlockIndex, out bytesVerified, out bytesFailed);
+			while (thread.ThreadState == System.Threading.ThreadState.Running)
+			{
+				Thread.Sleep(10);
+			}
+
+			return VerifyDataBlock(dataBlock, fileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, knownGoodDataBlock: knownGoodDataBlock);
 		}
 
 		private byte[] ReadDataBlock(FileStream fileReader, int dataBlockIndex, out long readBytesPerSecond)
 		{
-				int dataBlockStartIndex = dataBlockIndex * DATA_BLOCK_SIZE;
-				long dataBlockSize = fileReader.Length - dataBlockStartIndex;
-				if (dataBlockSize > DATA_BLOCK_SIZE)
-					dataBlockSize = DATA_BLOCK_SIZE;
+			int dataBlockStartIndex = dataBlockIndex * DATA_BLOCK_SIZE;
+			long dataBlockSize = fileReader.Length - dataBlockStartIndex;
+			if (dataBlockSize > DATA_BLOCK_SIZE)
+				dataBlockSize = DATA_BLOCK_SIZE;
 
-				var dataBlock = new byte[(int)dataBlockSize];
+			var dataBlock = new byte[(int)dataBlockSize];
 
-				if (fileReader.Position != dataBlockStartIndex)
-					fileReader.Seek(dataBlockStartIndex, SeekOrigin.Begin);
+			if (fileReader.Position != dataBlockStartIndex)
+				fileReader.Seek(dataBlockStartIndex, SeekOrigin.Begin);
 
-				var stopwatch = new Stopwatch();
-				stopwatch.Start();
-				int readBytes = fileReader.Read(dataBlock, 0, dataBlock.Length);
-				stopwatch.Stop();
-				readBytesPerSecond = (long)((double)readBytes / stopwatch.Elapsed.TotalSeconds);
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+			int readBytes = fileReader.Read(dataBlock, 0, dataBlock.Length);
+			stopwatch.Stop();
+			readBytesPerSecond = (long)((double)readBytes / stopwatch.Elapsed.TotalSeconds);
 
-				if (readBytes != dataBlock.Length)
-				{
-					Array.Resize(ref dataBlock, readBytes);
-				}
+			if (readBytes != dataBlock.Length)
+			{
+				Array.Resize(ref dataBlock, readBytes);
+			}
 
-				return dataBlock;
+			return dataBlock;
 		}
 
-		private bool VerifyDataBlock(byte[] dataBlock, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed)
+		private bool VerifyDataBlock(byte[] dataBlock, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed, byte[] knownGoodDataBlock = null)
 		{
 			bytesVerified = 0;
 			bytesFailed = 0;
-			var knownGoodDataBlock = GenerateDataBlock(fileIndex, dataBlockIndex, dataBlock.Length);
+			if (knownGoodDataBlock == null || knownGoodDataBlock.Length != dataBlock.Length)
+				knownGoodDataBlock = GenerateDataBlock(fileIndex, dataBlockIndex, dataBlock.Length);
+
 			if (dataBlock.Length > knownGoodDataBlock.Length)
 			{
 				bytesFailed = dataBlock.Length;
