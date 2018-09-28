@@ -365,7 +365,7 @@ namespace MediaTester
 			if (!isQuickTest)
 				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
 					writeBytesRemaining: 0,
-					readBytesRemaining: mediaTester.Options.MaxBytesToTest);
+					readBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
 
 			if (bytesFailed == 0)
 			{
