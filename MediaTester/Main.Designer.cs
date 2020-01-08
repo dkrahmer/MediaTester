@@ -120,7 +120,7 @@
 			this.StopProcessingOnFailureCheckBox.Size = new System.Drawing.Size(167, 17);
 			this.StopProcessingOnFailureCheckBox.TabIndex = 3;
 			this.StopProcessingOnFailureCheckBox.Text = "Stop processing on first failure";
-			this.toolTip1.SetToolTip(this.StopProcessingOnFailureCheckBox, "Stop the test process after a single failure. (recommended)");
+			this.toolTip1.SetToolTip(this.StopProcessingOnFailureCheckBox, "Stop the test process after a single failure.\n(recommended)");
 			this.StopProcessingOnFailureCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// TotalBytesToTestLabel
@@ -154,8 +154,8 @@
 			this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(234, 17);
 			this.QuickTestAfterEachFileCheckBox.TabIndex = 7;
 			this.QuickTestAfterEachFileCheckBox.Text = "Quick test after writing each GiB of test data";
-			this.toolTip1.SetToolTip(this.QuickTestAfterEachFileCheckBox, "Performs brief spot checks as data is written. Enabling this will detect common f" +
-        "ailures much faster. (recommended)");
+			this.toolTip1.SetToolTip(this.QuickTestAfterEachFileCheckBox, "Performs brief spot checks as data is written.\nEnabling this will detect common f" +
+        "ailures much faster.\n(recommended)");
 			this.QuickTestAfterEachFileCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// QuickFirstFailingByteMethodCheckBox
@@ -167,8 +167,8 @@
 			this.QuickFirstFailingByteMethodCheckBox.Size = new System.Drawing.Size(146, 17);
 			this.QuickFirstFailingByteMethodCheckBox.TabIndex = 8;
 			this.QuickFirstFailingByteMethodCheckBox.Text = "Quick find first failing byte";
-			this.toolTip1.SetToolTip(this.QuickFirstFailingByteMethodCheckBox, "If a failure is encountered, skip testing all written files from the beginning. S" +
-        "earch for the last successful byte in reverse instead. (recommended)");
+			this.toolTip1.SetToolTip(this.QuickFirstFailingByteMethodCheckBox, "If a failure is encountered, skip testing all written files from the beginning.\n" +
+		"Search for the last successful byte in reverse instead.\n(recommended)");
 			this.QuickFirstFailingByteMethodCheckBox.UseVisualStyleBackColor = true;
 			// 
 			// WriteAndVerifyButton
@@ -180,8 +180,8 @@
 			this.WriteAndVerifyButton.Size = new System.Drawing.Size(97, 28);
 			this.WriteAndVerifyButton.TabIndex = 9;
 			this.WriteAndVerifyButton.Text = "Write and Verify";
-			this.toolTip1.SetToolTip(this.WriteAndVerifyButton, "Write test data to media then read back to verify data was stored correctly. Only" +
-        " available space will be used. Non-destructive.");
+			this.toolTip1.SetToolTip(this.WriteAndVerifyButton, "Write test data to media then read back to verify data was stored correctly.\nOnly" +
+		" available space will be used.\nNon-destructive.");
 			this.WriteAndVerifyButton.UseVisualStyleBackColor = true;
 			this.WriteAndVerifyButton.Click += new System.EventHandler(this.WriteAndVerifyButton_Click);
 			// 
@@ -194,7 +194,7 @@
 			this.VerifyOnlyButton.Size = new System.Drawing.Size(97, 28);
 			this.VerifyOnlyButton.TabIndex = 10;
 			this.VerifyOnlyButton.Text = "Verify Only";
-			this.toolTip1.SetToolTip(this.VerifyOnlyButton, "Verify previous written test data. Will not write anything to media.");
+			this.toolTip1.SetToolTip(this.VerifyOnlyButton, "Verify previous written test data.\nWill not write anything to media.");
 			this.VerifyOnlyButton.UseVisualStyleBackColor = true;
 			this.VerifyOnlyButton.Click += new System.EventHandler(this.VerifyOnlyButton_Click);
 			// 
@@ -234,7 +234,7 @@
 			this.SaveTestResultsFileToMediaCheckBox.Size = new System.Drawing.Size(184, 17);
 			this.SaveTestResultsFileToMediaCheckBox.TabIndex = 14;
 			this.SaveTestResultsFileToMediaCheckBox.Text = "Save test results file to media root";
-			this.toolTip1.SetToolTip(this.SaveTestResultsFileToMediaCheckBox, "Save test results file to media with full test log output. MediaTesterResults_YYY" +
+			this.toolTip1.SetToolTip(this.SaveTestResultsFileToMediaCheckBox, "Save test results file to media with full test log output.\nMediaTesterResults_YYY" +
         "Y-MM-DD_hh-mm-ss.txt\nTemp test data files will be removed, if necessary, to crea" +
         "te space for the test results file.");
 			this.SaveTestResultsFileToMediaCheckBox.UseVisualStyleBackColor = true;

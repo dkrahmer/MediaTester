@@ -371,6 +371,10 @@ namespace KrahmerSoft.MediaTester
 			else
 			{
 				WriteLog(mediaTester, $"{(isQuickTest ? "Quick test: " : string.Empty)}FAILED block {absoluteDataBlockIndex.ToString("#,##0")}! Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
+				if (isQuickTest)
+				{
+					WriteLog(mediaTester, "Identifying first failing byte...");
+				}
 			}
 		}
 
