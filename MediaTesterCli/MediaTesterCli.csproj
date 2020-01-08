@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KrahmerSoft.MediaTesterCli</RootNamespace>
-    <AssemblyName>KrahmerSoft.MediaTester</AssemblyName>
+    <AssemblyName>MediaTesterCli</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

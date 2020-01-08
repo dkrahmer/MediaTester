@@ -517,10 +517,10 @@ namespace KrahmerSoft.MediaTester
 
 		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			string aboutMessage = $"MediaTester will test any media, such as SD cards, \n"
-								+ $"and verify that the media stores the expected number \n"
-								+ $"of bytes. If you buy any storage media, you should \n"
-								+ $"use MediaTested to verify it or risk losing your data.\n"
+			string aboutMessage = $"MediaTester can test any media (SD, microSD, thumb, etc) \n"
+								+ $"and verify it stores the expected number of bytes. \n"
+								+ $"If you buy any storage media, you should use MediaTester \n"
+								+ $"to verify it or risk losing your data.\n"
 								+ $"\n"
 								+ $"Written by Doug Krahmer\n"
 								+ $"Released as plublic domain open source.\n"
