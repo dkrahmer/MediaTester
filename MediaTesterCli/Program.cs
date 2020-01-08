@@ -4,9 +4,9 @@ using System.IO;
 
 namespace MediaTesterCli
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			string testDirectory = null;
 			if (args == null || args.Length < 1)

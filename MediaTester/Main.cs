@@ -9,16 +9,15 @@ namespace MediaTester
 {
 	public partial class Main : Form
 	{
-		MediaTesterLib.Options _mediaTesterOptions = Options.Deserialize();
-		MediaTesterLib.MediaTester _mediaTester;
+		private MediaTesterLib.Options _mediaTesterOptions = Options.Deserialize();
+		private MediaTesterLib.MediaTester _mediaTester;
 		private Thread _mediaTesterThread;
-		const string PALCEHOLDER_VALUE = "---";
-		const string BYTES = " Bytes";
-		const string BYTES_PER_SECOND = BYTES + "/sec";
-		const string TEST_RESULTS_FILENAME_TEMPLATE = "MediaTesterResults_{0}_{1}.txt";
-		const string TEST_RESULTS_FILENAME_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
-
-		DateTime? _startDateTime;
+		private const string PALCEHOLDER_VALUE = "---";
+		private const string BYTES = " Bytes";
+		private const string BYTES_PER_SECOND = BYTES + "/sec";
+		private const string TEST_RESULTS_FILENAME_TEMPLATE = "MediaTesterResults_{0}_{1}.txt";
+		private const string TEST_RESULTS_FILENAME_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
+		private DateTime? _startDateTime;
 
 		public Main()
 		{
@@ -472,10 +471,10 @@ namespace MediaTester
 			ProgressBar.Value = _mediaTester == null ? 0 : (int)(10M * _mediaTester.ProgressPercent);
 		}
 
-		long _totalReadSpeedSamples = 0;
-		long _totalWriteSpeedSamples = 0;
-		decimal _averageReadBytesPerSecond = 0;
-		decimal _averageWriteBytesPerSecond = 0;
+		private long _totalReadSpeedSamples = 0;
+		private long _totalWriteSpeedSamples = 0;
+		private decimal _averageReadBytesPerSecond = 0;
+		private decimal _averageWriteBytesPerSecond = 0;
 
 		private void UpdateSpeedAverage(long readBytesPerSecond = -1, long writeBytesPerSecond = -1)
 		{

@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace MediaTesterLib
 {
@@ -13,7 +12,7 @@ namespace MediaTesterLib
 
 	public class MediaTester
 	{
-		const FileOptions FileFlagNoBuffering = (FileOptions)0x20000000;
+		private const FileOptions FileFlagNoBuffering = (FileOptions)0x20000000;
 		public const int DATA_BLOCK_SIZE = 8 * 1024 * 1024;
 		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
 		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
@@ -313,12 +312,12 @@ namespace MediaTesterLib
 			return Path.Combine(testDirectory);
 		}
 
-		static public long GetAvailableBytes(string directory, bool actual = false)
+		public static long GetAvailableBytes(string directory, bool actual = false)
 		{
 			return GetAvailableBytes(directory, out _, actual: actual);
 		}
 
-		static public long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
+		public static long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
 		{
 			var driveInfo = new DriveInfo(directory);
 			totalSize = driveInfo.TotalSize;
@@ -588,7 +587,7 @@ namespace MediaTesterLib
 			return GetTestFilePath(GetTestDirectory(), fileIndex);
 		}
 
-		static private string GetTestFilePath(string testDirectory, int fileIndex)
+		private static string GetTestFilePath(string testDirectory, int fileIndex)
 		{
 			return Path.Combine(testDirectory, (fileIndex + 1).ToString("D8") + ".MediaTester");
 		}
