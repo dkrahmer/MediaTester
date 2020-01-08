@@ -1,10 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MediaTesterLib
 {
@@ -14,7 +9,7 @@ namespace MediaTesterLib
 		public bool QuickTestAfterEachFile { get; set; } = true;
 		public string TestDirectory { get; set; }
 		public bool QuickFirstFailingByteMethod { get; set; } = true;
-		public bool RemoveTempDataFilesUponCompletion { get; set; } = true;	
+		public bool RemoveTempDataFilesUponCompletion { get; set; } = true;
 		public bool SaveTestResultsFileToMedia { get; set; } = true;
 		public long MaxBytesToTest { get; set; } = -1;
 
@@ -25,7 +20,7 @@ namespace MediaTesterLib
 			File.WriteAllText(filePath, JsonConvert.SerializeObject(this));
 		}
 
-		static public Options Deserialize(string filePath = CONFIG_FILENAME)
+		public static Options Deserialize(string filePath = CONFIG_FILENAME)
 		{
 			Options options;
 			try

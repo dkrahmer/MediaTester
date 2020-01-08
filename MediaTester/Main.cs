@@ -56,8 +56,7 @@ namespace MediaTester
 			_mediaTesterOptions.RemoveTempDataFilesUponCompletion = RemoveTempDataFilesUponCompletionCheckBox.Checked;
 			_mediaTesterOptions.SaveTestResultsFileToMedia = SaveTestResultsFileToMediaCheckBox.Checked;
 
-			long lMaxBytesToTest;
-			if (long.TryParse(MaxBytesToTestComboBox.Text.Replace(",", string.Empty).Replace(".", string.Empty), out lMaxBytesToTest))
+			if (long.TryParse(MaxBytesToTestComboBox.Text.Replace(",", string.Empty).Replace(".", string.Empty), out long lMaxBytesToTest))
 			{
 				_mediaTesterOptions.MaxBytesToTest = lMaxBytesToTest;
 			}
@@ -97,8 +96,7 @@ namespace MediaTester
 			{
 				if (Directory.Exists(targetDirectory))
 				{
-					long lTargetTotalBytes;
-					long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(targetDirectory, out lTargetTotalBytes, actual: true);
+					long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(targetDirectory, out long lTargetTotalBytes, actual: true);
 					targetTotalBytes = $"{lTargetTotalBytes.ToString("#,##0")}{BYTES}";
 					targetAvailableBytes = $"{lTargetAvailableBytes.ToString("#,##0")}{BYTES}";
 				}
@@ -269,8 +267,7 @@ namespace MediaTester
 
 			if (success)
 			{
-				long lTargetTotalBytes;
-				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true);
+				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 				WriteLog(_mediaTester, $"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
 				WriteLog(_mediaTester, $"Media test PASSED!");
 				// WriteLog(_mediaTester, $"Information: Not all bytes are directly testable because directory and filenames take up additional space on the media.");
@@ -290,8 +287,7 @@ namespace MediaTester
 				string dateTime = DateTime.Now.ToString(TEST_RESULTS_FILENAME_DATETIME_FORMAT);
 				string testResultsFilePath = Path.Combine(_mediaTester.Options.TestDirectory, string.Format(TEST_RESULTS_FILENAME_TEMPLATE, dateTime, success ? "PASS" : "FAIL"));
 				string testResultsLog = ActivityLogTextBox.Text;
-				long lTargetTotalBytes;
-				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true);
+				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
 				int spaceNeeded = testResultsLog.Length + (int)Math.Pow(2, 16);
 				bool enoughSpace = true;

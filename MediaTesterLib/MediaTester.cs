@@ -120,18 +120,15 @@ namespace MediaTesterLib
 				int lastFileIndex = (int)((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					int actualTestFileSize;
-					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out actualTestFileSize);
+					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out int actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
 					{
 						int checkIndex = GetLastDataBlockIndex(actualTestFileSize);
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, checkIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, checkIndex);
-						int bytesVerified, bytesFailed;
-						long readBytesPerSecond;
 						SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)DATA_BLOCK_SIZE)) / (decimal)Options.MaxBytesToTest, 1);
-						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
+						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond);
 						IsSuccess &= success;
 						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
 						if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
@@ -318,8 +315,7 @@ namespace MediaTesterLib
 
 		static public long GetAvailableBytes(string directory, bool actual = false)
 		{
-			long totalSize;
-			return GetAvailableBytes(directory, out totalSize, actual: actual);
+			return GetAvailableBytes(directory, out _, actual: actual);
 		}
 
 		static public long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
@@ -350,8 +346,7 @@ namespace MediaTesterLib
 		}
 		private long GetAvailableBytes(bool actual = false)
 		{
-			long totalSize;
-			return GetAvailableBytes(GetTestDirectory(), out totalSize, actual: actual);
+			return GetAvailableBytes(GetTestDirectory(), out _, actual: actual);
 		}
 
 		private int GetLastDataBlockIndex(int testFileSize)
@@ -377,8 +372,7 @@ namespace MediaTesterLib
 				if (!File.Exists(testFilePath))
 					break;
 
-				int bytesVerified, bytesFailed;
-				bool success = VerifyTestFile(testFileIndex, testFilePath, out bytesVerified, out bytesFailed, true);
+				bool success = VerifyTestFile(testFileIndex, testFilePath, out int bytesVerified, out int bytesFailed, true);
 				allFilesSuccess &= success;
 				IsSuccess &= success;
 
@@ -412,11 +406,9 @@ namespace MediaTesterLib
 					{
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
-						long readBytesPerSecond;
-						int blockBytesVerified, blockBytesFailed;
 						try
 						{
-							bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out blockBytesVerified, out blockBytesFailed, out readBytesPerSecond);
+							bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out long readBytesPerSecond);
 							success &= blockSuccess;
 							IsSuccess &= success;
 							bytesVerified += blockBytesVerified;
