@@ -515,7 +515,7 @@ namespace MediaTester
 				_mediaTesterThread?.Abort();
 				_startDateTime = null;
 			}
-			catch (Exception ex)
+			catch //(Exception ex)
 			{
 			}
 		}

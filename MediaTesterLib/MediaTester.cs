@@ -446,7 +446,7 @@ namespace MediaTesterLib
 							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long)_averageVerifyBytesPerSecond);
 							lastElapsedSeconds = elapsedSeconds;
 						}
-						catch (Exception ex)
+						catch //(Exception ex)
 						{
 							success = false;
 							IsSuccess &= success;

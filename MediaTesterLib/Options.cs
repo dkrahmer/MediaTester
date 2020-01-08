@@ -32,7 +32,7 @@ namespace MediaTesterLib
 			{
 				options = JsonConvert.DeserializeObject<Options>(File.ReadAllText(filePath));
 			}
-			catch (Exception ex)
+			catch //(Exception ex)
 			{
 				// If anything goes wrong just create a default object
 				options = new Options();
