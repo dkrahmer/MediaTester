@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace MediaTesterLib
+namespace KrahmerSoft.MediaTesterLib
 {
 	public class Options
 	{

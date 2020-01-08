@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace MediaTesterLib
+namespace KrahmerSoft.MediaTesterLib
 {
 	public delegate void WriteBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite);
 	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond);
@@ -594,7 +594,7 @@ namespace MediaTesterLib
 
 		private static long GetAbsoluteDataBlockIndex(int fileIndex, int fileDataBlockIndex)
 		{
-			return (long)fileIndex * (long)DATA_BLOCKS_PER_FILE + (long)fileDataBlockIndex;
+			return ((long)fileIndex * (long)DATA_BLOCKS_PER_FILE) + (long)fileDataBlockIndex;
 		}
 
 		private static long GetAbsoluteDataByteIndex(int fileIndex, int fileDataBlockIndex)

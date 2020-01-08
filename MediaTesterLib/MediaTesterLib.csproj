@@ -7,8 +7,8 @@
     <ProjectGuid>{D684ACBC-9D01-4515-8CB1-969C15B22C4D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MediaTesterLib</RootNamespace>
-    <AssemblyName>MediaTesterLib</AssemblyName>
+    <RootNamespace>KrahmerSoft.MediaTesterLib</RootNamespace>
+    <AssemblyName>KrahmerSoft.MediaTesterLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

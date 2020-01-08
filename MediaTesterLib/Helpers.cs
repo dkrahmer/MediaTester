@@ -1,4 +1,4 @@
-﻿namespace MediaTesterLib
+﻿namespace KrahmerSoft.MediaTesterLib
 {
 	public class Helpers
 	{
@@ -6,7 +6,7 @@
 		{
 			if (totalSamples > 0)
 			{
-				runningAverage = ((decimal) totalSamples * runningAverage + (decimal) newValue) / (decimal) (++totalSamples);
+				runningAverage = (((decimal) totalSamples * runningAverage) + (decimal) newValue) / (decimal) ++totalSamples;
 			}
 			else
 			{

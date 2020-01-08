@@ -1,4 +1,4 @@
-﻿namespace MediaTester
+﻿namespace KrahmerSoft.MediaTester
 {
 	partial class Main
 	{

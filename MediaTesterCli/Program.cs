@@ -1,8 +1,8 @@
-﻿using MediaTesterLib;
+﻿using KrahmerSoft.MediaTesterLib;
 using System;
 using System.IO;
 
-namespace MediaTesterCli
+namespace KrahmerSoft.MediaTesterCli
 {
 	internal class Program
 	{

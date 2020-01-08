@@ -1,16 +1,16 @@
-﻿using MediaTesterLib;
+﻿using KrahmerSoft.MediaTesterLib;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace MediaTester
+namespace KrahmerSoft.MediaTester
 {
 	public partial class Main : Form
 	{
-		private MediaTesterLib.Options _mediaTesterOptions = Options.Deserialize();
-		private MediaTesterLib.MediaTester _mediaTester;
+		private Options _mediaTesterOptions = Options.Deserialize();
+		private KrahmerSoft.MediaTesterLib.MediaTester _mediaTester;
 		private Thread _mediaTesterThread;
 		private const string PALCEHOLDER_VALUE = "---";
 		private const string BYTES = " Bytes";
@@ -128,7 +128,7 @@ namespace MediaTester
 			if (TestOptionsGgroupBox.InvokeRequired)
 			{
 				EnableControlsDelegate d = new EnableControlsDelegate(EnableControls);
-				this.Invoke(d, new object[] { enable });
+				Invoke(d, new object[] { enable });
 				return;
 			}
 
@@ -288,7 +288,7 @@ namespace MediaTester
 				string testResultsLog = ActivityLogTextBox.Text;
 				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
-				int spaceNeeded = testResultsLog.Length + (int)Math.Pow(2, 16);
+				int spaceNeeded = testResultsLog.Length + (int) Math.Pow(2, 16);
 				bool enoughSpace = true;
 				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true))
 				{
@@ -394,7 +394,7 @@ namespace MediaTester
 			if (ActivityLogTextBox.InvokeRequired)
 			{
 				WriteLogDelegate d = new WriteLogDelegate(WriteLog);
-				this.Invoke(d, new object[] { mediaTester, message });
+				Invoke(d, new object[] { mediaTester, message });
 				return;
 			}
 
@@ -419,7 +419,7 @@ namespace MediaTester
 			if (ActivityLogTextBox.InvokeRequired)
 			{
 				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
-				this.Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond });
+				Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond });
 				return;
 			}
 
@@ -443,23 +443,23 @@ namespace MediaTester
 
 			if (_startDateTime != null)
 			{
-				elapsedTime = new TimeSpan(0, 0, (int)((DateTime.Now - _startDateTime.Value).TotalSeconds));
-				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)writeBytesRemaining / bytesPerSecond));
+				elapsedTime = new TimeSpan(0, 0, (int) (DateTime.Now - _startDateTime.Value).TotalSeconds);
+				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((decimal) writeBytesRemaining / bytesPerSecond));
 				if (verifyBytesPerSecond > 1000)
 				{
-					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((decimal)readBytesRemaining / verifyBytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((decimal) readBytesRemaining / verifyBytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
 				}
 				else
 				{
-					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int)((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
-										* (decimal)readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
+										* (decimal) readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
 				}
 				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
 			}
 
 			// Display to the user...
-			ElapsedTimeLabel.Text = (elapsedTime?.ToString() ?? PALCEHOLDER_VALUE);
-			TotalTimeRemainingLabel.Text = (totalTimeRemaining?.ToString() ?? PALCEHOLDER_VALUE);
+			ElapsedTimeLabel.Text = elapsedTime?.ToString() ?? PALCEHOLDER_VALUE;
+			TotalTimeRemainingLabel.Text = totalTimeRemaining?.ToString() ?? PALCEHOLDER_VALUE;
 
 			if (_mediaTester != null)
 			{
@@ -468,7 +468,7 @@ namespace MediaTester
 				FailedBytesLabel.Text = (_mediaTester?.TotalBytesFailed.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
 			}
 
-			ProgressBar.Value = _mediaTester == null ? 0 : (int)(10M * _mediaTester.ProgressPercent);
+			ProgressBar.Value = _mediaTester == null ? 0 : (int) (10M * _mediaTester.ProgressPercent);
 		}
 
 		private long _totalReadSpeedSamples = 0;
@@ -533,7 +533,7 @@ namespace MediaTester
 
 		private void Main_Load(object sender, EventArgs e)
 		{
-			this.Text += $" v{Assembly.GetEntryAssembly().GetName().Version}";
+			Text += $" v{Assembly.GetEntryAssembly().GetName().Version}";
 		}
 	}
 }
