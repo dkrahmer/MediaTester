@@ -1,12 +1,12 @@
-﻿using MediaTesterLib;
+﻿using KrahmerSoft.MediaTesterLib;
 using System;
 using System.IO;
 
-namespace MediaTesterCli
+namespace KrahmerSoft.MediaTesterCli
 {
-	class Program
+	internal class Program
 	{
-		static void Main(string[] args)
+		private static void Main(string[] args)
 		{
 			string testDirectory = null;
 			if (args == null || args.Length < 1)
@@ -99,12 +99,12 @@ namespace MediaTesterCli
 			}
 		}
 
-		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
+		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, false);
+			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
 		}
 
-		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
+		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
 		{
 			if (bytesFailed == 0)
 			{
@@ -116,9 +116,9 @@ namespace MediaTesterCli
 			}
 		}
 
-		private static void AfterQuickTest(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed)
+		private static void AfterQuickTest(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePathlong, readBytesPerSecond, bytesVerified, bytesFailed, true);
+			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePathlong, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
 		}
 
 		private static void OnMediaTesterException(MediaTester mediaTester, Exception exception)

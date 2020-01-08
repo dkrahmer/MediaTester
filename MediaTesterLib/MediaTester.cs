@@ -3,9 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace MediaTesterLib
+namespace KrahmerSoft.MediaTesterLib
 {
 	public delegate void WriteBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite);
 	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond);
@@ -13,7 +12,7 @@ namespace MediaTesterLib
 
 	public class MediaTester
 	{
-		const FileOptions FileFlagNoBuffering = (FileOptions)0x20000000;
+		private const FileOptions FileFlagNoBuffering = (FileOptions)0x20000000;
 		public const int DATA_BLOCK_SIZE = 8 * 1024 * 1024;
 		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
 		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
@@ -120,18 +119,15 @@ namespace MediaTesterLib
 				int lastFileIndex = (int)((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					int actualTestFileSize;
-					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out actualTestFileSize);
+					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out int actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
 					{
 						int checkIndex = GetLastDataBlockIndex(actualTestFileSize);
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, checkIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, checkIndex);
-						int bytesVerified, bytesFailed;
-						long readBytesPerSecond;
 						SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)DATA_BLOCK_SIZE)) / (decimal)Options.MaxBytesToTest, 1);
-						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
+						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond);
 						IsSuccess &= success;
 						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
 						if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
@@ -226,6 +222,8 @@ namespace MediaTesterLib
 							var stopwatch = new Stopwatch();
 							stopwatch.Start();
 							fileWriter.Write(dataBlock);
+							fileWriter.Flush(); // Force the data to finish writing to the device
+							file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
 							stopwatch.Stop();
 							long writeBytesPerSecond;
 							if (dataBlockSize == DATA_BLOCK_SIZE)
@@ -314,13 +312,12 @@ namespace MediaTesterLib
 			return Path.Combine(testDirectory);
 		}
 
-		static public long GetAvailableBytes(string directory, bool actual = false)
+		public static long GetAvailableBytes(string directory, bool actual = false)
 		{
-			long totalSize;
-			return GetAvailableBytes(directory, out totalSize, actual: actual);
+			return GetAvailableBytes(directory, out _, actual: actual);
 		}
 
-		static public long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
+		public static long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
 		{
 			var driveInfo = new DriveInfo(directory);
 			totalSize = driveInfo.TotalSize;
@@ -348,8 +345,7 @@ namespace MediaTesterLib
 		}
 		private long GetAvailableBytes(bool actual = false)
 		{
-			long totalSize;
-			return GetAvailableBytes(GetTestDirectory(), out totalSize, actual: actual);
+			return GetAvailableBytes(GetTestDirectory(), out _, actual: actual);
 		}
 
 		private int GetLastDataBlockIndex(int testFileSize)
@@ -375,8 +371,7 @@ namespace MediaTesterLib
 				if (!File.Exists(testFilePath))
 					break;
 
-				int bytesVerified, bytesFailed;
-				bool success = VerifyTestFile(testFileIndex, testFilePath, out bytesVerified, out bytesFailed, true);
+				bool success = VerifyTestFile(testFileIndex, testFilePath, out int bytesVerified, out int bytesFailed, true);
 				allFilesSuccess &= success;
 				IsSuccess &= success;
 
@@ -410,11 +405,9 @@ namespace MediaTesterLib
 					{
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
-						long readBytesPerSecond;
-						int blockBytesVerified, blockBytesFailed;
 						try
 						{
-							bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out blockBytesVerified, out blockBytesFailed, out readBytesPerSecond);
+							bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out long readBytesPerSecond);
 							success &= blockSuccess;
 							IsSuccess &= success;
 							bytesVerified += blockBytesVerified;
@@ -444,7 +437,7 @@ namespace MediaTesterLib
 							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long)_averageVerifyBytesPerSecond);
 							lastElapsedSeconds = elapsedSeconds;
 						}
-						catch (Exception ex)
+						catch //(Exception ex)
 						{
 							success = false;
 							IsSuccess &= success;
@@ -594,14 +587,14 @@ namespace MediaTesterLib
 			return GetTestFilePath(GetTestDirectory(), fileIndex);
 		}
 
-		static private string GetTestFilePath(string testDirectory, int fileIndex)
+		private static string GetTestFilePath(string testDirectory, int fileIndex)
 		{
 			return Path.Combine(testDirectory, (fileIndex + 1).ToString("D8") + ".MediaTester");
 		}
 
 		private static long GetAbsoluteDataBlockIndex(int fileIndex, int fileDataBlockIndex)
 		{
-			return (long)fileIndex * (long)DATA_BLOCKS_PER_FILE + (long)fileDataBlockIndex;
+			return ((long)fileIndex * (long)DATA_BLOCKS_PER_FILE) + (long)fileDataBlockIndex;
 		}
 
 		private static long GetAbsoluteDataByteIndex(int fileIndex, int fileDataBlockIndex)

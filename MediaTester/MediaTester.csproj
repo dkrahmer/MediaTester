@@ -7,7 +7,7 @@
     <ProjectGuid>{CBC3129F-F13E-4BAD-BEFE-00EBF57D2C09}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MediaTester</RootNamespace>
+    <RootNamespace>KrahmerSoft.MediaTester</RootNamespace>
     <AssemblyName>MediaTester</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
