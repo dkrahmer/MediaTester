@@ -226,6 +226,8 @@ namespace MediaTesterLib
 							var stopwatch = new Stopwatch();
 							stopwatch.Start();
 							fileWriter.Write(dataBlock);
+							fileWriter.Flush(); // Force the data to finish writing to the device
+							file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
 							stopwatch.Stop();
 							long writeBytesPerSecond;
 							if (dataBlockSize == DATA_BLOCK_SIZE)
