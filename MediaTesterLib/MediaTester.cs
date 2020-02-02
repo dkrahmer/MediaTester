@@ -12,7 +12,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 	public class MediaTester
 	{
-		private const FileOptions FileFlagNoBuffering = (FileOptions)0x20000000;
+		private const FileOptions FileFlagNoBuffering = (FileOptions) 0x20000000;
 		public const int DATA_BLOCK_SIZE = 8 * 1024 * 1024;
 		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
 		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
@@ -116,17 +116,17 @@ namespace KrahmerSoft.MediaTesterLib
 					Options.MaxBytesToTest = GetAvailableBytes();
 				}
 
-				int lastFileIndex = (int)((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
+				int lastFileIndex = (int) ((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
 					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out int actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
 					{
-						int checkIndex = GetLastDataBlockIndex(actualTestFileSize);
+						int checkIndex = 0;
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, checkIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, checkIndex);
-						SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)DATA_BLOCK_SIZE)) / (decimal)Options.MaxBytesToTest, 1);
+						SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) DATA_BLOCK_SIZE)) / (decimal) Options.MaxBytesToTest, 1);
 						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond);
 						IsSuccess &= success;
 						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
@@ -134,6 +134,22 @@ namespace KrahmerSoft.MediaTesterLib
 						{
 							success = false;
 							VerifyTestFile(testFileIndex, testFilePath, out bytesVerified, out bytesFailed);
+						}
+
+						if (success)
+						{
+							checkIndex = GetLastDataBlockIndex(actualTestFileSize);
+							absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, checkIndex);
+							absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, checkIndex);
+							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) DATA_BLOCK_SIZE)) / (decimal) Options.MaxBytesToTest, 1);
+							success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
+							IsSuccess &= success;
+							AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
+							if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
+							{
+								success = false;
+								VerifyTestFile(testFileIndex, testFilePath, out bytesVerified, out bytesFailed);
+							}
 						}
 
 						if (Options.StopProcessingOnFailure && !success)
@@ -156,7 +172,7 @@ namespace KrahmerSoft.MediaTesterLib
 			long freeSpace = GetAvailableBytes(actual: true);
 			actualTestFileSize = testFileSize;
 			if (actualTestFileSize > freeSpace)
-				actualTestFileSize = (int)freeSpace;
+				actualTestFileSize = (int) freeSpace;
 
 			string testFilePath = GetTestFilePath(testFileIndex);
 			Directory.CreateDirectory(GetTestDirectory());
@@ -174,7 +190,7 @@ namespace KrahmerSoft.MediaTesterLib
 					if (fileInfo.Length == FILE_SIZE || actualTestFileSize == 0)
 					{
 						// File already exists. Leaving in place.
-						actualTestFileSize = (int)fileInfo.Length;
+						actualTestFileSize = (int) fileInfo.Length;
 						TotalBytesWritten += fileInfo.Length;
 						return testFilePath;
 					}
@@ -184,7 +200,7 @@ namespace KrahmerSoft.MediaTesterLib
 						// File already exists but needs to be bigger.
 						if (freeSpace < FILE_SIZE)
 						{
-							actualTestFileSize = actualTestFileSize + (int)freeSpace;
+							actualTestFileSize = actualTestFileSize + (int) freeSpace;
 							if (actualTestFileSize > FILE_SIZE)
 								actualTestFileSize = FILE_SIZE;
 						}
@@ -204,14 +220,14 @@ namespace KrahmerSoft.MediaTesterLib
 					// Check if the free space changed after creating the file
 					freeSpace = GetAvailableBytes(actual: true);
 					if (actualTestFileSize > freeSpace)
-						actualTestFileSize = (int)freeSpace; // Adding a directory or file to the FAT can decrease available space.
+						actualTestFileSize = (int) freeSpace; // Adding a directory or file to the FAT can decrease available space.
 
 					long lastWriteBytesPerSecond = 0;
 					int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
 					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 					{
 						int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
-							? (int)(actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
+							? (int) (actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
 						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
 						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
 
@@ -228,7 +244,7 @@ namespace KrahmerSoft.MediaTesterLib
 							long writeBytesPerSecond;
 							if (dataBlockSize == DATA_BLOCK_SIZE)
 							{
-								writeBytesPerSecond = (long)((double)dataBlockSize / stopwatch.Elapsed.TotalSeconds);
+								writeBytesPerSecond = (long) ((double) dataBlockSize / stopwatch.Elapsed.TotalSeconds);
 								lastWriteBytesPerSecond = writeBytesPerSecond;
 							}
 							else
@@ -237,7 +253,7 @@ namespace KrahmerSoft.MediaTesterLib
 							}
 
 							TotalBytesWritten += dataBlockSize;
-							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 1);
+							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 1);
 							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0);
 						}
 						catch (Exception ex)
@@ -397,7 +413,7 @@ namespace KrahmerSoft.MediaTesterLib
 					FileFlagNoBuffering | FileOptions.SequentialScan))
 				{
 					long lastReadBytesPerSecond = 0;
-					int lastDataBlockIndex = GetLastDataBlockIndex((int)fileReader.Length);
+					int lastDataBlockIndex = GetLastDataBlockIndex((int) fileReader.Length);
 					var stopwatch = new Stopwatch();
 					stopwatch.Start();
 					double lastElapsedSeconds = 0;
@@ -419,7 +435,7 @@ namespace KrahmerSoft.MediaTesterLib
 							}
 
 							int dataBlockSize = blockBytesVerified + blockBytesFailed;
-							SetProgressPercent((100M * ((decimal)absoluteDataByteIndex + (decimal)dataBlockSize)) / (decimal)Options.MaxBytesToTest, 2);
+							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 2);
 
 							if (dataBlockSize == DATA_BLOCK_SIZE)
 							{
@@ -431,10 +447,10 @@ namespace KrahmerSoft.MediaTesterLib
 							}
 
 							double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-							long verifyBytesPerSecond = (long)((double)dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
+							long verifyBytesPerSecond = (long) ((double) dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
 							Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
 
-							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long)_averageVerifyBytesPerSecond);
+							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond);
 							lastElapsedSeconds = elapsedSeconds;
 						}
 						catch //(Exception ex)
@@ -445,7 +461,7 @@ namespace KrahmerSoft.MediaTesterLib
 							if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
 								exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
 
-							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int)exceptionBlockBytesFailed, 0);
+							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0);
 						}
 
 						if (Options.StopProcessingOnFailure && !success)
@@ -474,7 +490,7 @@ namespace KrahmerSoft.MediaTesterLib
 		private void SetProgressPercent(decimal percent, int batchPhaseNumber)
 		{
 			if (_isBatchMode)
-				percent = (percent / (decimal)BatchPhaseCount) + (100M * (decimal)(batchPhaseNumber - 1) / (decimal)BatchPhaseCount);
+				percent = (percent / (decimal) BatchPhaseCount) + (100M * (decimal) (batchPhaseNumber - 1) / (decimal) BatchPhaseCount);
 
 			if (percent < 0)
 				percent = 0;
@@ -525,7 +541,7 @@ namespace KrahmerSoft.MediaTesterLib
 			if (dataBlockSize > DATA_BLOCK_SIZE)
 				dataBlockSize = DATA_BLOCK_SIZE;
 
-			var dataBlock = new byte[(int)dataBlockSize];
+			var dataBlock = new byte[(int) dataBlockSize];
 
 			if (fileReader.Position != dataBlockStartIndex)
 				fileReader.Seek(dataBlockStartIndex, SeekOrigin.Begin);
@@ -534,7 +550,7 @@ namespace KrahmerSoft.MediaTesterLib
 			stopwatch.Start();
 			int readBytes = fileReader.Read(dataBlock, 0, dataBlock.Length);
 			stopwatch.Stop();
-			readBytesPerSecond = (long)((double)readBytes / stopwatch.Elapsed.TotalSeconds);
+			readBytesPerSecond = (long) ((double) readBytes / stopwatch.Elapsed.TotalSeconds);
 
 			if (readBytes != dataBlock.Length)
 			{
@@ -594,7 +610,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 		private static long GetAbsoluteDataBlockIndex(int fileIndex, int fileDataBlockIndex)
 		{
-			return ((long)fileIndex * (long)DATA_BLOCKS_PER_FILE) + (long)fileDataBlockIndex;
+			return ((long) fileIndex * (long) DATA_BLOCKS_PER_FILE) + (long) fileDataBlockIndex;
 		}
 
 		private static long GetAbsoluteDataByteIndex(int fileIndex, int fileDataBlockIndex)
@@ -617,7 +633,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 		private static int GetDataBlockSeed(long absoluteDataBlockIndex)
 		{
-			return (int)absoluteDataBlockIndex;
+			return (int) absoluteDataBlockIndex;
 		}
 	}
 }
