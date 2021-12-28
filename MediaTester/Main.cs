@@ -531,7 +531,7 @@ namespace KrahmerSoft.MediaTester
 								+ $"to verify it or risk losing your data.\n"
 								+ $"\n"
 								+ $"Written by Doug Krahmer\n"
-								+ $"Released as plublic domain open source.\n"
+								+ $"Released as public domain open source.\n"
 								+ $"https://github.com/dkrahmer/MediaTester (Click Help to view)\n\n"
 								+ $"\n"
 								+ $"Version: v{Assembly.GetEntryAssembly().GetName().Version}";
