@@ -10,9 +10,9 @@ namespace KrahmerSoft.MediaTester
 	public partial class Main : Form
 	{
 		private Options _mediaTesterOptions = Options.Deserialize();
-		private KrahmerSoft.MediaTesterLib.MediaTester _mediaTester;
+		private MediaTesterLib.MediaTester _mediaTester;
 		private Thread _mediaTesterThread;
-		private const string PALCEHOLDER_VALUE = "---";
+		private const string PLACEHOLDER_VALUE = "---";
 		private const string BYTES = " Bytes";
 		private const string BYTES_PER_SECOND = BYTES + "/sec";
 		private const string TEST_RESULTS_FILENAME_TEMPLATE = "MediaTesterResults_{0}_{1}.txt";
@@ -87,8 +87,8 @@ namespace KrahmerSoft.MediaTester
 
 		private void UpdateTargetInformation()
 		{
-			string targetTotalBytes = PALCEHOLDER_VALUE;
-			string targetAvailableBytes = PALCEHOLDER_VALUE;
+			string targetTotalBytes = PLACEHOLDER_VALUE;
+			string targetAvailableBytes = PLACEHOLDER_VALUE;
 			string targetDirectory = TargetTextBox.Text;
 
 			if (!string.IsNullOrWhiteSpace(targetDirectory))
@@ -147,8 +147,8 @@ namespace KrahmerSoft.MediaTester
 
 			if (!enable)
 			{
-				WriteSpeedLabel.Text = PALCEHOLDER_VALUE;
-				ReadSpeedLabel.Text = PALCEHOLDER_VALUE;
+				WriteSpeedLabel.Text = PLACEHOLDER_VALUE;
+				ReadSpeedLabel.Text = PLACEHOLDER_VALUE;
 			}
 		}
 
@@ -483,14 +483,14 @@ namespace KrahmerSoft.MediaTester
 			}
 
 			// Display to the user...
-			ElapsedTimeLabel.Text = elapsedTime?.ToString() ?? PALCEHOLDER_VALUE;
-			TotalTimeRemainingLabel.Text = totalTimeRemaining?.ToString() ?? PALCEHOLDER_VALUE;
+			ElapsedTimeLabel.Text = elapsedTime?.ToString() ?? PLACEHOLDER_VALUE;
+			TotalTimeRemainingLabel.Text = totalTimeRemaining?.ToString() ?? PLACEHOLDER_VALUE;
 
 			if (_mediaTester != null)
 			{
-				WrittenBytesLabel.Text = (_mediaTester?.TotalBytesWritten.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
-				VerifiedBytesLabel.Text = (_mediaTester?.TotalBytesVerified.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
-				FailedBytesLabel.Text = (_mediaTester?.TotalBytesFailed.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
+				WrittenBytesLabel.Text = (_mediaTester?.TotalBytesWritten.ToString("#,##0") ?? PLACEHOLDER_VALUE) + BYTES;
+				VerifiedBytesLabel.Text = (_mediaTester?.TotalBytesVerified.ToString("#,##0") ?? PLACEHOLDER_VALUE) + BYTES;
+				FailedBytesLabel.Text = (_mediaTester?.TotalBytesFailed.ToString("#,##0") ?? PLACEHOLDER_VALUE) + BYTES;
 			}
 
 			ProgressBar.Value = _mediaTester == null ? 0 : (int) (10M * _mediaTester.ProgressPercent);
