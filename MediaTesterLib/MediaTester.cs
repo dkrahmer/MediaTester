@@ -7,19 +7,21 @@ using System.Threading;
 namespace KrahmerSoft.MediaTesterLib
 {
 	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond);
-	public  class ExceptionEventArgs : EventArgs
+
+	public class ExceptionEventArgs : EventArgs
 	{
 		public ExceptionEventArgs(Exception e)
-	{
+		{
 			Exception = e;
 		}
+
 		public Exception Exception;
 	}
 
 	public readonly record struct WrittenBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long WriteBytesPerSecond, int BytesWritten, int BytesFailedWrite);
 	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long ReadBytesPerSecond, int BytesVerified, int BytesFailed, long VerifyBytesPerSecond);
 
-	public class VerifiedBlockEventArgs: EventArgs
+	public class VerifiedBlockEventArgs : EventArgs
 	{
 		public VerifiedBlockEventArgs(VerifiedBlock block)
 		{
@@ -41,12 +43,12 @@ namespace KrahmerSoft.MediaTesterLib
 		public long VerifyBytesPerSecond;
 	}
 
-	public class WritedBlockEventArgs: EventArgs
+	public class WritedBlockEventArgs : EventArgs
 	{
 		public WritedBlockEventArgs(WrittenBlock block)
 		{
 			AbsoluteDataBlockIndex = block.AbsoluteDataBlockIndex;
-			AbsoluteDataByteIndex= block.AbsoluteDataByteIndex;
+			AbsoluteDataByteIndex = block.AbsoluteDataByteIndex;
 			TestFilePath = block.TestFilePath;
 			WriteBytesPerSecond = block.WriteBytesPerSecond;
 			BytesWritten = block.BytesWritten;
@@ -70,12 +72,13 @@ namespace KrahmerSoft.MediaTesterLib
 		public const string TempSubDirectoryName = "MediaTester";
 
 		public event EventHandler<VerifiedBlockEventArgs> QuickTestCompleted;
+
 		public event EventHandler<VerifiedBlockEventArgs> BlockVerified;
 
 		public VerifyBlockCompleteHandler AfterVerifyBlock;
 
-
 		public event EventHandler<WritedBlockEventArgs> BlockWritten;
+
 		public event EventHandler<ExceptionEventArgs> ExceptionThrown;
 
 		private void OnExceptionThrown(Exception ex)
@@ -434,6 +437,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 			return freeSpace;
 		}
+
 		private long GetAvailableBytes(bool actual = false)
 		{
 			return GetAvailableBytes(GetTestDirectory(), out _, actual: actual);
@@ -562,6 +566,7 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		private const int BatchPhaseCount = 2;
+
 		private void SetProgressPercent(decimal percent, int batchPhaseNumber)
 		{
 			if (_isBatchMode)
