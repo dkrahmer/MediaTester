@@ -15,11 +15,20 @@ namespace KrahmerSoft.MediaTesterLib
 
 		public const string CONFIG_FILENAME = "MediaTesterOptions.json";
 
+		/// <summary>
+		/// Save option in file.
+		/// </summary>
+		/// <param name="filePath">The file path relative to executable location.</param>
 		public void Serialize(string filePath = CONFIG_FILENAME)
 		{
 			File.WriteAllText(filePath, JsonConvert.SerializeObject(this));
 		}
 
+		/// <summary>
+		/// Read configuration file. If anything goes wrong just create a default object.
+		/// </summary>
+		/// <param name="filePath">The file path relative to executable location.</param>
+		/// <returns>Return the options read in file.</returns>
 		public static Options Deserialize(string filePath = CONFIG_FILENAME)
 		{
 			Options options;
@@ -27,9 +36,8 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				options = JsonConvert.DeserializeObject<Options>(File.ReadAllText(filePath));
 			}
-			catch //(Exception ex)
+			catch
 			{
-				// If anything goes wrong just create a default object
 				options = new Options();
 			}
 
