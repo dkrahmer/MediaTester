@@ -66,9 +66,22 @@ namespace KrahmerSoft.MediaTesterLib
 	public class MediaTester
 	{
 		private const FileOptions FileFlagNoBuffering = (FileOptions) 0x20000000;
+
+		/// <summary>
+		/// Specify the size of each block, in bytes.
+		/// </summary>
 		public const int DATA_BLOCK_SIZE = 8 * 1024 * 1024;
+
+		/// <summary>
+		/// Specify the number of blocks per files.
+		/// </summary>
 		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
-		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
+
+		/// <summary>
+		/// The total size of a test file, in bytes.
+		/// </summary>
+		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE;
+
 		public const string TempSubDirectoryName = "MediaTester";
 
 		public event EventHandler<VerifiedBlockEventArgs> QuickTestCompleted;
@@ -157,6 +170,10 @@ namespace KrahmerSoft.MediaTesterLib
 			Options.TestDirectory = testDirectory;
 		}
 
+		/// <summary>
+		/// Start a complete test.
+		/// </summary>
+		/// <returns></returns>
 		public bool FullTest()
 		{
 			bool success;
@@ -184,6 +201,9 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		public bool GenerateTestFiles()
+		/// Creates and writes all the test files.
+		/// </summary>
+		/// <returns></returns>
 		{
 			IsSuccess = true;
 			TotalGeneratedTestFileBytes = 0;
@@ -245,6 +265,13 @@ namespace KrahmerSoft.MediaTesterLib
 			}
 		}
 
+		/// <summary>
+		/// Create a file and write it.
+		/// </summary>
+		/// <param name="testFileIndex"></param>
+		/// <param name="testFileSize"></param>
+		/// <param name="actualTestFileSize"></param>
+		/// <returns>The absolute path to test file.</returns>
 		private string GenerateTestFile(int testFileIndex, int testFileSize, out int actualTestFileSize)
 		{
 			long freeSpace = GetAvailableBytes(actual: true);
@@ -255,6 +282,7 @@ namespace KrahmerSoft.MediaTesterLib
 			string testFilePath = GetTestFilePath(testFileIndex);
 			Directory.CreateDirectory(GetTestDirectory());
 
+			// TODO check this while
 			do
 			{
 				if (File.Exists(testFilePath))
@@ -354,6 +382,11 @@ namespace KrahmerSoft.MediaTesterLib
 			return testFilePath;
 		}
 
+		/// <summary>
+		/// Remove temporary files.
+		/// </summary>
+		/// <param name="filesToRemove"></param>
+		/// <returns>The number of deleted files.</returns>
 		public int RemoveTempDataFiles(int filesToRemove = int.MaxValue)
 		{
 			// Find the last file index that exists
@@ -390,6 +423,10 @@ namespace KrahmerSoft.MediaTesterLib
 			return filesRemoved;
 		}
 
+		/// <summary>
+		/// Get the target directory where test files are. This path always ends with the "TempSubDirectoryName".
+		/// </summary>
+		/// <returns></returns>
 		public string GetTestDirectory()
 		{
 			string testDirectory = Options.TestDirectory;
@@ -448,6 +485,10 @@ namespace KrahmerSoft.MediaTesterLib
 			return ((testFileSize + DATA_BLOCK_SIZE - 1) / DATA_BLOCK_SIZE) - 1;
 		}
 
+		/// <summary>
+		/// Verify all the test files.
+		/// </summary>
+		/// <returns></returns>
 		public bool VerifyTestFiles()
 		{
 			TotalBytesVerified = 0;
@@ -480,6 +521,15 @@ namespace KrahmerSoft.MediaTesterLib
 			return allFilesSuccess;
 		}
 
+		/// <summary>
+		/// Verify a test file. TODO this function can be split and simplified.
+		/// </summary>
+		/// <param name="testFileIndex"></param>
+		/// <param name="testFilePath"></param>
+		/// <param name="bytesVerified"></param>
+		/// <param name="bytesFailed"></param>
+		/// <param name="updateTotalBytes"></param>
+		/// <returns></returns>
 		private bool VerifyTestFile(int testFileIndex, string testFilePath, out int bytesVerified, out int bytesFailed, bool updateTotalBytes = false)
 		{
 			bool success = true;
@@ -567,6 +617,11 @@ namespace KrahmerSoft.MediaTesterLib
 
 		private const int BatchPhaseCount = 2;
 
+		/// <summary>
+		/// Calculate and set the progress percentage, considering the batch id.
+		/// </summary>
+		/// <param name="percent">Actual percentage of current batch.</param>
+		/// <param name="batchPhaseNumber">Current batch number.</param>
 		private void SetProgressPercent(decimal percent, int batchPhaseNumber)
 		{
 			if (_isBatchMode)
@@ -678,31 +733,67 @@ namespace KrahmerSoft.MediaTesterLib
 			}
 		}
 
+		/// <summary>
+		/// Get the absolute file path given its index.
+		/// </summary>
+		/// <param name="fileIndex"></param>
+		/// <returns></returns>
 		private string GetTestFilePath(int fileIndex)
 		{
 			return GetTestFilePath(GetTestDirectory(), fileIndex);
 		}
 
+		/// <summary>
+		/// Get the absolute directory of a test file.
+		/// </summary>
+		/// <param name="testDirectory">The target directory of test files.</param>
+		/// <param name="fileIndex">The file index, from 0 to n.</param>
+		/// <returns>The full path to test file, the file name index is increased by one than "fileIndex".</returns>
 		private static string GetTestFilePath(string testDirectory, int fileIndex)
 		{
 			return Path.Combine(testDirectory, (fileIndex + 1).ToString("D8") + ".MediaTester");
 		}
 
+		/// <summary>
+		/// Get the global block ID given the actual file and the relative block ID.
+		/// </summary>
+		/// <param name="fileIndex">Test file index (count starts from 0).</param>
+		/// <param name="fileDataBlockIndex"></param>
+		/// <returns></returns>
 		private static long GetAbsoluteDataBlockIndex(int fileIndex, int fileDataBlockIndex)
 		{
 			return ((long) fileIndex * (long) DATA_BLOCKS_PER_FILE) + (long) fileDataBlockIndex;
 		}
 
+		/// <summary>
+		/// Get the absolute byte for the current block
+		/// </summary>
+		/// <param name="fileIndex">Test file index (count starts from 0).</param>
+		/// <param name="fileDataBlockIndex">Relative block ID.</param>
+		/// <returns></returns>
 		private static long GetAbsoluteDataByteIndex(int fileIndex, int fileDataBlockIndex)
 		{
 			return GetAbsoluteDataBlockIndex(fileIndex, fileDataBlockIndex) * DATA_BLOCK_SIZE;
 		}
 
+		/// <summary>
+		/// Create the randomized content of a block.
+		/// </summary>
+		/// <param name="fileIndex">File index (count from 0).</param>
+		/// <param name="fileDataBlockIndex">Relative block ID.</param>
+		/// <param name="blockSize">Block size in bytes.</param>
+		/// <returns></returns>
 		private static byte[] GenerateDataBlock(int fileIndex, int fileDataBlockIndex, int blockSize)
 		{
 			return GenerateDataBlock(GetAbsoluteDataBlockIndex(fileIndex, fileDataBlockIndex), blockSize);
 		}
 
+		/// <summary>
+		/// Create the randomized content of a block.
+		/// </summary>
+		/// <param name="absoluteDataBlockIndex"></param>
+		/// <param name="blockSize">Block size in bytes.</param>
+		/// <returns></returns>
 		private static byte[] GenerateDataBlock(long absoluteDataBlockIndex, int blockSize)
 		{
 			var dataBlock = new byte[blockSize];
@@ -711,6 +802,11 @@ namespace KrahmerSoft.MediaTesterLib
 			return dataBlock;
 		}
 
+		/// <summary>
+		/// Get the seed for the current block.
+		/// </summary>
+		/// <param name="absoluteDataBlockIndex"></param>
+		/// <returns></returns>
 		private static int GetDataBlockSeed(long absoluteDataBlockIndex)
 		{
 			return (int) absoluteDataBlockIndex;
