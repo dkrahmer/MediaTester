@@ -65,8 +65,6 @@ namespace KrahmerSoft.MediaTesterLib
 
 	public class MediaTester
 	{
-		private const FileOptions FileFlagNoBuffering = (FileOptions) 0x20000000;
-
 		/// <summary>
 		/// Specify the size of each block, in bytes.
 		/// </summary>
@@ -75,7 +73,7 @@ namespace KrahmerSoft.MediaTesterLib
 		/// <summary>
 		/// Specify the number of blocks per files.
 		/// </summary>
-		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
+		public const int DATA_BLOCKS_PER_FILE = 128;
 
 		/// <summary>
 		/// The total size of a test file, in bytes.
@@ -94,26 +92,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 		public event EventHandler<ExceptionEventArgs> ExceptionThrown;
 
-		private void OnExceptionThrown(Exception ex)
-		{
-			ExceptionThrown?.Invoke(this, new ExceptionEventArgs(ex));
-		}
-
-		private void OnBlockWritten(WrittenBlock writtenBlock)
-		{
-			BlockWritten?.Invoke(this, new WritedBlockEventArgs(writtenBlock));
-		}
-
-		private void OnBlockVerified(VerifiedBlock block)
-		{
-			BlockVerified?.Invoke(this, new VerifiedBlockEventArgs(block));
-		}
-
-		private void OnQuickTestCompleted(VerifiedBlock block)
-		{
-			QuickTestCompleted?.Invoke(this, new VerifiedBlockEventArgs(block));
-		}
-
+		private const FileOptions FileFlagNoBuffering = (FileOptions) 0x20000000;
 		private bool _isBatchMode = false;
 		private Options _options;
 		private decimal _averageVerifyBytesPerSecond;
@@ -136,22 +115,6 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		public bool IsSuccess { get; protected set; } = true;
-
-		private long GetTotalDataFileBytes()
-		{
-			long totalBytes = 0;
-			for (int testFileIndex = 0; ; testFileIndex++)
-			{
-				string testFilePath = GetTestFilePath(testFileIndex);
-				if (!File.Exists(testFilePath))
-					break;
-
-				FileInfo fileInfo = new FileInfo(testFilePath);
-				totalBytes += fileInfo.Length;
-			}
-
-			return totalBytes;
-		}
 
 		public decimal ProgressPercent { get; protected set; }
 		public long TotalBytesWritten { get; protected set; }
@@ -200,10 +163,155 @@ namespace KrahmerSoft.MediaTesterLib
 			return IsSuccess;
 		}
 
-		public bool GenerateTestFiles()
+		/// <summary>
+		/// Verify all the test files.
+		/// </summary>
+		/// <returns></returns>
+		public bool VerifyTestFiles()
+		{
+			TotalBytesVerified = 0;
+			TotalBytesFailed = 0;
+
+			if (!_isBatchMode)
+				IsSuccess = true;
+
+			bool allFilesSuccess = true;
+			if (Options.MaxBytesToTest < 0)
+				Options.MaxBytesToTest = GetTotalDataFileBytes();
+
+			for (int testFileIndex = 0; ; testFileIndex++)
+			{
+				string testFilePath = GetTestFilePath(testFileIndex);
+				if (!File.Exists(testFilePath))
+					break;
+
+				bool success = VerifyTestFile(testFileIndex, testFilePath, out _, out _, true);
+				allFilesSuccess &= success;
+				IsSuccess &= success;
+
+				if (Options.StopProcessingOnFailure && !success)
+					return success;
+
+				if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
+					return success; // The requested number of bytes has been verified
+			}
+
+			return allFilesSuccess;
+		}
+
+		/// <summary>
+		/// Remove temporary files.
+		/// </summary>
+		/// <param name="filesToRemove"></param>
+		/// <returns>The number of deleted files.</returns>
+		public int RemoveTempDataFiles(int filesToRemove = int.MaxValue)
+		{
+			// Find the last file index that exists
+			int fileCount = 0;
+			while (true)
+			{
+				string testFilePath = GetTestFilePath(fileCount);
+				if (!File.Exists(testFilePath))
+					break;
+
+				fileCount++;
+			}
+
+			// Delete files in reverse order
+			int filesRemoved = 0;
+			string testDirectory = GetTestDirectory();
+			for (int testFileIndex = fileCount - 1; testFileIndex >= 0; testFileIndex--)
+			{
+				if (filesToRemove <= 0)
+					break;
+
+				string testFilePath = GetTestFilePath(testFileIndex);
+
+				File.Delete(testFilePath);
+				filesToRemove--;
+				filesRemoved++;
+			}
+
+			if (Directory.Exists(testDirectory)
+				&& Directory.EnumerateFiles(testDirectory).FirstOrDefault() == null
+				&& Directory.EnumerateDirectories(testDirectory).FirstOrDefault() == null)
+			{
+				// Delete empty directory
+				Directory.Delete(testDirectory);
+			}
+
+			return filesRemoved;
+		}
+
+		/// <summary>
+		/// Get the target directory where test files are. This path always ends with the "TempSubDirectoryName".
+		/// </summary>
+		/// <returns></returns>
+		public string GetTestDirectory()
+		{
+			string testDirectory = Options.TestDirectory;
+			if (testDirectory.EndsWith(":"))
+			{
+				testDirectory += "\\";
+			}
+
+			if (!testDirectory.TrimEnd('\\').EndsWith(TempSubDirectoryName))
+			{
+				testDirectory = Path.Combine(testDirectory, TempSubDirectoryName);
+			}
+
+			return testDirectory;
+		}
+
+		/// <summary>
+		/// Get available space in a drive.
+		/// </summary>
+		/// <param name="directory"></param>
+		/// <param name="totalSize">Total capacity of drive.</param>
+		/// <param name="actual">If true get the concrete free space, otherwise get the current free space summing up test files (if present).</param>
+		/// <returns></returns>
+		public static long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
+		{
+			DriveInfo driveInfo = new(directory);
+			totalSize = driveInfo.TotalSize;
+			long freeSpace = driveInfo.AvailableFreeSpace;
+			if (actual)
+				return freeSpace;
+
+			int skippedFiles = 0;
+
+			// Add the space taken by existing TestMedia files
+			for (int testFileIndex = 0; skippedFiles < 100; testFileIndex++)
+			{
+				string testFilePath = GetTestFilePath(directory, testFileIndex);
+				if (!File.Exists(testFilePath))
+				{
+					skippedFiles++;
+					continue;
+				}
+				var fileInfo = new FileInfo(testFilePath);
+
+				freeSpace += fileInfo.Length;
+			}
+
+			return freeSpace;
+		}
+
+		private long GetAvailableBytes(bool actual = false)
+		{
+			return GetAvailableBytes(GetTestDirectory(), out _, actual);
+		}
+
+		private static int GetLastDataBlockIndex(int testFileSize)
+		{
+			return ((testFileSize + DATA_BLOCK_SIZE - 1) / DATA_BLOCK_SIZE) - 1;
+		}
+
+		/// <summary>
 		/// Creates and writes all the test files.
 		/// </summary>
 		/// <returns></returns>
+		private bool GenerateTestFiles()
 		{
 			IsSuccess = true;
 			TotalGeneratedTestFileBytes = 0;
@@ -383,145 +491,6 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Remove temporary files.
-		/// </summary>
-		/// <param name="filesToRemove"></param>
-		/// <returns>The number of deleted files.</returns>
-		public int RemoveTempDataFiles(int filesToRemove = int.MaxValue)
-		{
-			// Find the last file index that exists
-			int fileCount = 0;
-			while (true)
-			{
-				string testFilePath = GetTestFilePath(fileCount);
-				if (!File.Exists(testFilePath))
-					break;
-
-				fileCount++;
-			}
-
-			// Delete files in reverse order
-			int filesRemoved = 0;
-			string testDirectory = GetTestDirectory();
-			for (int testFileIndex = fileCount - 1; testFileIndex >= 0; testFileIndex--)
-			{
-				if (filesToRemove <= 0)
-					break;
-
-				string testFilePath = GetTestFilePath(testFileIndex);
-
-				File.Delete(testFilePath);
-				filesToRemove--;
-				filesRemoved++;
-			}
-
-			if (Directory.Exists(testDirectory)
-				&& Directory.EnumerateFiles(testDirectory).FirstOrDefault() == null
-				&& Directory.EnumerateDirectories(testDirectory).FirstOrDefault() == null)
-				Directory.Delete(testDirectory); // Delete empty directory
-
-			return filesRemoved;
-		}
-
-		/// <summary>
-		/// Get the target directory where test files are. This path always ends with the "TempSubDirectoryName".
-		/// </summary>
-		/// <returns></returns>
-		public string GetTestDirectory()
-		{
-			string testDirectory = Options.TestDirectory;
-			if (testDirectory.EndsWith(":"))
-			{
-				testDirectory += "\\";
-			}
-
-			if (!testDirectory.TrimEnd('\\').EndsWith(TempSubDirectoryName))
-			{
-				testDirectory = Path.Combine(testDirectory, TempSubDirectoryName);
-			}
-
-			return Path.Combine(testDirectory);
-		}
-
-		public static long GetAvailableBytes(string directory, bool actual = false)
-		{
-			return GetAvailableBytes(directory, out _, actual: actual);
-		}
-
-		public static long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
-		{
-			var driveInfo = new DriveInfo(directory);
-			totalSize = driveInfo.TotalSize;
-			long freeSpace = driveInfo.AvailableFreeSpace;
-			if (actual)
-				return freeSpace;
-
-			int skippedFiles = 0;
-
-			// Add the space taken by existing TestMedia files
-			for (int testFileIndex = 0; skippedFiles < 100; testFileIndex++)
-			{
-				string testFilePath = GetTestFilePath(directory, testFileIndex);
-				if (!File.Exists(testFilePath))
-				{
-					skippedFiles++;
-					continue;
-				}
-				var fileInfo = new FileInfo(testFilePath);
-
-				freeSpace += fileInfo.Length;
-			}
-
-			return freeSpace;
-		}
-
-		private long GetAvailableBytes(bool actual = false)
-		{
-			return GetAvailableBytes(GetTestDirectory(), out _, actual: actual);
-		}
-
-		private int GetLastDataBlockIndex(int testFileSize)
-		{
-			return ((testFileSize + DATA_BLOCK_SIZE - 1) / DATA_BLOCK_SIZE) - 1;
-		}
-
-		/// <summary>
-		/// Verify all the test files.
-		/// </summary>
-		/// <returns></returns>
-		public bool VerifyTestFiles()
-		{
-			TotalBytesVerified = 0;
-			TotalBytesFailed = 0;
-
-			if (!_isBatchMode)
-				IsSuccess = true;
-
-			bool allFilesSuccess = true;
-			if (Options.MaxBytesToTest < 0)
-				Options.MaxBytesToTest = GetTotalDataFileBytes();
-
-			for (int testFileIndex = 0; ; testFileIndex++)
-			{
-				string testFilePath = GetTestFilePath(testFileIndex);
-				if (!File.Exists(testFilePath))
-					break;
-
-				bool success = VerifyTestFile(testFileIndex, testFilePath, out int bytesVerified, out int bytesFailed, true);
-				allFilesSuccess &= success;
-				IsSuccess &= success;
-
-				if (Options.StopProcessingOnFailure && !success)
-					return success;
-
-				if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
-					return success; // The requested number of bytes has been verified
-			}
-
-			return allFilesSuccess;
-		}
-
-		/// <summary>
 		/// Verify a test file. TODO this function can be split and simplified.
 		/// </summary>
 		/// <param name="testFileIndex"></param>
@@ -538,72 +507,70 @@ namespace KrahmerSoft.MediaTesterLib
 
 			try
 			{
-				using (var fileReader = new FileStream(testFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, DATA_BLOCK_SIZE,
-					FileFlagNoBuffering | FileOptions.SequentialScan))
+				using var fileReader = new FileStream(testFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, DATA_BLOCK_SIZE,
+					FileFlagNoBuffering | FileOptions.SequentialScan);
+				long lastReadBytesPerSecond = 0;
+				int lastDataBlockIndex = GetLastDataBlockIndex((int) fileReader.Length);
+				var stopwatch = new Stopwatch();
+				stopwatch.Start();
+				double lastElapsedSeconds = 0;
+				for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 				{
-					long lastReadBytesPerSecond = 0;
-					int lastDataBlockIndex = GetLastDataBlockIndex((int) fileReader.Length);
-					var stopwatch = new Stopwatch();
-					stopwatch.Start();
-					double lastElapsedSeconds = 0;
-					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
+					long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
+					long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
+					try
 					{
-						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
-						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
-						try
-						{
-							bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out long readBytesPerSecond);
-							success &= blockSuccess;
-							IsSuccess &= success;
-							bytesVerified += blockBytesVerified;
-							bytesFailed += blockBytesFailed;
-							if (updateTotalBytes)
-							{
-								TotalBytesVerified += blockBytesVerified;
-								TotalBytesFailed += blockBytesFailed;
-							}
-
-							int dataBlockSize = blockBytesVerified + blockBytesFailed;
-							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 2);
-
-							if (dataBlockSize == DATA_BLOCK_SIZE)
-							{
-								lastReadBytesPerSecond = readBytesPerSecond;
-							}
-							else
-							{
-								readBytesPerSecond = lastReadBytesPerSecond; // prevent an artificial rate spike on the last block
-							}
-
-							double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-							long verifyBytesPerSecond = (long) ((double) dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
-							Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
-
-							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond);
-							lastElapsedSeconds = elapsedSeconds;
-						}
-						catch //(Exception ex)
-						{
-							success = false;
-							IsSuccess &= success;
-							long exceptionBlockBytesFailed = fileReader.Length - (dataBlockIndex * DATA_BLOCK_SIZE);
-							if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
-								exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
-
-							AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0);
-						}
-
-						if (Options.StopProcessingOnFailure && !success)
-							return success;
-
+						bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out long readBytesPerSecond);
+						success &= blockSuccess;
+						IsSuccess &= success;
+						bytesVerified += blockBytesVerified;
+						bytesFailed += blockBytesFailed;
 						if (updateTotalBytes)
 						{
-							if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
-								return success; // The requested number of bytes has been verified
+							TotalBytesVerified += blockBytesVerified;
+							TotalBytesFailed += blockBytesFailed;
 						}
+
+						int dataBlockSize = blockBytesVerified + blockBytesFailed;
+						SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 2);
+
+						if (dataBlockSize == DATA_BLOCK_SIZE)
+						{
+							lastReadBytesPerSecond = readBytesPerSecond;
+						}
+						else
+						{
+							readBytesPerSecond = lastReadBytesPerSecond; // prevent an artificial rate spike on the last block
+						}
+
+						double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
+						long verifyBytesPerSecond = (long) ((double) dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
+						Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
+
+						AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond);
+						lastElapsedSeconds = elapsedSeconds;
 					}
-					stopwatch.Stop();
+					catch //(Exception ex)
+					{
+						success = false;
+						IsSuccess &= success;
+						long exceptionBlockBytesFailed = fileReader.Length - (dataBlockIndex * DATA_BLOCK_SIZE);
+						if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
+							exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
+
+						AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0);
+					}
+
+					if (Options.StopProcessingOnFailure && !success)
+						return success;
+
+					if (updateTotalBytes)
+					{
+						if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
+							return success; // The requested number of bytes has been verified
+					}
 				}
+				stopwatch.Stop();
 			}
 			catch (Exception ex)
 			{
@@ -635,17 +602,26 @@ namespace KrahmerSoft.MediaTesterLib
 			ProgressPercent = percent;
 		}
 
-		private bool VerifyTestFileDataBlock(int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
+		private long GetTotalDataFileBytes()
 		{
-			return VerifyTestFileDataBlock(fileIndex, GetTestFilePath(fileIndex), dataBlockIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
+			long totalBytes = 0;
+			for (int testFileIndex = 0; ; testFileIndex++)
+			{
+				string testFilePath = GetTestFilePath(testFileIndex);
+				if (!File.Exists(testFilePath))
+					break;
+
+				FileInfo fileInfo = new(testFilePath);
+				totalBytes += fileInfo.Length;
+			}
+
+			return totalBytes;
 		}
 
 		private bool VerifyTestFileDataBlock(int testFileIndex, string testFilePath, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
 		{
-			using (var file = File.OpenRead(testFilePath))
-			{
-				return VerifyTestFileDataBlock(file, testFileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
-			}
+			using var file = File.OpenRead(testFilePath);
+			return VerifyTestFileDataBlock(file, testFileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 		}
 
 		private bool VerifyTestFileDataBlock(FileStream fileReader, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
@@ -669,7 +645,7 @@ namespace KrahmerSoft.MediaTesterLib
 			return VerifyDataBlock(dataBlock, fileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, knownGoodDataBlock: knownGoodDataBlock);
 		}
 
-		private byte[] ReadDataBlock(FileStream fileReader, int dataBlockIndex, out long readBytesPerSecond)
+		private static byte[] ReadDataBlock(FileStream fileReader, int dataBlockIndex, out long readBytesPerSecond)
 		{
 			int dataBlockStartIndex = dataBlockIndex * DATA_BLOCK_SIZE;
 			long dataBlockSize = fileReader.Length - dataBlockStartIndex;
@@ -810,6 +786,26 @@ namespace KrahmerSoft.MediaTesterLib
 		private static int GetDataBlockSeed(long absoluteDataBlockIndex)
 		{
 			return (int) absoluteDataBlockIndex;
+		}
+
+		private void OnExceptionThrown(Exception ex)
+		{
+			ExceptionThrown?.Invoke(this, new ExceptionEventArgs(ex));
+		}
+
+		private void OnBlockWritten(WrittenBlock writtenBlock)
+		{
+			BlockWritten?.Invoke(this, new WritedBlockEventArgs(writtenBlock));
+		}
+
+		private void OnBlockVerified(VerifiedBlock block)
+		{
+			BlockVerified?.Invoke(this, new VerifiedBlockEventArgs(block));
+		}
+
+		private void OnQuickTestCompleted(VerifiedBlock block)
+		{
+			QuickTestCompleted?.Invoke(this, new VerifiedBlockEventArgs(block));
 		}
 	}
 }
