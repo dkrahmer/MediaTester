@@ -297,11 +297,21 @@ namespace KrahmerSoft.MediaTesterLib
 			return freeSpace;
 		}
 
+		/// <summary>
+		/// Get free bytes on disk.
+		/// </summary>
+		/// <param name="actual">if true return the concrete free space, otherwise return the concrete space and ignore test files.</param>
+		/// <returns></returns>
 		private long GetAvailableBytes(bool actual = false)
 		{
 			return GetAvailableBytes(GetTestDirectory(), out _, actual);
 		}
 
+		/// <summary>
+		/// Return the highest relative block ID.
+		/// </summary>
+		/// <param name="testFileSize"></param>
+		/// <returns></returns>
 		private static int GetLastDataBlockIndex(int testFileSize)
 		{
 			return ((testFileSize + DATA_BLOCK_SIZE - 1) / DATA_BLOCK_SIZE) - 1;
@@ -602,6 +612,10 @@ namespace KrahmerSoft.MediaTesterLib
 			ProgressPercent = percent;
 		}
 
+		/// <summary>
+		/// Return the total size of test files on disk.
+		/// </summary>
+		/// <returns></returns>
 		private long GetTotalDataFileBytes()
 		{
 			long totalBytes = 0;
@@ -618,12 +632,32 @@ namespace KrahmerSoft.MediaTesterLib
 			return totalBytes;
 		}
 
+		/// <summary>
+		/// Verify a data block.
+		/// </summary>
+		/// <param name="testFileIndex"></param>
+		/// <param name="testFilePath"></param>
+		/// <param name="dataBlockIndex"></param>
+		/// <param name="bytesVerified"></param>
+		/// <param name="bytesFailed"></param>
+		/// <param name="readBytesPerSecond"></param>
+		/// <returns></returns>
 		private bool VerifyTestFileDataBlock(int testFileIndex, string testFilePath, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
 		{
 			using var file = File.OpenRead(testFilePath);
 			return VerifyTestFileDataBlock(file, testFileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 		}
 
+		/// <summary>
+		/// Verify a data block. TODO: use Task instead of while(..) and another thread.
+		/// </summary>
+		/// <param name="fileReader"></param>
+		/// <param name="fileIndex"></param>
+		/// <param name="dataBlockIndex"></param>
+		/// <param name="bytesVerified"></param>
+		/// <param name="bytesFailed"></param>
+		/// <param name="readBytesPerSecond"></param>
+		/// <returns></returns>
 		private bool VerifyTestFileDataBlock(FileStream fileReader, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
 		{
 			byte[] knownGoodDataBlock = null;
@@ -645,6 +679,13 @@ namespace KrahmerSoft.MediaTesterLib
 			return VerifyDataBlock(dataBlock, fileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, knownGoodDataBlock: knownGoodDataBlock);
 		}
 
+		/// <summary>
+		/// Read the block from file. The length of this block depends on the remaining bytes in the files.
+		/// </summary>
+		/// <param name="fileReader"></param>
+		/// <param name="dataBlockIndex">Relative block ID.</param>
+		/// <param name="readBytesPerSecond"></param>
+		/// <returns></returns>
 		private static byte[] ReadDataBlock(FileStream fileReader, int dataBlockIndex, out long readBytesPerSecond)
 		{
 			int dataBlockStartIndex = dataBlockIndex * DATA_BLOCK_SIZE;
@@ -671,6 +712,16 @@ namespace KrahmerSoft.MediaTesterLib
 			return dataBlock;
 		}
 
+		/// <summary>
+		/// Verify 2 blocks against each other. If the reference block length is different from the test block, it is regenerated! TODO refactor this piece of code.
+		/// </summary>
+		/// <param name="dataBlock">The block to be tested.</param>
+		/// <param name="fileIndex"></param>
+		/// <param name="dataBlockIndex"></param>
+		/// <param name="bytesVerified"></param>
+		/// <param name="bytesFailed"></param>
+		/// <param name="knownGoodDataBlock">The reference block.</param>
+		/// <returns></returns>
 		private bool VerifyDataBlock(byte[] dataBlock, int fileIndex, int dataBlockIndex, out int bytesVerified, out int bytesFailed, byte[] knownGoodDataBlock = null)
 		{
 			bytesVerified = 0;
@@ -685,6 +736,7 @@ namespace KrahmerSoft.MediaTesterLib
 				return false;
 			}
 
+			// Now dataBlock and knownGoodDataBlock have the same length.
 			for (int i = 0; i < dataBlock.Length; i++)
 			{
 				if (dataBlock[i] == knownGoodDataBlock[i])
@@ -701,6 +753,10 @@ namespace KrahmerSoft.MediaTesterLib
 			return bytesFailed == 0;
 		}
 
+		/// <summary>
+		/// Set FirstFailingByteIndex. TODO: This can be inserted directly in Property FirstFailingByteIndex
+		/// </summary>
+		/// <param name="failingByteIndex"></param>
 		private void SetFirstFailingByteIndex(long failingByteIndex)
 		{
 			if (FirstFailingByteIndex > failingByteIndex || FirstFailingByteIndex < 0)
@@ -753,7 +809,7 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Create the randomized content of a block.
+		/// Create a block of specified length initialized with "pseudo-random" data depending only from absolute block ID.
 		/// </summary>
 		/// <param name="fileIndex">File index (count from 0).</param>
 		/// <param name="fileDataBlockIndex">Relative block ID.</param>
@@ -765,7 +821,7 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Create the randomized content of a block.
+		/// Create a block of specified length initialized with "pseudo-random" data depending only from absolute block ID.
 		/// </summary>
 		/// <param name="absoluteDataBlockIndex"></param>
 		/// <param name="blockSize">Block size in bytes.</param>
