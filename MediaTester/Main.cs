@@ -515,10 +515,10 @@ namespace KrahmerSoft.MediaTester
 		{
 			try
 			{
-				_mediaTesterThread?.Abort();
+				_mediaTesterThread?.Interrupt();
 				_startDateTime = null;
 			}
-			catch //(Exception ex)
+			catch
 			{
 			}
 		}
