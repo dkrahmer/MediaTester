@@ -390,7 +390,7 @@
             // TotalTimeRemainingLabel
             // 
             this.TotalTimeRemainingLabel.AutoSize = true;
-            this.TotalTimeRemainingLabel.Location = new System.Drawing.Point(79, 214);
+            this.TotalTimeRemainingLabel.Location = new System.Drawing.Point(85, 214);
             this.TotalTimeRemainingLabel.Name = "TotalTimeRemainingLabel";
             this.TotalTimeRemainingLabel.Size = new System.Drawing.Size(27, 20);
             this.TotalTimeRemainingLabel.TabIndex = 13;
@@ -408,7 +408,7 @@
             // ElapsedTimeLabel
             // 
             this.ElapsedTimeLabel.AutoSize = true;
-            this.ElapsedTimeLabel.Location = new System.Drawing.Point(79, 183);
+            this.ElapsedTimeLabel.Location = new System.Drawing.Point(85, 183);
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
             this.ElapsedTimeLabel.Size = new System.Drawing.Size(27, 20);
             this.ElapsedTimeLabel.TabIndex = 11;
@@ -426,7 +426,7 @@
             // FailedBytesLabel
             // 
             this.FailedBytesLabel.AutoSize = true;
-            this.FailedBytesLabel.Location = new System.Drawing.Point(79, 154);
+            this.FailedBytesLabel.Location = new System.Drawing.Point(85, 154);
             this.FailedBytesLabel.Name = "FailedBytesLabel";
             this.FailedBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.FailedBytesLabel.TabIndex = 9;
@@ -435,7 +435,7 @@
             // VerifiedBytesLabel
             // 
             this.VerifiedBytesLabel.AutoSize = true;
-            this.VerifiedBytesLabel.Location = new System.Drawing.Point(79, 123);
+            this.VerifiedBytesLabel.Location = new System.Drawing.Point(85, 123);
             this.VerifiedBytesLabel.Name = "VerifiedBytesLabel";
             this.VerifiedBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.VerifiedBytesLabel.TabIndex = 8;
@@ -444,7 +444,7 @@
             // WrittenBytesLabel
             // 
             this.WrittenBytesLabel.AutoSize = true;
-            this.WrittenBytesLabel.Location = new System.Drawing.Point(79, 63);
+            this.WrittenBytesLabel.Location = new System.Drawing.Point(85, 63);
             this.WrittenBytesLabel.Name = "WrittenBytesLabel";
             this.WrittenBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.WrittenBytesLabel.TabIndex = 7;
@@ -453,7 +453,7 @@
             // ReadSpeedLabel
             // 
             this.ReadSpeedLabel.AutoSize = true;
-            this.ReadSpeedLabel.Location = new System.Drawing.Point(79, 94);
+            this.ReadSpeedLabel.Location = new System.Drawing.Point(85, 94);
             this.ReadSpeedLabel.Name = "ReadSpeedLabel";
             this.ReadSpeedLabel.Size = new System.Drawing.Size(27, 20);
             this.ReadSpeedLabel.TabIndex = 6;
@@ -462,7 +462,7 @@
             // WriteSpeedLabel
             // 
             this.WriteSpeedLabel.AutoSize = true;
-            this.WriteSpeedLabel.Location = new System.Drawing.Point(79, 34);
+            this.WriteSpeedLabel.Location = new System.Drawing.Point(85, 34);
             this.WriteSpeedLabel.Name = "WriteSpeedLabel";
             this.WriteSpeedLabel.Size = new System.Drawing.Size(27, 20);
             this.WriteSpeedLabel.TabIndex = 5;
