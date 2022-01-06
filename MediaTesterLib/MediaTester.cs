@@ -6,9 +6,60 @@ using System.Threading;
 
 namespace KrahmerSoft.MediaTesterLib
 {
-	public delegate void WriteBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite);
 	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond);
-	public delegate void ExceptionHandler(MediaTester mediaTester, Exception exception);
+	public  class ExceptionEventArgs : EventArgs
+	{
+		public ExceptionEventArgs(Exception e)
+	{
+			Exception = e;
+		}
+		public Exception Exception;
+	}
+
+	public readonly record struct WrittenBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long WriteBytesPerSecond, int BytesWritten, int BytesFailedWrite);
+	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long ReadBytesPerSecond, int BytesVerified, int BytesFailed, long VerifyBytesPerSecond);
+
+	public class VerifiedBlockEventArgs: EventArgs
+	{
+		public VerifiedBlockEventArgs(VerifiedBlock block)
+		{
+			AbsoluteDataBlockIndex = block.AbsoluteDataBlockIndex;
+			AbsoluteDataByteIndex = block.AbsoluteDataByteIndex;
+			TestFilePath = block.TestFilePath;
+			ReadBytesPerSecond = block.ReadBytesPerSecond;
+			BytesVerified = block.BytesVerified;
+			BytesFailed = block.BytesFailed;
+			VerifyBytesPerSecond = block.VerifyBytesPerSecond;
+		}
+
+		public long AbsoluteDataBlockIndex;
+		public long AbsoluteDataByteIndex;
+		public string TestFilePath;
+		public long ReadBytesPerSecond;
+		public int BytesVerified;
+		public int BytesFailed;
+		public long VerifyBytesPerSecond;
+	}
+
+	public class WritedBlockEventArgs: EventArgs
+	{
+		public WritedBlockEventArgs(WrittenBlock block)
+		{
+			AbsoluteDataBlockIndex = block.AbsoluteDataBlockIndex;
+			AbsoluteDataByteIndex= block.AbsoluteDataByteIndex;
+			TestFilePath = block.TestFilePath;
+			WriteBytesPerSecond = block.WriteBytesPerSecond;
+			BytesWritten = block.BytesWritten;
+			BytesFailedWrite = block.BytesFailedWrite;
+		}
+
+		public long AbsoluteDataBlockIndex;
+		public long AbsoluteDataByteIndex;
+		public string TestFilePath;
+		public long WriteBytesPerSecond;
+		public int BytesWritten;
+		public int BytesFailedWrite;
+	}
 
 	public class MediaTester
 	{
@@ -18,10 +69,34 @@ namespace KrahmerSoft.MediaTesterLib
 		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
 		public const string TempSubDirectoryName = "MediaTester";
 
-		public WriteBlockCompleteHandler AfterWriteBlock;
-		public VerifyBlockCompleteHandler AfterQuickTest;
+		public event EventHandler<VerifiedBlockEventArgs> QuickTestCompleted;
+		public event EventHandler<VerifiedBlockEventArgs> BlockVerified;
+
 		public VerifyBlockCompleteHandler AfterVerifyBlock;
-		public ExceptionHandler OnException;
+
+
+		public event EventHandler<WritedBlockEventArgs> BlockWritten;
+		public event EventHandler<ExceptionEventArgs> ExceptionThrown;
+
+		private void OnExceptionThrown(Exception ex)
+		{
+			ExceptionThrown?.Invoke(this, new ExceptionEventArgs(ex));
+		}
+
+		private void OnBlockWritten(WrittenBlock writtenBlock)
+		{
+			BlockWritten?.Invoke(this, new WritedBlockEventArgs(writtenBlock));
+		}
+
+		private void OnBlockVerified(VerifiedBlock block)
+		{
+			BlockVerified?.Invoke(this, new VerifiedBlockEventArgs(block));
+		}
+
+		private void OnQuickTestCompleted(VerifiedBlock block)
+		{
+			QuickTestCompleted?.Invoke(this, new VerifiedBlockEventArgs(block));
+		}
 
 		private bool _isBatchMode = false;
 		private Options _options;
@@ -96,7 +171,7 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				success = false;
 				IsSuccess &= false;
-				OnException(this, new Exception($"Total bytes verified does not match total bytes written. Total Bytes Written: {TotalGeneratedTestFileBytes.ToString("#,##0")} ; Total Bytes Verified: {TotalBytesVerified.ToString("#,##0")}"));
+				OnExceptionThrown(new Exception($"Total bytes verified does not match total bytes written. Total Bytes Written: {TotalGeneratedTestFileBytes.ToString("#,##0")} ; Total Bytes Verified: {TotalBytesVerified.ToString("#,##0")}"));
 			}
 			if (Options.StopProcessingOnFailure && !success)
 				return success;
@@ -129,7 +204,7 @@ namespace KrahmerSoft.MediaTesterLib
 						SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) DATA_BLOCK_SIZE)) / (decimal) Options.MaxBytesToTest, 1);
 						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond);
 						IsSuccess &= success;
-						AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
+						OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0));
 						if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 						{
 							success = false;
@@ -144,7 +219,7 @@ namespace KrahmerSoft.MediaTesterLib
 							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) DATA_BLOCK_SIZE)) / (decimal) Options.MaxBytesToTest, 1);
 							success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 							IsSuccess &= success;
-							AfterQuickTest?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0);
+							OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0));
 							if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 							{
 								success = false;
@@ -162,7 +237,7 @@ namespace KrahmerSoft.MediaTesterLib
 			catch (Exception ex)
 			{
 				IsSuccess = false;
-				OnException?.Invoke(this, new Exception("An unhandled exception ocurred while writing test data.", ex));
+				OnExceptionThrown(new Exception("An unhandled exception occurred while writing test data.", ex));
 				return false;
 			}
 		}
@@ -254,13 +329,13 @@ namespace KrahmerSoft.MediaTesterLib
 
 							TotalBytesWritten += dataBlockSize;
 							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 1);
-							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0);
+							OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
 						}
 						catch (Exception ex)
 						{
 							IsSuccess = false;
-							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize);
-							OnException?.Invoke(this, new Exception($"Unable to write block to file '{testFilePath}'.", ex));
+							OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
+							OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
 							return testFilePath;
 						}
 					}
@@ -270,7 +345,7 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				testFilePath = null;
 				IsSuccess = false;
-				OnException?.Invoke(this, new Exception($"Unable to open file '{testFilePath}' for writing.", ex));
+				OnExceptionThrown(new Exception($"Unable to open file '{testFilePath}' for writing.", ex));
 			}
 
 			return testFilePath;
@@ -478,7 +553,7 @@ namespace KrahmerSoft.MediaTesterLib
 			}
 			catch (Exception ex)
 			{
-				OnException?.Invoke(this, new Exception($"Unable to open '{testFilePath}' for reading.", ex));
+				OnExceptionThrown(new Exception($"Unable to open '{testFilePath}' for reading.", ex));
 				success = false;
 				IsSuccess &= success;
 			}

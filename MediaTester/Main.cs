@@ -123,6 +123,7 @@ namespace KrahmerSoft.MediaTester
 		}
 
 		private delegate void EnableControlsDelegate(bool enable);
+
 		private void EnableControls(bool enable = true)
 		{
 			if (TestOptionsGgroupBox.InvokeRequired)
@@ -315,10 +316,19 @@ namespace KrahmerSoft.MediaTester
 		{
 			UpdateOptionsFromUi();
 			_mediaTester = new MediaTesterLib.MediaTester(_mediaTesterOptions);
-			_mediaTester.OnException += OnMediaTesterException;
-			_mediaTester.AfterQuickTest += AfterQuickTest;
-			_mediaTester.AfterVerifyBlock += AfterVerifyBlock;
-			_mediaTester.AfterWriteBlock += AfterWriteBlock;
+			_mediaTester.ExceptionThrown += (s, e) => { LogException(s as MediaTesterLib.MediaTester, e.Exception); };
+			_mediaTester.QuickTestCompleted += (s, e) =>
+			{
+				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, e.VerifyBytesPerSecond, true);
+			};
+			_mediaTester.BlockVerified += (s, e) =>
+			{
+				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, e.VerifyBytesPerSecond, false);
+			};
+			_mediaTester.BlockWritten += (s, e) =>
+			{
+				AfterWriteBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.WriteBytesPerSecond, e.BytesWritten, e.BytesFailedWrite);
+			};
 
 			long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
@@ -354,11 +364,6 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
-		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
-		}
-
 		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
@@ -387,16 +392,26 @@ namespace KrahmerSoft.MediaTester
 			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
 		}
 
-		private void OnMediaTesterException(MediaTesterLib.MediaTester mediaTester, Exception exception)
+		private void OnMediaTesterException(object sender, ExceptionEventArgs exception)
+		{
+		}
+
+		/// <summary>
+		/// Write Exception message on log. Since exception may be nested, this function is recursive.
+		/// </summary>
+		/// <param name="mediaTester"></param>
+		/// <param name="exception"></param>
+		private void LogException(MediaTesterLib.MediaTester mediaTester, Exception exception)
 		{
 			WriteLog(mediaTester, $"{exception.Message}");
 			if (exception.InnerException != null)
 			{
-				OnMediaTesterException(mediaTester, exception.InnerException);
+				LogException(mediaTester, exception.InnerException);
 			}
 		}
 
 		private delegate void WriteLogDelegate(MediaTesterLib.MediaTester mediaTester, string message);
+
 		private void WriteLog(MediaTesterLib.MediaTester mediaTester, string message)
 		{
 			if (ActivityLogTextBox.InvokeRequired)
@@ -415,12 +430,14 @@ namespace KrahmerSoft.MediaTester
 				ActivityLogTextBox.AppendText((ActivityLogTextBox.Text.Length == 0 ? string.Empty : "\r\n") + message);
 			}
 		}
+
 		private void ClearLog(object p1, object p2)
 		{
 			WriteLog(null, null);
 		}
 
 		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining, long verifyBytesPerSecond);
+
 		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0, long verifyBytesPerSecond = 0)
 		{
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
