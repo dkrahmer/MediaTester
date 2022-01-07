@@ -86,8 +86,6 @@ namespace KrahmerSoft.MediaTesterLib
 
 		public event EventHandler<VerifiedBlockEventArgs> BlockVerified;
 
-		public VerifyBlockCompleteHandler AfterVerifyBlock;
-
 		public event EventHandler<WritedBlockEventArgs> BlockWritten;
 
 		public event EventHandler<ExceptionEventArgs> ExceptionThrown;
@@ -557,7 +555,7 @@ namespace KrahmerSoft.MediaTesterLib
 						long verifyBytesPerSecond = (long) ((double) dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
 						Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
 
-						AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond);
+						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond));
 						lastElapsedSeconds = elapsedSeconds;
 					}
 					catch //(Exception ex)
@@ -568,7 +566,7 @@ namespace KrahmerSoft.MediaTesterLib
 						if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
 							exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
 
-						AfterVerifyBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0);
+						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0));
 					}
 
 					if (Options.StopProcessingOnFailure && !success)
