@@ -45,10 +45,10 @@ namespace KrahmerSoft.MediaTesterCli
 			{
 			};
 
-			mediaTester.AfterWriteBlock += AfterWriteBlock;
-			mediaTester.AfterQuickTest += AfterQuickTest;
-			mediaTester.AfterVerifyBlock += AfterVerifyBlock;
-			mediaTester.OnException += OnMediaTesterException;
+			mediaTester.BlockWritten += AfterWriteBlock;
+			mediaTester.QuickTestCompleted += AfterQuickTest;
+			mediaTester.BlockVerified += AfterVerifyBlock;
+			mediaTester.ExceptionThrown += (o, e) => { LogException(o as MediaTester, e.Exception); };
 
 			bool result = mediaTester.FullTest();
 
@@ -87,21 +87,23 @@ namespace KrahmerSoft.MediaTesterCli
 			Console.ReadLine();
 		}
 
-		private static void AfterWriteBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
+		private static void AfterWriteBlock(object sender, WritedBlockEventArgs e)
 		{
-			if (bytesFailedWrite == 0)
+			MediaTester mediaTester = sender as MediaTester;
+			if (e.BytesFailedWrite == 0)
 			{
-				WriteLog(mediaTester, $"Successfully wrote block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. {writeBytesPerSecond.ToString("#,##0")} B/sec ({mediaTester.ProgressPercent.ToString("0.00")}%)");
+				WriteLog(mediaTester, $"Successfully wrote block {e.AbsoluteDataBlockIndex.ToString("#,##0")}. Byte index: {e.AbsoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. {e.WriteBytesPerSecond.ToString("#,##0")} B/sec ({mediaTester.ProgressPercent.ToString("0.00")}%)");
 			}
 			else
 			{
-				WriteLog(mediaTester, $"FAILED writing block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. ({mediaTester.ProgressPercent.ToString("0.00")}%)");
+				WriteLog(mediaTester, $"FAILED writing block {e.AbsoluteDataBlockIndex.ToString("#,##0")}. Byte index: {e.AbsoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. ({mediaTester.ProgressPercent.ToString("0.00")}%)");
 			}
 		}
 
-		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		private static void AfterVerifyBlock(object sender, VerifiedBlockEventArgs e)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
+			MediaTester mediaTester = sender as MediaTester;
+			AfterVerifyBlock(mediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, e.VerifyBytesPerSecond, false);
 		}
 
 		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
@@ -116,17 +118,18 @@ namespace KrahmerSoft.MediaTesterCli
 			}
 		}
 
-		private static void AfterQuickTest(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		private static void AfterQuickTest(object sender, VerifiedBlockEventArgs e)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePathlong, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
+			MediaTester mediaTester = sender as MediaTester;
+			AfterVerifyBlock(mediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, e.VerifyBytesPerSecond, true);
 		}
 
-		private static void OnMediaTesterException(MediaTester mediaTester, Exception exception)
+		private static void LogException(MediaTester mediaTester, Exception exception)
 		{
 			WriteLog(mediaTester, $"{exception.Message}");
 			if (exception.InnerException != null)
 			{
-				OnMediaTesterException(mediaTester, exception.InnerException);
+				LogException(mediaTester, exception.InnerException);
 			}
 		}
 
