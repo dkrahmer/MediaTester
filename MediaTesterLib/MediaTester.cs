@@ -121,11 +121,19 @@ namespace KrahmerSoft.MediaTesterLib
 		public long TotalGeneratedTestFileBytes { get; protected set; }
 		public decimal FirstFailingByteIndex { get; protected set; } = -1;
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="options">Set the options for the test.</param>
 		public MediaTester(Options options)
 		{
 			Options = options;
 		}
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="testDirectory">Set only test path, the other parameters are set to default.</param>
 		public MediaTester(string testDirectory)
 		{
 			Options.TestDirectory = testDirectory;
@@ -270,6 +278,7 @@ namespace KrahmerSoft.MediaTesterLib
 		/// <returns></returns>
 		public static long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
 		{
+			// TODO catch exception if disk is removed (System.IO.DriveNotFoundException)
 			DriveInfo driveInfo = new(directory);
 			totalSize = driveInfo.TotalSize;
 			long freeSpace = driveInfo.AvailableFreeSpace;
