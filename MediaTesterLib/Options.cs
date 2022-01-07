@@ -21,7 +21,7 @@ namespace KrahmerSoft.MediaTesterLib
 		/// <param name="filePath">The file path relative to executable location.</param>
 		public void Serialize(string filePath = CONFIG_FILENAME)
 		{
-			File.WriteAllText(filePath, JsonSerializer.Serialize(this));
+			File.WriteAllText(filePath, JsonSerializer.Serialize(this, typeof(Options), new JsonSerializerOptions() { WriteIndented = true }));
 		}
 
 		/// <summary>
