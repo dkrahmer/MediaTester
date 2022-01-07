@@ -93,14 +93,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TargetTextBox.Location = new System.Drawing.Point(61, 34);
             this.TargetTextBox.Name = "TargetTextBox";
-            this.TargetTextBox.Size = new System.Drawing.Size(221, 27);
+            this.TargetTextBox.Size = new System.Drawing.Size(238, 27);
             this.TargetTextBox.TabIndex = 1;
             this.TargetTextBox.TextChanged += new System.EventHandler(this.TargetTextBox_TextChanged);
             // 
             // ChooseTargetButton
             // 
             this.ChooseTargetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChooseTargetButton.Location = new System.Drawing.Point(289, 32);
+            this.ChooseTargetButton.Location = new System.Drawing.Point(306, 32);
             this.ChooseTargetButton.Name = "ChooseTargetButton";
             this.ChooseTargetButton.Size = new System.Drawing.Size(28, 31);
             this.ChooseTargetButton.TabIndex = 2;
@@ -166,7 +166,7 @@
             // WriteAndVerifyButton
             // 
             this.WriteAndVerifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.WriteAndVerifyButton.Location = new System.Drawing.Point(343, 342);
+            this.WriteAndVerifyButton.Location = new System.Drawing.Point(360, 342);
             this.WriteAndVerifyButton.Name = "WriteAndVerifyButton";
             this.WriteAndVerifyButton.Size = new System.Drawing.Size(129, 43);
             this.WriteAndVerifyButton.TabIndex = 9;
@@ -179,7 +179,7 @@
             // VerifyOnlyButton
             // 
             this.VerifyOnlyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.VerifyOnlyButton.Location = new System.Drawing.Point(477, 342);
+            this.VerifyOnlyButton.Location = new System.Drawing.Point(494, 342);
             this.VerifyOnlyButton.Name = "VerifyOnlyButton";
             this.VerifyOnlyButton.Size = new System.Drawing.Size(129, 43);
             this.VerifyOnlyButton.TabIndex = 10;
@@ -208,7 +208,7 @@
             this.TestOptionsGgroupBox.Controls.Add(this.QuickTestAfterEachFileCheckBox);
             this.TestOptionsGgroupBox.Location = new System.Drawing.Point(12, 37);
             this.TestOptionsGgroupBox.Name = "TestOptionsGgroupBox";
-            this.TestOptionsGgroupBox.Size = new System.Drawing.Size(324, 297);
+            this.TestOptionsGgroupBox.Size = new System.Drawing.Size(341, 297);
             this.TestOptionsGgroupBox.TabIndex = 11;
             this.TestOptionsGgroupBox.TabStop = false;
             this.TestOptionsGgroupBox.Text = "Test Options";
@@ -283,7 +283,7 @@
             this.ActivityLogTextBox.Name = "ActivityLogTextBox";
             this.ActivityLogTextBox.ReadOnly = true;
             this.ActivityLogTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ActivityLogTextBox.Size = new System.Drawing.Size(595, 180);
+            this.ActivityLogTextBox.Size = new System.Drawing.Size(612, 180);
             this.ActivityLogTextBox.TabIndex = 12;
             this.ActivityLogTextBox.WordWrap = false;
             // 
@@ -297,7 +297,7 @@
             this.StatusStrip.Location = new System.Drawing.Point(0, 579);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
-            this.StatusStrip.Size = new System.Drawing.Size(620, 30);
+            this.StatusStrip.Size = new System.Drawing.Size(637, 30);
             this.StatusStrip.TabIndex = 13;
             // 
             // ProgressBar
@@ -322,7 +322,7 @@
             // 
             this.AboutLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AboutLinkLabel.AutoSize = true;
-            this.AboutLinkLabel.Location = new System.Drawing.Point(549, 11);
+            this.AboutLinkLabel.Location = new System.Drawing.Point(566, 11);
             this.AboutLinkLabel.Name = "AboutLinkLabel";
             this.AboutLinkLabel.Size = new System.Drawing.Size(59, 20);
             this.AboutLinkLabel.TabIndex = 15;
@@ -354,7 +354,7 @@
             // AbortButton
             // 
             this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.AbortButton.Location = new System.Drawing.Point(343, 342);
+            this.AbortButton.Location = new System.Drawing.Point(360, 342);
             this.AbortButton.Name = "AbortButton";
             this.AbortButton.Size = new System.Drawing.Size(264, 43);
             this.AbortButton.TabIndex = 18;
@@ -380,7 +380,7 @@
             this.StatisticsGroupBox.Controls.Add(this.label3);
             this.StatisticsGroupBox.Controls.Add(this.label2);
             this.StatisticsGroupBox.Controls.Add(this.label1);
-            this.StatisticsGroupBox.Location = new System.Drawing.Point(343, 37);
+            this.StatisticsGroupBox.Location = new System.Drawing.Point(360, 37);
             this.StatisticsGroupBox.Name = "StatisticsGroupBox";
             this.StatisticsGroupBox.Size = new System.Drawing.Size(264, 246);
             this.StatisticsGroupBox.TabIndex = 19;
@@ -516,7 +516,7 @@
             // RemoveTempDataFilesButton
             // 
             this.RemoveTempDataFilesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.RemoveTempDataFilesButton.Location = new System.Drawing.Point(343, 289);
+            this.RemoveTempDataFilesButton.Location = new System.Drawing.Point(360, 289);
             this.RemoveTempDataFilesButton.Name = "RemoveTempDataFilesButton";
             this.RemoveTempDataFilesButton.Size = new System.Drawing.Size(264, 43);
             this.RemoveTempDataFilesButton.TabIndex = 20;
@@ -529,7 +529,7 @@
             this.AcceptButton = this.WriteAndVerifyButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(620, 609);
+            this.ClientSize = new System.Drawing.Size(637, 609);
             this.Controls.Add(this.RemoveTempDataFilesButton);
             this.Controls.Add(this.StatisticsGroupBox);
             this.Controls.Add(this.DefaultOptionsButton);
@@ -541,7 +541,7 @@
             this.Controls.Add(this.VerifyOnlyButton);
             this.Controls.Add(this.WriteAndVerifyButton);
             this.Controls.Add(this.AbortButton);
-            this.MinimumSize = new System.Drawing.Size(635, 545);
+            this.MinimumSize = new System.Drawing.Size(655, 545);
             this.Name = "Main";
             this.Text = "MediaTester";
             this.Load += new System.EventHandler(this.Main_Load);
