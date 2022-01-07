@@ -8,3 +8,13 @@ MediaTester is released as a free public service to help stop counterfeiters and
 The MediaTester library, GUI, and CLI are released with a generous open source license with no restrictions.
 
 -Doug Krahmer
+
+## Build Releases
+
+The final releases are generated from command line using `dotnet` tool. Open the Terminal directly in Visual Studio (View > Terminal) and launch the following command:
+
+	dotnet publish <ProjectName> -r <RuntimeIdentifier> -c Release -p:PublishSingleFile=true --no-self-contained -p:PublishReadyToRun=true
+
+where `ProjectName` can be `MediaTesterCLI` or `MediaTester`; `RuntimeIdentifier` is the target platform (CPU and OS) as specified [here](https://docs.microsoft.com/en-us/dotnet/core/rid-catalog).
+
+> :information_source: MediaTester is officially distribuited only for `win-x86`, `win-x64`, `linux-x64`, `linux-arm`, `linux-arm64`, and `osx-x64`.
