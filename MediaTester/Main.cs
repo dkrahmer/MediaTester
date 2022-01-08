@@ -122,14 +122,11 @@ namespace KrahmerSoft.MediaTester
 			UpdateUiFromOptions();
 		}
 
-		private delegate void EnableControlsDelegate(bool enable);
-
 		private void EnableControls(bool enable = true)
 		{
 			if (TestOptionsGgroupBox.InvokeRequired)
 			{
-				EnableControlsDelegate d = new EnableControlsDelegate(EnableControls);
-				Invoke(d, new object[] { enable });
+				Invoke(() => EnableControls(enable));
 				return;
 			}
 
