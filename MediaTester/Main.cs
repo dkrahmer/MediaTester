@@ -221,12 +221,13 @@ namespace KrahmerSoft.MediaTester
 
 		private void RemoveTempDataFiles()
 		{
-			WriteLog(_mediaTester, $"Removing temp data files...");
+			WriteLog($"Removing temp data files...");
 			int filesDeleted = _mediaTester.RemoveTempDataFiles();
-			WriteLog(_mediaTester, $"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+			WriteLog($"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
 		}
 
-		private enum ResultMediaTest { PASS, ERROR, USER_CANCEL };
+		private enum ResultMediaTest
+		{ PASS, ERROR, USER_CANCEL };
 
 		private void MediaTesterFullTest()
 		{
@@ -235,7 +236,8 @@ namespace KrahmerSoft.MediaTester
 				ResultMediaTest result = ResultMediaTest.ERROR;
 				try
 				{
-					if (_mediaTester.FullTest()) {
+					if (_mediaTester.FullTest())
+					{
 						result = ResultMediaTest.PASS;
 					}
 				}
@@ -268,21 +270,22 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (result == ResultMediaTest.USER_CANCEL)
 			{
-				ClearLog(null, null);
-				WriteLog(_mediaTester, "The test was manually stopped by the user.");
+				ClearLog();
+				WriteLog("The test was manually stopped by the user.");
 			}
 			else
 			{
 				LogTestCompletion(result == ResultMediaTest.PASS);
 			}
 		}
+
 		private void LogTestCompletion(bool success)
 		{
 			if (_averageWriteBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog($"Averge write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_averageReadBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog($"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 			{
@@ -292,18 +295,18 @@ namespace KrahmerSoft.MediaTester
 			if (success)
 			{
 				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
-				WriteLog(_mediaTester, $"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
-				WriteLog(_mediaTester, $"Media test PASSED!");
+				WriteLog($"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
+				WriteLog($"Media test PASSED!");
 				// WriteLog(_mediaTester, $"Information: Not all bytes are directly testable because directory and filenames take up additional space on the media.");
 
 				if (!_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 				{
-					WriteLog(_mediaTester, $"Notice: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
+					WriteLog($"Notice: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
 				}
 			}
 			else
 			{
-				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
+				WriteLog($"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
 			}
 
 			if (_mediaTesterOptions.SaveTestResultsFileToMedia && (success || _mediaTesterOptions.RemoveTempDataFilesUponCompletion))
@@ -327,11 +330,11 @@ namespace KrahmerSoft.MediaTester
 				if (enoughSpace)
 				{
 					File.WriteAllText(testResultsFilePath, testResultsLog);
-					WriteLog(_mediaTester, $"Wrote test results file '{testResultsFilePath}'");
+					WriteLog($"Wrote test results file '{testResultsFilePath}'");
 				}
 				else
 				{
-					WriteLog(_mediaTester, $"Not enough free space to write test results file '{testResultsFilePath}'");
+					WriteLog($"Not enough free space to write test results file '{testResultsFilePath}'");
 				}
 			}
 		}
@@ -356,11 +359,11 @@ namespace KrahmerSoft.MediaTester
 
 			long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
-			ClearLog(null, null);
-			WriteLog(_mediaTester, $"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
-			WriteLog(_mediaTester, $"Total reported media size: {lTargetTotalBytes.ToString("#,##0")}{BYTES}");
-			WriteLog(_mediaTester, $"Total reported available space: {lTargetAvailableBytes.ToString("#,##0")}{BYTES}");
-			WriteLog(_mediaTester, $"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
+			ClearLog();
+			WriteLog($"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
+			WriteLog($"Total reported media size: {lTargetTotalBytes.ToString("#,##0")}{BYTES}");
+			WriteLog($"Total reported available space: {lTargetAvailableBytes.ToString("#,##0")}{BYTES}");
+			WriteLog($"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
 			_startDateTime = DateTime.Now;
 		}
 
@@ -384,7 +387,7 @@ namespace KrahmerSoft.MediaTester
 			}
 			else
 			{
-				WriteLog(mediaTester, $"FAILED writing block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}.");
+				WriteLog($"FAILED writing block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}.");
 			}
 		}
 
@@ -399,25 +402,16 @@ namespace KrahmerSoft.MediaTester
 			if (bytesFailed == 0)
 			{
 				if (isQuickTest)
-					WriteLog(mediaTester, $"{(isQuickTest ? "Quick test: " : string.Empty)}Verified block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
+					WriteLog($"{(isQuickTest ? "Quick test: " : string.Empty)}Verified block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
 			}
 			else
 			{
-				WriteLog(mediaTester, $"{(isQuickTest ? "Quick test: " : string.Empty)}FAILED block {absoluteDataBlockIndex.ToString("#,##0")}! Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
+				WriteLog($"{(isQuickTest ? "Quick test: " : string.Empty)}FAILED block {absoluteDataBlockIndex.ToString("#,##0")}! Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
 				if (isQuickTest)
 				{
-					WriteLog(mediaTester, "Identifying first failing byte...");
+					WriteLog("Identifying first failing byte...");
 				}
 			}
-		}
-
-		private void AfterQuickTest(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
-		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
-		}
-
-		private void OnMediaTesterException(object sender, ExceptionEventArgs exception)
-		{
 		}
 
 		/// <summary>
@@ -427,21 +421,18 @@ namespace KrahmerSoft.MediaTester
 		/// <param name="exception"></param>
 		private void LogException(MediaTesterLib.MediaTester mediaTester, Exception exception)
 		{
-			WriteLog(mediaTester, $"{exception.Message}");
+			WriteLog($"{exception.Message}");
 			if (exception.InnerException != null)
 			{
 				LogException(mediaTester, exception.InnerException);
 			}
 		}
 
-		private delegate void WriteLogDelegate(MediaTesterLib.MediaTester mediaTester, string message);
-
-		private void WriteLog(MediaTesterLib.MediaTester mediaTester, string message)
+		private void WriteLog(string message)
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				WriteLogDelegate d = new WriteLogDelegate(WriteLog);
-				Invoke(d, new object[] { mediaTester, message });
+				Invoke(() => WriteLog(message));
 				return;
 			}
 
@@ -455,20 +446,17 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
-		private void ClearLog(object p1, object p2)
+		private void ClearLog()
 		{
-			WriteLog(null, null);
+			WriteLog(null);
 		}
-
-		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining, long verifyBytesPerSecond);
 
 		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0, long verifyBytesPerSecond = 0)
 		{
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
-				Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond });
+				Invoke(() => UpdateStatus(readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond));
 				return;
 			}
 
