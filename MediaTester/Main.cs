@@ -226,12 +226,24 @@ namespace KrahmerSoft.MediaTester
 			WriteLog(_mediaTester, $"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
 		}
 
+		private enum ResultMediaTest { PASS, ERROR, USER_CANCEL };
+
 		private void MediaTesterFullTest()
 		{
 			try
 			{
-				bool success = _mediaTester.FullTest();
-				LogTestCompletion(success);
+				ResultMediaTest result = ResultMediaTest.ERROR;
+				try
+				{
+					if (_mediaTester.FullTest()) {
+						result = ResultMediaTest.PASS;
+					}
+				}
+				catch (ThreadInterruptedException)
+				{
+					result = ResultMediaTest.USER_CANCEL;
+				}
+				ElaborateTestResult(result);
 			}
 			finally
 			{
@@ -252,6 +264,18 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
+		private void ElaborateTestResult(ResultMediaTest result)
+		{
+			if (result == ResultMediaTest.USER_CANCEL)
+			{
+				ClearLog(null, null);
+				WriteLog(_mediaTester, "The test was manually stopped by the user.");
+			}
+			else
+			{
+				LogTestCompletion(result == ResultMediaTest.PASS);
+			}
+		}
 		private void LogTestCompletion(bool success)
 		{
 			if (_averageWriteBytesPerSecond > 0)

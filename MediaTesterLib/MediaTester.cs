@@ -386,7 +386,7 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				IsSuccess = false;
 				OnExceptionThrown(new Exception("An unhandled exception occurred while writing test data.", ex));
-				return false;
+				throw;
 			}
 		}
 
@@ -492,7 +492,8 @@ namespace KrahmerSoft.MediaTesterLib
 							IsSuccess = false;
 							OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
 							OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
-							return testFilePath;
+							throw;
+							
 						}
 					}
 				}
@@ -502,6 +503,7 @@ namespace KrahmerSoft.MediaTesterLib
 				testFilePath = null;
 				IsSuccess = false;
 				OnExceptionThrown(new Exception($"Unable to open file '{testFilePath}' for writing.", ex));
+				throw;
 			}
 
 			return testFilePath;
