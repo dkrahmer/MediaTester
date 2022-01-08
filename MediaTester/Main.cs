@@ -144,6 +144,7 @@ namespace KrahmerSoft.MediaTester
 			VerifyOnlyButton.Visible = enable;
 			AbortButton.Visible = !enable;
 			ProgressBar.Enabled = !enable;
+			AbortButton.Enabled = true;
 
 			if (!enable)
 			{
@@ -163,6 +164,7 @@ namespace KrahmerSoft.MediaTester
 				return;
 
 			DisableControls();
+			AbortButton.Enabled = false;
 			SaveOptions();
 			InitializeMediaTester();
 			_mediaTesterThread = new Thread(new ThreadStart(RemoveTempDataFilesGui));
@@ -211,7 +213,16 @@ namespace KrahmerSoft.MediaTester
 		{
 			try
 			{
-				RemoveTempDataFiles();
+				try
+				{
+					RemoveTempDataFiles();
+				}
+				catch (IOException)
+				{
+					WriteLog("An error raised during the cancellation of test files.");
+					WriteLog("Check the file permission, reconnect the drive and retry.");
+				}
+				
 			}
 			finally
 			{
@@ -227,13 +238,13 @@ namespace KrahmerSoft.MediaTester
 		}
 
 		private enum ResultMediaTest
-		{ PASS, ERROR, USER_CANCEL };
+		{ PASS, FAIL, USER_CANCEL, ERROR };
 
 		private void MediaTesterFullTest()
 		{
 			try
 			{
-				ResultMediaTest result = ResultMediaTest.ERROR;
+				ResultMediaTest result = ResultMediaTest.FAIL;
 				try
 				{
 					if (_mediaTester.FullTest())
@@ -244,6 +255,10 @@ namespace KrahmerSoft.MediaTester
 				catch (ThreadInterruptedException)
 				{
 					result = ResultMediaTest.USER_CANCEL;
+				}
+				catch (IOException)
+				{
+					result = ResultMediaTest.ERROR;
 				}
 				ElaborateTestResult(result);
 			}
@@ -257,8 +272,23 @@ namespace KrahmerSoft.MediaTester
 		{
 			try
 			{
-				bool success = _mediaTester.VerifyTestFiles();
-				LogTestCompletion(success);
+				ResultMediaTest result = ResultMediaTest.FAIL;
+				try
+				{
+					if (_mediaTester.VerifyTestFiles())
+					{
+						result = ResultMediaTest.PASS;
+					}
+				}
+				catch (ThreadInterruptedException)
+				{
+					result = ResultMediaTest.USER_CANCEL;
+				}
+				catch (IOException)
+				{
+					result = ResultMediaTest.ERROR;
+				}
+				ElaborateTestResult(result);
 			}
 			finally
 			{
@@ -272,6 +302,12 @@ namespace KrahmerSoft.MediaTester
 			{
 				ClearLog();
 				WriteLog("The test was manually stopped by the user.");
+			}
+			else if(result == ResultMediaTest.ERROR)
+			{
+				ClearLog();
+				WriteLog("An error raised during the test and it was interrupted.");
+				WriteLog("Check the file permission, reconnect the drive and retry.");
 			}
 			else
 			{

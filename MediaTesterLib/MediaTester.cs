@@ -578,6 +578,7 @@ namespace KrahmerSoft.MediaTesterLib
 							exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
 
 						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0));
+						throw;
 					}
 
 					if (Options.StopProcessingOnFailure && !success)
@@ -596,6 +597,7 @@ namespace KrahmerSoft.MediaTesterLib
 				OnExceptionThrown(new Exception($"Unable to open '{testFilePath}' for reading.", ex));
 				success = false;
 				IsSuccess &= success;
+				throw;
 			}
 
 			return success;
