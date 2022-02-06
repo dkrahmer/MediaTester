@@ -493,6 +493,9 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				// Create file and write
 				//https://docs.microsoft.com/en-us/windows/win32/api/fileapi/ns-fileapi-createfile2_extended_parameters
+				// Known current issues in .NET 6:
+				// - https://github.com/dotnet/runtime/issues/62851
+				// - https://github.com/dotnet/runtime/issues/27408
 				using var file = new FileStream(testFilePath, FileMode.Create, FileAccess.Write, FileShare.Read,
 												DATA_BLOCK_SIZE, FileFlagNoBuffering | FileOptions.WriteThrough);
 				using var fileWriter = new BinaryWriter(file);
