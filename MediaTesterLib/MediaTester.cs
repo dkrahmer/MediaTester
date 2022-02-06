@@ -91,10 +91,16 @@ namespace KrahmerSoft.MediaTesterLib
 		public event EventHandler<ExceptionEventArgs> ExceptionThrown;
 
 		private const FileOptions FileFlagNoBuffering = (FileOptions) 0x20000000;
+
+		/// <summary>
+		/// Say if write+verify or only-verify mode
+		/// </summary>
 		private bool _isBatchMode = false;
+
 		private Options _options;
 		private decimal _averageVerifyBytesPerSecond;
 		private long _totalVerifySpeedSamples;
+		public int _totalTargetFiles = 0;
 
 		public Options Options
 		{
@@ -122,7 +128,7 @@ namespace KrahmerSoft.MediaTesterLib
 		public decimal FirstFailingByteIndex { get; protected set; } = -1;
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="options">Set the options for the test.</param>
 		public MediaTester(Options options)
@@ -131,7 +137,7 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// 
+		///
 		/// </summary>
 		/// <param name="testDirectory">Set only test path, the other parameters are set to default.</param>
 		public MediaTester(string testDirectory)
@@ -150,11 +156,15 @@ namespace KrahmerSoft.MediaTesterLib
 
 			success = GenerateTestFiles();
 			if (Options.StopProcessingOnFailure && !success && Options.QuickFirstFailingByteMethod)
-				return success;
+			{
+				return false;
+			}
 
 			success = VerifyTestFiles();
 			if (Options.StopProcessingOnFailure && !success)
-				return success;
+			{
+				return false;
+			}
 
 			if (TotalGeneratedTestFileBytes != TotalBytesVerified)
 			{
@@ -163,7 +173,9 @@ namespace KrahmerSoft.MediaTesterLib
 				OnExceptionThrown(new Exception($"Total bytes verified does not match total bytes written. Total Bytes Written: {TotalGeneratedTestFileBytes.ToString("#,##0")} ; Total Bytes Verified: {TotalBytesVerified.ToString("#,##0")}"));
 			}
 			if (Options.StopProcessingOnFailure && !success)
-				return success;
+			{
+				return false;
+			}
 
 			_isBatchMode = false;
 			return IsSuccess;
@@ -183,7 +195,9 @@ namespace KrahmerSoft.MediaTesterLib
 
 			bool allFilesSuccess = true;
 			if (Options.MaxBytesToTest < 0)
+			{
 				Options.MaxBytesToTest = GetTotalDataFileBytes();
+			}
 
 			for (int testFileIndex = 0; ; testFileIndex++)
 			{
@@ -196,10 +210,15 @@ namespace KrahmerSoft.MediaTesterLib
 				IsSuccess &= success;
 
 				if (Options.StopProcessingOnFailure && !success)
+				{
 					return success;
+				}
 
 				if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
-					return success; // The requested number of bytes has been verified
+				{
+					// The requested number of bytes has been verified
+					return success;
+				}
 			}
 
 			return allFilesSuccess;
@@ -319,9 +338,23 @@ namespace KrahmerSoft.MediaTesterLib
 		/// </summary>
 		/// <param name="testFileSize"></param>
 		/// <returns></returns>
-		private static int GetLastDataBlockIndex(int testFileSize)
+		private static int GetLastDataBlockIndex(long testFileSize)
 		{
-			return ((testFileSize + DATA_BLOCK_SIZE - 1) / DATA_BLOCK_SIZE) - 1;
+			return (int)((testFileSize + DATA_BLOCK_SIZE - 1) / DATA_BLOCK_SIZE) - 1;
+		}
+
+		/// <summary>
+		/// Return the highest file ID.
+		/// </summary>
+		/// <param name="testFileSize">The number of bytes to test. If negative, consider all the free space (including past test file).</param>
+		/// <returns></returns>
+		private int GetLastTestFileIndex(long testFileSize)
+		{
+			if (testFileSize < 0)
+			{
+				testFileSize = GetAvailableBytes();
+			}
+			return (int) ((testFileSize + FILE_SIZE - 1) / FILE_SIZE) - 1;
 		}
 
 		/// <summary>
@@ -334,15 +367,13 @@ namespace KrahmerSoft.MediaTesterLib
 			TotalGeneratedTestFileBytes = 0;
 			try
 			{
-				if (Options.MaxBytesToTest < 0)
-				{
-					Options.MaxBytesToTest = GetAvailableBytes();
-				}
+				int lastFileIndex = GetLastTestFileIndex(Options.MaxBytesToTest);
+				int _totalFileNumber = lastFileIndex + 1;
 
-				int lastFileIndex = (int) ((Options.MaxBytesToTest + FILE_SIZE - 1) / FILE_SIZE) - 1;
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					string testFilePath = GenerateTestFile(testFileIndex, FILE_SIZE, out int actualTestFileSize);
+					long desideredBytes = ComputeDesideredTestFileSize(testFileIndex, _totalFileNumber, Options.MaxBytesToTest);
+					string testFilePath = GenerateTestFile(testFileIndex, desideredBytes, out long actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
 					{
@@ -391,33 +422,46 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Create a file and write it.
+		/// Get the number of byte to write for the current file.
+		/// </summary>
+		/// <param name="fileIndex"></param>
+		/// <param name="totalFileNumber"></param>
+		/// <param name="totalBytesToTest"></param>
+		/// <returns></returns>
+		private long ComputeDesideredTestFileSize(int fileIndex, int totalFileNumber, long totalBytesToTest)
+		{
+			if (fileIndex < GetLastTestFileIndex(totalBytesToTest))
+			{
+				return FILE_SIZE;
+			}
+			return totalBytesToTest - (totalFileNumber - 1) * FILE_SIZE;
+		}
+
+		/// <summary>
+		/// Create a file and write it. IF the file is already on disk, leave it.
 		/// </summary>
 		/// <param name="testFileIndex"></param>
-		/// <param name="testFileSize"></param>
+		/// <param name="desideredTestFileSize">The desired size of the test file.</param>
 		/// <param name="actualTestFileSize"></param>
 		/// <returns>The absolute path to test file.</returns>
-		private string GenerateTestFile(int testFileIndex, int testFileSize, out int actualTestFileSize)
+		private string GenerateTestFile(int testFileIndex, long desideredTestFileSize, out long actualTestFileSize)
 		{
-			long freeSpace = GetAvailableBytes(actual: true);
-			actualTestFileSize = testFileSize;
+			long freeSpace = GetAvailableBytes(true);
+			actualTestFileSize = desideredTestFileSize;
 			if (actualTestFileSize > freeSpace)
+			{
 				actualTestFileSize = (int) freeSpace;
+			}
 
 			string testFilePath = GetTestFilePath(testFileIndex);
 			Directory.CreateDirectory(GetTestDirectory());
 
-			// TODO check this while
-			do
+			// If the file already exist, try to reuse it
+			if (File.Exists(testFilePath))
 			{
-				if (File.Exists(testFilePath))
+				var fileInfo = new FileInfo(testFilePath);
+				if (fileInfo.Length <= FILE_SIZE)
 				{
-					var fileInfo = new FileInfo(testFilePath);
-					if (fileInfo.Length > FILE_SIZE)
-					{
-						break; // Overwrite the file
-					}
-
 					if (fileInfo.Length == FILE_SIZE || actualTestFileSize == 0)
 					{
 						// File already exists. Leaving in place.
@@ -431,70 +475,76 @@ namespace KrahmerSoft.MediaTesterLib
 						// File already exists but needs to be bigger.
 						if (freeSpace < FILE_SIZE)
 						{
-							actualTestFileSize = actualTestFileSize + (int) freeSpace;
+							actualTestFileSize += (int) freeSpace;
 							if (actualTestFileSize > FILE_SIZE)
+							{
 								actualTestFileSize = FILE_SIZE;
+							}
 						}
 						if (actualTestFileSize > FILE_SIZE || freeSpace > FILE_SIZE)
+						{
 							actualTestFileSize = FILE_SIZE;
+						}
 					}
 				}
-			} while (false);
+			}
 
 			try
 			{
 				// Create file and write
-				using (var file = new FileStream(testFilePath, FileMode.Create, FileAccess.Write, FileShare.Read, DATA_BLOCK_SIZE,
-					FileFlagNoBuffering | FileOptions.WriteThrough))
-				using (var fileWriter = new BinaryWriter(file))
+				//https://docs.microsoft.com/en-us/windows/win32/api/fileapi/ns-fileapi-createfile2_extended_parameters
+				using var file = new FileStream(testFilePath, FileMode.Create, FileAccess.Write, FileShare.Read,
+												DATA_BLOCK_SIZE, FileFlagNoBuffering | FileOptions.WriteThrough);
+				using var fileWriter = new BinaryWriter(file);
+
+				// Check if the free space changed after creating the file since
+				// adding a directory or file to the FAT can decrease available space
+				freeSpace = GetAvailableBytes(true);
+				if (actualTestFileSize > freeSpace)
 				{
-					// Check if the free space changed after creating the file
-					freeSpace = GetAvailableBytes(actual: true);
-					if (actualTestFileSize > freeSpace)
-						actualTestFileSize = (int) freeSpace; // Adding a directory or file to the FAT can decrease available space.
+					actualTestFileSize = (int) freeSpace;
+				}
 
-					long lastWriteBytesPerSecond = 0;
-					int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
-					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
+				long lastWriteBytesPerSecond = 0;
+				int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
+				for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
+				{
+					int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
+						? (int) (actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
+					long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
+					long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
+
+					try
 					{
-						int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
-							? (int) (actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
-						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
-						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
+						var dataBlock = GenerateDataBlock(testFileIndex, dataBlockIndex, dataBlockSize);
 
-						try
+						var stopwatch = new Stopwatch();
+						stopwatch.Start();
+						fileWriter.Write(dataBlock);
+						//fileWriter.Flush(); // Force the data to finish writing to the device
+						//file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
+						stopwatch.Stop();
+						long writeBytesPerSecond;
+						if (dataBlockSize == DATA_BLOCK_SIZE)
 						{
-							var dataBlock = GenerateDataBlock(testFileIndex, dataBlockIndex, dataBlockSize);
-
-							var stopwatch = new Stopwatch();
-							stopwatch.Start();
-							fileWriter.Write(dataBlock);
-							fileWriter.Flush(); // Force the data to finish writing to the device
-							file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
-							stopwatch.Stop();
-							long writeBytesPerSecond;
-							if (dataBlockSize == DATA_BLOCK_SIZE)
-							{
-								writeBytesPerSecond = (long) ((double) dataBlockSize / stopwatch.Elapsed.TotalSeconds);
-								lastWriteBytesPerSecond = writeBytesPerSecond;
-							}
-							else
-							{
-								writeBytesPerSecond = lastWriteBytesPerSecond; // prevent an artificial rate spike on the last block
-							}
-
-							TotalBytesWritten += dataBlockSize;
-							SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 1);
-							OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
+							writeBytesPerSecond = (long) ((double) dataBlockSize / stopwatch.Elapsed.TotalSeconds);
+							lastWriteBytesPerSecond = writeBytesPerSecond;
 						}
-						catch (Exception ex)
+						else
 						{
-							IsSuccess = false;
-							OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
-							OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
-							throw;
-							
+							writeBytesPerSecond = lastWriteBytesPerSecond; // prevent an artificial rate spike on the last block
 						}
+
+						TotalBytesWritten += dataBlockSize;
+						SetProgressPercent((100M * ((decimal) absoluteDataByteIndex + (decimal) dataBlockSize)) / (decimal) Options.MaxBytesToTest, 1);
+						OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
+					}
+					catch (Exception ex)
+					{
+						IsSuccess = false;
+						OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
+						OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
+						throw;
 					}
 				}
 			}
@@ -569,7 +619,7 @@ namespace KrahmerSoft.MediaTesterLib
 						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond));
 						lastElapsedSeconds = elapsedSeconds;
 					}
-					catch //(Exception ex)
+					catch
 					{
 						success = false;
 						IsSuccess &= success;
@@ -587,7 +637,10 @@ namespace KrahmerSoft.MediaTesterLib
 					if (updateTotalBytes)
 					{
 						if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
-							return success; // The requested number of bytes has been verified
+						{
+							// The requested number of bytes has been verified
+							return success;
+						}
 					}
 				}
 				stopwatch.Stop();
@@ -660,7 +713,7 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Verify a data block. TODO: use Task instead of while(..) and another thread.
+		/// Verify a data block.
 		/// </summary>
 		/// <param name="fileReader"></param>
 		/// <param name="fileIndex"></param>
@@ -682,10 +735,8 @@ namespace KrahmerSoft.MediaTesterLib
 			thread.Start();
 
 			var dataBlock = ReadDataBlock(fileReader, dataBlockIndex, out readBytesPerSecond);
-			while (thread.ThreadState == System.Threading.ThreadState.Running)
-			{
-				Thread.Sleep(10);
-			}
+
+			thread.Join();
 
 			return VerifyDataBlock(dataBlock, fileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, knownGoodDataBlock: knownGoodDataBlock);
 		}
@@ -724,7 +775,7 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Verify 2 blocks against each other. If the reference block length is different from the test block, it is regenerated! TODO refactor this piece of code.
+		/// Verify 2 blocks against each other. If the reference block length is different (longer) from the test block, it is regenerated to match the lenght of test block. TODO refactor this piece of code.
 		/// </summary>
 		/// <param name="dataBlock">The block to be tested.</param>
 		/// <param name="fileIndex"></param>
