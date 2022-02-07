@@ -24,6 +24,8 @@ namespace KrahmerSoft.MediaTester
 			InitializeComponent();
 			UpdateUiFromOptions();
 			EnableControls();
+
+			FormClosing += Main_FormClosing;
 		}
 
 		private void UpdateUiFromOptions()
@@ -126,7 +128,7 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (TestOptionsGgroupBox.InvokeRequired)
 			{
-				Invoke(() => EnableControls(enable));
+				BeginInvoke(() => EnableControls(enable));
 				return;
 			}
 
@@ -465,7 +467,7 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				Invoke(() => WriteLog(message));
+				BeginInvoke(() => WriteLog(message));
 				return;
 			}
 
@@ -489,7 +491,7 @@ namespace KrahmerSoft.MediaTester
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				Invoke(() => UpdateStatus(readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond));
+				BeginInvoke(() => UpdateStatus(readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond));
 				return;
 			}
 
@@ -579,6 +581,18 @@ namespace KrahmerSoft.MediaTester
 			{
 				_mediaTesterThread?.Interrupt();
 				_startDateTime = null;
+			}
+			catch
+			{
+			}
+		}
+
+		private void Main_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			try
+			{
+				_mediaTesterThread?.Interrupt();
+				_mediaTesterThread?.Join();
 			}
 			catch
 			{

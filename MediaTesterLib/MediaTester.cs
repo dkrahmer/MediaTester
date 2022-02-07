@@ -549,6 +549,9 @@ namespace KrahmerSoft.MediaTesterLib
 						OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
 						throw;
 					}
+
+					// yields once in a while to allow thread interruption
+					Thread.Sleep(0);
 				}
 			}
 			catch (Exception ex)
@@ -740,6 +743,9 @@ namespace KrahmerSoft.MediaTesterLib
 			var dataBlock = ReadDataBlock(fileReader, dataBlockIndex, out readBytesPerSecond);
 
 			thread.Join();
+
+			// yields once in a while to allow thread interruption
+			Thread.Sleep(0);
 
 			return VerifyDataBlock(dataBlock, fileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, knownGoodDataBlock: knownGoodDataBlock);
 		}
