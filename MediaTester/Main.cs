@@ -221,7 +221,6 @@ namespace KrahmerSoft.MediaTester
 					WriteLog("An error raised during the cancellation of test files.");
 					WriteLog("Check the file permission, reconnect the drive and retry.");
 				}
-				
 			}
 			finally
 			{
@@ -302,7 +301,7 @@ namespace KrahmerSoft.MediaTester
 				ClearLog();
 				WriteLog("The test was manually stopped by the user.");
 			}
-			else if(result == ResultMediaTest.ERROR)
+			else if (result == ResultMediaTest.ERROR)
 			{
 				ClearLog();
 				WriteLog("An error raised during the test and it was interrupted.");
@@ -413,8 +412,8 @@ namespace KrahmerSoft.MediaTester
 		private void AfterWriteBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
 		{
 			UpdateStatus(writeBytesPerSecond: writeBytesPerSecond,
-				writeBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesWritten,
-				readBytesRemaining: mediaTester.Options.MaxBytesToTest);
+				writeBytesRemaining: mediaTester.TotalTargetBytes - mediaTester.TotalBytesWritten,
+				readBytesRemaining: mediaTester.TotalTargetBytes);
 
 			if (bytesFailedWrite == 0)
 			{
@@ -432,7 +431,7 @@ namespace KrahmerSoft.MediaTester
 				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
 					verifyBytesPerSecond: verifyBytesPerSecond,
 					writeBytesRemaining: 0,
-					readBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
+					readBytesRemaining: mediaTester.TotalTargetBytes - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
 
 			if (bytesFailed == 0)
 			{

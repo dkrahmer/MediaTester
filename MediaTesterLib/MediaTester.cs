@@ -102,9 +102,6 @@ namespace KrahmerSoft.MediaTesterLib
 		private long _totalVerifySpeedSamples;
 		public int _totalTargetFiles = 0;
 
-		// Number of bytes to write or read. It is used to compute the percentage
-		private long _totalTargetBytes = 0;
-
 		public Options Options
 		{
 			get
@@ -132,6 +129,9 @@ namespace KrahmerSoft.MediaTesterLib
 		public long TotalBytesFailed { get; protected set; }
 		public long TotalGeneratedTestFileBytes { get; protected set; }
 		public decimal FirstFailingByteIndex { get; protected set; } = -1;
+
+		// Number of bytes to write or read. It is used to compute the progress percentage and stats.
+		public long TotalTargetBytes { get; protected set; } = 0;
 
 		/// <summary>
 		/// Initialize MediaTester with user-defined options.
@@ -162,11 +162,11 @@ namespace KrahmerSoft.MediaTesterLib
 
 			if (_options.MaxBytesToTest == -1)
 			{
-				_totalTargetBytes = GetAvailableBytes();
+				TotalTargetBytes = GetAvailableBytes();
 			}
 			else
 			{
-				_totalTargetBytes = _options.MaxBytesToTest;
+				TotalTargetBytes = _options.MaxBytesToTest;
 			}
 
 			success = GenerateTestFiles();
@@ -207,21 +207,17 @@ namespace KrahmerSoft.MediaTesterLib
 
 			if (_options.MaxBytesToTest == -1)
 			{
-				_totalTargetBytes = GetTestFilesSize(GetTestDirectory());
+				TotalTargetBytes = GetAvailableBytes();
 			}
 			else
 			{
-				_totalTargetBytes = _options.MaxBytesToTest;
+				TotalTargetBytes = _options.MaxBytesToTest;
 			}
 
 			if (!_isBatchMode)
 				IsSuccess = true;
 
 			bool allFilesSuccess = true;
-			if (Options.MaxBytesToTest < 0)
-			{
-				Options.MaxBytesToTest = GetTotalDataFileBytes();
-			}
 
 			for (int testFileIndex = 0; ; testFileIndex++)
 			{
@@ -238,7 +234,7 @@ namespace KrahmerSoft.MediaTesterLib
 					return success;
 				}
 
-				if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
+				if (TotalBytesVerified + TotalBytesFailed >= TotalTargetBytes)
 				{
 					// The requested number of bytes has been verified
 					return success;
@@ -405,12 +401,12 @@ namespace KrahmerSoft.MediaTesterLib
 			TotalGeneratedTestFileBytes = 0;
 			try
 			{
-				int lastFileIndex = GetLastTestFileIndex(Options.MaxBytesToTest);
+				int lastFileIndex = GetLastTestFileIndex(TotalTargetBytes);
 				int _totalFileNumber = lastFileIndex + 1;
 
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					long desideredBytes = ComputeDesideredTestFileSize(testFileIndex, _totalFileNumber, _totalTargetBytes);
+					long desideredBytes = ComputeDesideredTestFileSize(testFileIndex, _totalFileNumber, TotalTargetBytes);
 					string testFilePath = GenerateTestFile(testFileIndex, desideredBytes, out long actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
@@ -680,7 +676,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 					if (updateTotalBytes)
 					{
-						if (TotalBytesVerified + TotalBytesFailed >= Options.MaxBytesToTest)
+						if (TotalBytesVerified + TotalBytesFailed >= TotalTargetBytes)
 						{
 							// The requested number of bytes has been verified
 							return success;
@@ -709,7 +705,7 @@ namespace KrahmerSoft.MediaTesterLib
 		/// <param name="batchPhaseNumber">Current batch number.</param>
 		private void SetProgressPercent(long totalBytes, int batchPhaseNumber)
 		{
-			decimal percent = 100M * totalBytes / _totalTargetBytes;
+			decimal percent = 100M * totalBytes / TotalTargetBytes;
 
 			if (_isBatchMode)
 			{
