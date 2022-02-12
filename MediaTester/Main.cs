@@ -487,6 +487,7 @@ namespace KrahmerSoft.MediaTester
 
 		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0, long verifyBytesPerSecond = 0)
 		{
+			// e.g. 2 means that read is 2 times faster that write
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
@@ -515,15 +516,22 @@ namespace KrahmerSoft.MediaTester
 			if (_startDateTime != null)
 			{
 				elapsedTime = new TimeSpan(0, 0, (int) (DateTime.Now - _startDateTime.Value).TotalSeconds);
-				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((decimal) writeBytesRemaining / bytesPerSecond));
+
+				int seconds = bytesPerSecond < 0.01M ? 0 : (int) (writeBytesRemaining / bytesPerSecond);
+				writeTimeRemaining = new TimeSpan(0, 0, seconds);
+
+				// Assume read speed is the same as write speed since we do not know for sure
 				if (verifyBytesPerSecond > 1000)
 				{
-					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((decimal) readBytesRemaining / verifyBytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+					int remaingReadseconds = bytesPerSecond < 0.01M ? 0 : (int) ((decimal) readBytesRemaining / verifyBytesPerSecond);
+					readTimeRemaining = new TimeSpan(0, 0, remaingReadseconds);
 				}
 				else
 				{
-					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
-										* (decimal) readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+					decimal ratio = writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1;
+					int remaingReadSeconds = bytesPerSecond < 0.01M ? 0 : (int) (
+										readBytesRemaining / bytesPerSecond / ratio);
+					readTimeRemaining = new TimeSpan(0, 0, remaingReadSeconds);
 				}
 				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
 			}
@@ -551,7 +559,7 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (writeBytesPerSecond > 0)
 			{
-				WriteBytesPerSecondStatusLabel.Text = "Write: " + writeBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
+				WriteBytesPerSecondStatusLabel.Text = $"Write: {writeBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
 				Helpers.UpdateAverage(ref _averageWriteBytesPerSecond, ref _totalWriteSpeedSamples, ref writeBytesPerSecond);
 				WriteSpeedLabel.Text = _averageWriteBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
@@ -563,7 +571,7 @@ namespace KrahmerSoft.MediaTester
 
 			if (readBytesPerSecond > 0)
 			{
-				ReadBytesPerSecondStatusLabel.Text = "Read: " + readBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
+				ReadBytesPerSecondStatusLabel.Text = $"Read: {readBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
 				Helpers.UpdateAverage(ref _averageReadBytesPerSecond, ref _totalReadSpeedSamples, ref readBytesPerSecond);
 				ReadSpeedLabel.Text = _averageReadBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
