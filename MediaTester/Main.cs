@@ -349,16 +349,16 @@ namespace KrahmerSoft.MediaTester
 				string dateTime = DateTime.Now.ToString(TEST_RESULTS_FILENAME_DATETIME_FORMAT);
 				string testResultsFilePath = Path.Combine(_mediaTester.Options.TestDirectory, string.Format(TEST_RESULTS_FILENAME_TEMPLATE, dateTime, success ? "PASS" : "FAIL"));
 				string testResultsLog = ActivityLogTextBox.Text;
-				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
 				int spaceNeeded = testResultsLog.Length + (int) Math.Pow(2, 16);
 				bool enoughSpace = true;
-				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true))
+				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out _, actual: true))
 				{
-					if (_mediaTester.RemoveTempDataFiles(1) < 1)
+					// Try to remove just one file, so the remainings can be reused for further tests
+					if (_mediaTester.RemoveTempDataFiles(1) == 0)
 					{
 						enoughSpace = false;
-						break; // No files deleted
+						break;
 					}
 				}
 

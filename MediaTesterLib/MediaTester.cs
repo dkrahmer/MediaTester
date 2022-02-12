@@ -249,9 +249,9 @@ namespace KrahmerSoft.MediaTesterLib
 		}
 
 		/// <summary>
-		/// Remove temporary files.
+		/// Remove temporary files in reverse index order.
 		/// </summary>
-		/// <param name="filesToRemove"></param>
+		/// <param name="filesToRemove">The number of files to delete.</param>
 		/// <returns>The number of deleted files.</returns>
 		public int RemoveTempDataFiles(int filesToRemove = int.MaxValue)
 		{
@@ -410,7 +410,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 				for (int testFileIndex = 0; testFileIndex <= lastFileIndex; testFileIndex++)
 				{
-					long desideredBytes = ComputeDesideredTestFileSize(testFileIndex, _totalFileNumber, Options.MaxBytesToTest);
+					long desideredBytes = ComputeDesideredTestFileSize(testFileIndex, _totalFileNumber, _totalTargetBytes);
 					string testFilePath = GenerateTestFile(testFileIndex, desideredBytes, out long actualTestFileSize);
 					TotalGeneratedTestFileBytes += actualTestFileSize;
 					if (Options.QuickTestAfterEachFile && testFilePath != null)
