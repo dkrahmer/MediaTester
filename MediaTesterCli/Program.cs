@@ -1,6 +1,7 @@
 ﻿using KrahmerSoft.MediaTesterLib;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace KrahmerSoft.MediaTesterCli
 {
@@ -9,26 +10,53 @@ namespace KrahmerSoft.MediaTesterCli
 		private static void Main(string[] args)
 		{
 			string testDirectory = null;
-			if (args == null || args.Length < 1)
+			if (args == null || args.Length == 0)
 			{
 				while (string.IsNullOrEmpty(testDirectory))
 				{
 					Console.WriteLine();
 					Console.WriteLine();
-					Console.Write("Please enter a drive letter or path to test: ");
+					Console.Write("Please enter a drive letter or a full path: ");
 					testDirectory = Console.ReadLine();
-				}
-				if (!testDirectory.Contains(@":\"))
-				{
-					testDirectory = Path.Combine(testDirectory.Substring(0, 1).ToUpper() + @":\", MediaTester.TempSubDirectoryName);
 				}
 			}
 			else
 			{
-				testDirectory = args[0];
+				int pos = Array.IndexOf(args, "-d");
+				if (args.Length > pos)
+				{
+					testDirectory = args[pos + 1];
+				}
+
+				if (testDirectory == null)
+				{
+					Console.WriteLine("Path missing");
+					Environment.Exit(0);
+				}
 			}
 
-			testDirectory = testDirectory.TrimEnd('\\');
+			// Add :\ in case of single letter (e.g. C), since windows doesn't accept the drive letter as valid path
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				if (testDirectory.Length == 1)
+				{
+					testDirectory += @":\";
+				}
+			}
+
+			DirectoryInfo info = new(testDirectory);
+			if (info.Exists)
+			{
+				testDirectory = info.FullName;
+			}
+
+			if (!Directory.Exists(testDirectory))
+			{
+				Console.WriteLine("Path doesn't exist or is invalid");
+				Environment.Exit(0);
+			}
+
+			testDirectory = Path.TrimEndingDirectorySeparator(testDirectory);
 			if (!testDirectory.EndsWith(MediaTester.TempSubDirectoryName))
 			{
 				testDirectory = Path.Combine(testDirectory, MediaTester.TempSubDirectoryName);
