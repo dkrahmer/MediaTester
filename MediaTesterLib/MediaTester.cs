@@ -6,20 +6,8 @@ using System.Threading;
 
 namespace KrahmerSoft.MediaTesterLib
 {
-	public delegate void VerifyBlockCompleteHandler(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond);
-
-	public class ExceptionEventArgs : EventArgs
-	{
-		public ExceptionEventArgs(Exception e)
-		{
-			Exception = e;
-		}
-
-		public Exception Exception;
-	}
-
 	public readonly record struct WrittenBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long WriteBytesPerSecond, int BytesWritten, int BytesFailedWrite);
-	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long ReadBytesPerSecond, int BytesVerified, int BytesFailed, long VerifyBytesPerSecond);
+	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long ReadBytesPerSecond, int BytesVerified, int BytesFailed);
 
 	public class VerifiedBlockEventArgs : EventArgs
 	{
@@ -31,7 +19,6 @@ namespace KrahmerSoft.MediaTesterLib
 			ReadBytesPerSecond = block.ReadBytesPerSecond;
 			BytesVerified = block.BytesVerified;
 			BytesFailed = block.BytesFailed;
-			VerifyBytesPerSecond = block.VerifyBytesPerSecond;
 		}
 
 		public long AbsoluteDataBlockIndex;
@@ -40,7 +27,6 @@ namespace KrahmerSoft.MediaTesterLib
 		public long ReadBytesPerSecond;
 		public int BytesVerified;
 		public int BytesFailed;
-		public long VerifyBytesPerSecond;
 	}
 
 	public class WritedBlockEventArgs : EventArgs
@@ -61,6 +47,16 @@ namespace KrahmerSoft.MediaTesterLib
 		public long WriteBytesPerSecond;
 		public int BytesWritten;
 		public int BytesFailedWrite;
+	}
+
+	public class ExceptionEventArgs : EventArgs
+	{
+		public ExceptionEventArgs(Exception e)
+		{
+			Exception = e;
+		}
+
+		public Exception Exception;
 	}
 
 	public class MediaTester
@@ -417,7 +413,7 @@ namespace KrahmerSoft.MediaTesterLib
 						SetProgressPercent(absoluteDataByteIndex + DATA_BLOCK_SIZE, 1);
 						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond);
 						IsSuccess &= success;
-						OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0));
+						OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed));
 						if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 						{
 							success = false;
@@ -432,7 +428,7 @@ namespace KrahmerSoft.MediaTesterLib
 							SetProgressPercent(absoluteDataByteIndex + DATA_BLOCK_SIZE, 1);
 							success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 							IsSuccess &= success;
-							OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, 0));
+							OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed));
 							if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 							{
 								success = false;
@@ -523,6 +519,9 @@ namespace KrahmerSoft.MediaTesterLib
 				}
 			}
 
+			var stopwatch = new Stopwatch();
+			stopwatch.Start();
+
 			try
 			{
 				// Create file and write
@@ -544,6 +543,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 				long lastWriteBytesPerSecond = 0;
 				int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
+				double lastTimestamp = 0;
 				for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 				{
 					int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
@@ -555,21 +555,24 @@ namespace KrahmerSoft.MediaTesterLib
 					{
 						var dataBlock = GenerateDataBlock(testFileIndex, dataBlockIndex, dataBlockSize);
 
-						var stopwatch = new Stopwatch();
-						stopwatch.Start();
 						fileWriter.Write(dataBlock);
 						//fileWriter.Flush(); // Force the data to finish writing to the device
 						//file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
-						stopwatch.Stop();
+
 						long writeBytesPerSecond;
+
 						if (dataBlockSize == DATA_BLOCK_SIZE)
 						{
-							writeBytesPerSecond = (long) ((double) dataBlockSize / stopwatch.Elapsed.TotalSeconds);
+							double now = stopwatch.Elapsed.TotalSeconds;
+							double time = now - lastTimestamp;
+							lastTimestamp = now;
+							writeBytesPerSecond = (long) (dataBlockSize / time);
 							lastWriteBytesPerSecond = writeBytesPerSecond;
 						}
 						else
 						{
-							writeBytesPerSecond = lastWriteBytesPerSecond; // prevent an artificial rate spike on the last block
+							// prevent an artificial rate spike on the last block
+							writeBytesPerSecond = lastWriteBytesPerSecond;
 						}
 
 						TotalBytesWritten += dataBlockSize;
@@ -618,7 +621,6 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				using var fileReader = new FileStream(testFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, DATA_BLOCK_SIZE,
 					FileFlagNoBuffering | FileOptions.SequentialScan);
-				long lastReadBytesPerSecond = 0;
 				int lastDataBlockIndex = GetLastDataBlockIndex((int) fileReader.Length);
 				var stopwatch = new Stopwatch();
 				stopwatch.Start();
@@ -629,7 +631,7 @@ namespace KrahmerSoft.MediaTesterLib
 					long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
 					try
 					{
-						bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out long readBytesPerSecond);
+						bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out _);
 						success &= blockSuccess;
 						IsSuccess &= success;
 						bytesVerified += blockBytesVerified;
@@ -643,21 +645,11 @@ namespace KrahmerSoft.MediaTesterLib
 						int dataBlockSize = blockBytesVerified + blockBytesFailed;
 						SetProgressPercent(absoluteDataByteIndex + dataBlockSize, 2);
 
-						if (dataBlockSize == DATA_BLOCK_SIZE)
-						{
-							lastReadBytesPerSecond = readBytesPerSecond;
-						}
-						else
-						{
-							readBytesPerSecond = lastReadBytesPerSecond; // prevent an artificial rate spike on the last block
-						}
-
 						double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-						long verifyBytesPerSecond = (long) ((double) dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
-						Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
-
-						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, blockBytesVerified, blockBytesFailed, (long) _averageVerifyBytesPerSecond));
+						long verifiedBytesPerSecond = (long) (dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
 						lastElapsedSeconds = elapsedSeconds;
+
+						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, verifiedBytesPerSecond, blockBytesVerified, blockBytesFailed));
 					}
 					catch
 					{
@@ -667,7 +659,7 @@ namespace KrahmerSoft.MediaTesterLib
 						if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
 							exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
 
-						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed, 0));
+						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed));
 						throw;
 					}
 
@@ -683,7 +675,6 @@ namespace KrahmerSoft.MediaTesterLib
 						}
 					}
 				}
-				stopwatch.Stop();
 			}
 			catch (Exception ex)
 			{

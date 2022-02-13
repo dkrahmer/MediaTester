@@ -380,11 +380,11 @@ namespace KrahmerSoft.MediaTester
 			_mediaTester.ExceptionThrown += (s, e) => { LogException(s as MediaTesterLib.MediaTester, e.Exception); };
 			_mediaTester.QuickTestCompleted += (s, e) =>
 			{
-				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, e.VerifyBytesPerSecond, true);
+				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, true);
 			};
 			_mediaTester.BlockVerified += (s, e) =>
 			{
-				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, e.VerifyBytesPerSecond, false);
+				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.ReadBytesPerSecond, e.BytesVerified, e.BytesFailed, false);
 			};
 			_mediaTester.BlockWritten += (s, e) =>
 			{
@@ -425,13 +425,15 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
+		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
+			{
 				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
-					verifyBytesPerSecond: verifyBytesPerSecond,
 					writeBytesRemaining: 0,
 					readBytesRemaining: mediaTester.TotalTargetBytes - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
+
+			}
 
 			if (bytesFailed == 0)
 			{
@@ -485,13 +487,13 @@ namespace KrahmerSoft.MediaTester
 			WriteLog(null);
 		}
 
-		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0, long verifyBytesPerSecond = 0)
+		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0)
 		{
 			// e.g. 2 means that read is 2 times faster that write
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				BeginInvoke(() => UpdateStatus(readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond));
+				BeginInvoke(() => UpdateStatus(readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining));
 				return;
 			}
 
@@ -521,9 +523,9 @@ namespace KrahmerSoft.MediaTester
 				writeTimeRemaining = new TimeSpan(0, 0, seconds);
 
 				// Assume read speed is the same as write speed since we do not know for sure
-				if (verifyBytesPerSecond > 1000)
+				if (readBytesPerSecond > 1000)
 				{
-					int remaingReadseconds = bytesPerSecond < 0.01M ? 0 : (int) ((decimal) readBytesRemaining / verifyBytesPerSecond);
+					int remaingReadseconds = bytesPerSecond < 0.01M ? 0 : (int) ((decimal) readBytesRemaining / readBytesPerSecond);
 					readTimeRemaining = new TimeSpan(0, 0, remaingReadseconds);
 				}
 				else
