@@ -49,7 +49,7 @@
             this.ActivityLogTextBox = new System.Windows.Forms.TextBox();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.ReadBytesPerSecondStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.VerifyBytesPerSecondStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.WriteBytesPerSecondStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.AboutLinkLabel = new System.Windows.Forms.LinkLabel();
             this.SaveOptionsButton = new System.Windows.Forms.Button();
@@ -63,7 +63,7 @@
             this.FailedBytesLabel = new System.Windows.Forms.Label();
             this.VerifiedBytesLabel = new System.Windows.Forms.Label();
             this.WrittenBytesLabel = new System.Windows.Forms.Label();
-            this.ReadSpeedLabel = new System.Windows.Forms.Label();
+            this.VerifySpeedLabel = new System.Windows.Forms.Label();
             this.WriteSpeedLabel = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -292,7 +292,7 @@
             this.StatusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ProgressBar,
-            this.ReadBytesPerSecondStatusLabel,
+            this.VerifyBytesPerSecondStatusLabel,
             this.WriteBytesPerSecondStatusLabel});
             this.StatusStrip.Location = new System.Drawing.Point(0, 579);
             this.StatusStrip.Name = "StatusStrip";
@@ -308,9 +308,9 @@
             // 
             // ReadBytesPerSecondStatusLabel
             // 
-            this.ReadBytesPerSecondStatusLabel.Name = "ReadBytesPerSecondStatusLabel";
-            this.ReadBytesPerSecondStatusLabel.Size = new System.Drawing.Size(18, 24);
-            this.ReadBytesPerSecondStatusLabel.Text = "...";
+            this.VerifyBytesPerSecondStatusLabel.Name = "ReadBytesPerSecondStatusLabel";
+            this.VerifyBytesPerSecondStatusLabel.Size = new System.Drawing.Size(18, 24);
+            this.VerifyBytesPerSecondStatusLabel.Text = "...";
             // 
             // WriteBytesPerSecondStatusLabel
             // 
@@ -373,7 +373,7 @@
             this.StatisticsGroupBox.Controls.Add(this.FailedBytesLabel);
             this.StatisticsGroupBox.Controls.Add(this.VerifiedBytesLabel);
             this.StatisticsGroupBox.Controls.Add(this.WrittenBytesLabel);
-            this.StatisticsGroupBox.Controls.Add(this.ReadSpeedLabel);
+            this.StatisticsGroupBox.Controls.Add(this.VerifySpeedLabel);
             this.StatisticsGroupBox.Controls.Add(this.WriteSpeedLabel);
             this.StatisticsGroupBox.Controls.Add(this.label5);
             this.StatisticsGroupBox.Controls.Add(this.label4);
@@ -452,12 +452,12 @@
             // 
             // ReadSpeedLabel
             // 
-            this.ReadSpeedLabel.AutoSize = true;
-            this.ReadSpeedLabel.Location = new System.Drawing.Point(85, 94);
-            this.ReadSpeedLabel.Name = "ReadSpeedLabel";
-            this.ReadSpeedLabel.Size = new System.Drawing.Size(27, 20);
-            this.ReadSpeedLabel.TabIndex = 6;
-            this.ReadSpeedLabel.Text = "---";
+            this.VerifySpeedLabel.AutoSize = true;
+            this.VerifySpeedLabel.Location = new System.Drawing.Point(85, 94);
+            this.VerifySpeedLabel.Name = "ReadSpeedLabel";
+            this.VerifySpeedLabel.Size = new System.Drawing.Size(27, 20);
+            this.VerifySpeedLabel.TabIndex = 6;
+            this.VerifySpeedLabel.Text = "---";
             // 
             // WriteSpeedLabel
             // 
@@ -500,9 +500,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(7, 95);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(73, 20);
+            this.label2.Size = new System.Drawing.Size(76, 20);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Read Avg";
+            this.label2.Text = "Verify Avg";
             // 
             // label1
             // 
@@ -580,7 +580,7 @@
 		private System.Windows.Forms.Button DefaultOptionsButton;
 		private System.Windows.Forms.Button AbortButton;
 		private System.Windows.Forms.ToolStripProgressBar ProgressBar;
-		private System.Windows.Forms.ToolStripStatusLabel ReadBytesPerSecondStatusLabel;
+		private System.Windows.Forms.ToolStripStatusLabel VerifyBytesPerSecondStatusLabel;
 		private System.Windows.Forms.ToolStripStatusLabel WriteBytesPerSecondStatusLabel;
 		private System.Windows.Forms.GroupBox StatisticsGroupBox;
 		private System.Windows.Forms.Label label4;
@@ -590,7 +590,7 @@
 		private System.Windows.Forms.Label FailedBytesLabel;
 		private System.Windows.Forms.Label VerifiedBytesLabel;
 		private System.Windows.Forms.Label WrittenBytesLabel;
-		private System.Windows.Forms.Label ReadSpeedLabel;
+		private System.Windows.Forms.Label VerifySpeedLabel;
 		private System.Windows.Forms.Label WriteSpeedLabel;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label TotalTimeRemainingLabel;

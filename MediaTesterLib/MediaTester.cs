@@ -7,7 +7,7 @@ using System.Threading;
 namespace KrahmerSoft.MediaTesterLib
 {
 	public readonly record struct WrittenBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long WriteBytesPerSecond, int BytesWritten, int BytesFailedWrite);
-	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long ReadBytesPerSecond, int BytesVerified, int BytesFailed);
+	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long VerifyBytesPerSecond, int BytesVerified, int BytesFailed);
 
 	public class VerifiedBlockEventArgs : EventArgs
 	{
@@ -16,7 +16,7 @@ namespace KrahmerSoft.MediaTesterLib
 			AbsoluteDataBlockIndex = block.AbsoluteDataBlockIndex;
 			AbsoluteDataByteIndex = block.AbsoluteDataByteIndex;
 			TestFilePath = block.TestFilePath;
-			ReadBytesPerSecond = block.ReadBytesPerSecond;
+			VerifyBytesPerSecond = block.VerifyBytesPerSecond;
 			BytesVerified = block.BytesVerified;
 			BytesFailed = block.BytesFailed;
 		}
@@ -24,7 +24,7 @@ namespace KrahmerSoft.MediaTesterLib
 		public long AbsoluteDataBlockIndex;
 		public long AbsoluteDataByteIndex;
 		public string TestFilePath;
-		public long ReadBytesPerSecond;
+		public long VerifyBytesPerSecond;
 		public int BytesVerified;
 		public int BytesFailed;
 	}
