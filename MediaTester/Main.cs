@@ -134,6 +134,7 @@ namespace KrahmerSoft.MediaTester
 
 			UpdateTargetInformation();
 			UpdateStatus(0, 0);
+			UpdateStatusLabel("");
 
 			TestOptionsGgroupBox.Enabled = enable;
 			RemoveTempDataFilesButton.Enabled = enable;
@@ -157,19 +158,6 @@ namespace KrahmerSoft.MediaTester
 			EnableControls(false);
 		}
 
-		private void RemoveTempDataFilesButton_Click(object sender, EventArgs e)
-		{
-			if (!ValidateGui())
-				return;
-
-			DisableControls();
-			AbortButton.Enabled = false;
-			SaveOptions();
-			InitializeMediaTester();
-			_mediaTesterThread = new Thread(new ThreadStart(RemoveTempDataFilesGui));
-			_mediaTesterThread.Start();
-		}
-
 		private void WriteAndVerifyButton_Click(object sender, EventArgs e)
 		{
 			if (!ValidateGui())
@@ -180,6 +168,7 @@ namespace KrahmerSoft.MediaTester
 
 			DisableControls();
 			SaveOptions();
+			ResetAverageCounters();
 			InitializeMediaTester();
 			_mediaTesterThread = new Thread(new ThreadStart(MediaTesterFullTest));
 			_mediaTesterThread.Start();
@@ -192,6 +181,7 @@ namespace KrahmerSoft.MediaTester
 
 			DisableControls();
 			SaveOptions();
+			ResetAverageCounters();
 			InitializeMediaTester();
 			_mediaTesterThread = new Thread(new ThreadStart(MediaTesterVerifyTestFiles));
 			_mediaTesterThread.Start();
@@ -208,31 +198,61 @@ namespace KrahmerSoft.MediaTester
 			return true;
 		}
 
+		private void RemoveTempDataFilesButton_Click(object sender, EventArgs e)
+		{
+			if (!ValidateGui())
+				return;
+
+			DisableControls();
+			AbortButton.Enabled = false;
+			SaveOptions();
+			InitializeMediaTester();
+			_mediaTesterThread = new Thread(new ThreadStart(RemoveTempDataFilesGui));
+			_mediaTesterThread.Start();
+		}
+
+		/// <summary>
+		/// Remove test file and show the progress bar.
+		/// </summary>
 		private void RemoveTempDataFilesGui()
 		{
 			try
 			{
-				try
-				{
-					RemoveTempDataFiles();
-				}
-				catch (IOException)
-				{
-					WriteLog("An error raised during the cancellation of test files.");
-					WriteLog("Check the file permission, reconnect the drive and retry.");
-				}
+				WriteLog($"Removing temp data files...");
+				UpdateStatusLabel("Removing files...");
+				_mediaTester.FileDeleted += FileDeletedProgressBar;
+
+				int filesDeleted = 0;
+
+				ProgressBar.Value = 0;
+				filesDeleted = _mediaTester.RemoveTempDataFiles();
+
+				WriteLog($"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+			}
+			catch (IOException)
+			{
+				WriteLog("An error raised during the cancellation of test files.");
+				WriteLog("Check the file permission, reconnect the drive and retry.");
+			}
+			catch (Exception ex)
+			{
+				LogException(_mediaTester, ex);
 			}
 			finally
 			{
+				_mediaTester.FileDeleted -= FileDeletedProgressBar;
 				ThreadCompleteEnableControls();
 			}
 		}
 
-		private void RemoveTempDataFiles()
+		private void FileDeletedProgressBar(object sender, FileDeletedEventArgs e)
 		{
-			WriteLog($"Removing temp data files...");
-			int filesDeleted = _mediaTester.RemoveTempDataFiles();
-			WriteLog($"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+			if (ActivityLogTextBox.InvokeRequired)
+			{
+				BeginInvoke(() => FileDeletedProgressBar(sender, e));
+				return;
+			}
+			ProgressBar.Value = (int) (1000 * ((float) e.removedFiles / e.totalFiles));
 		}
 
 		private enum ResultMediaTest
@@ -323,7 +343,7 @@ namespace KrahmerSoft.MediaTester
 
 			if (_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 			{
-				RemoveTempDataFiles();
+				RemoveTempDataFilesNoProgressBar();
 			}
 
 			if (success)
@@ -371,6 +391,37 @@ namespace KrahmerSoft.MediaTester
 					WriteLog($"Not enough free space to write test results file '{testResultsFilePath}'");
 				}
 			}
+		}
+
+		/// <summary>
+		/// Remove test files after write+verify. This method do no update the progress bar!
+		/// </summary>
+		private void RemoveTempDataFilesNoProgressBar()
+		{
+			WriteLog($"Removing temp data files...");
+			UpdateStatusLabel("Cleaning up...");
+
+			int filesDeleted = 0;
+			try
+			{
+				filesDeleted = _mediaTester.RemoveTempDataFiles();
+			}
+			catch (Exception ex)
+			{
+				LogException(_mediaTester, ex);
+			}
+
+			WriteLog($"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+		}
+
+		private void UpdateStatusLabel(string text)
+		{
+			if (StatusStrip.InvokeRequired)
+			{
+				BeginInvoke(() => { StatusLabel.Text = text; });
+				return;
+			}
+			StatusLabel.Text = text;
 		}
 
 		private void InitializeMediaTester()
@@ -551,37 +602,36 @@ namespace KrahmerSoft.MediaTester
 			ProgressBar.Value = _mediaTester == null ? 0 : (int) (10M * _mediaTester.ProgressPercent);
 		}
 
-		private long _totalVerifySpeedSamples = 0;
-		private long _totalWriteSpeedSamples = 0;
-		private decimal _averageVerifyBytesPerSecond = 0;
-		private decimal _averageWriteBytesPerSecond = 0;
+		private long _totalVerifySpeedSamples;
+		private long _totalWriteSpeedSamples;
+		private decimal _averageVerifyBytesPerSecond;
+		private decimal _averageWriteBytesPerSecond;
+
+		private void ResetAverageCounters()
+		{
+			_totalVerifySpeedSamples = 0;
+			_totalWriteSpeedSamples = 0;
+			_averageVerifyBytesPerSecond = 0;
+			_averageWriteBytesPerSecond = 0;
+		}
 
 		private void UpdateSpeedAverage(long verifyBytesPerSecond = -1, long writeBytesPerSecond = -1)
 		{
 			if (writeBytesPerSecond > 0)
 			{
-				WriteBytesPerSecondStatusLabel.Text = $"Write: {writeBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
+				StatusLabel.Text = $"Write: {writeBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
 				Helpers.UpdateAverage(ref _averageWriteBytesPerSecond, ref _totalWriteSpeedSamples, ref writeBytesPerSecond);
 				WriteSpeedLabel.Text = _averageWriteBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
-			else
+			else if (verifyBytesPerSecond > 0)
 			{
-				WriteBytesPerSecondStatusLabel.Text = string.Empty;
-				_totalWriteSpeedSamples = 0;
-			}
-
-			if (verifyBytesPerSecond > 0)
-			{
-				VerifyBytesPerSecondStatusLabel.Text = $"Verify: {verifyBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
+				StatusLabel.Text = $"Verify: {verifyBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
 				Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
 				VerifySpeedLabel.Text = _averageVerifyBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
-			else
-			{
-				VerifyBytesPerSecondStatusLabel.Text = string.Empty;
-				_totalVerifySpeedSamples = 0;
-			}
 		}
+
+
 
 		private void AbortButton_Click(object sender, EventArgs e)
 		{

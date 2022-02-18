@@ -49,6 +49,18 @@ namespace KrahmerSoft.MediaTesterLib
 		public int BytesFailedWrite;
 	}
 
+	public class FileDeletedEventArgs : EventArgs
+	{
+		public FileDeletedEventArgs(int _totalFiles, int _removedFiles)
+		{
+			totalFiles = _totalFiles;
+			removedFiles = _removedFiles;
+		}
+
+		public int totalFiles;
+		public int removedFiles;
+	}
+
 	public class ExceptionEventArgs : EventArgs
 	{
 		public ExceptionEventArgs(Exception e)
@@ -83,6 +95,8 @@ namespace KrahmerSoft.MediaTesterLib
 		public event EventHandler<VerifiedBlockEventArgs> BlockVerified;
 
 		public event EventHandler<WritedBlockEventArgs> BlockWritten;
+
+		public event EventHandler<FileDeletedEventArgs> FileDeleted;
 
 		public event EventHandler<ExceptionEventArgs> ExceptionThrown;
 
@@ -271,6 +285,7 @@ namespace KrahmerSoft.MediaTesterLib
 				File.Delete(testFilePath);
 				filesToRemove--;
 				filesRemoved++;
+				OnFileDeleted(fileCount, filesRemoved);
 			}
 
 			if (Directory.Exists(testDirectory)
@@ -704,9 +719,13 @@ namespace KrahmerSoft.MediaTesterLib
 			}
 
 			if (percent < 0)
+			{
 				percent = 0;
+			}
 			else if (percent > 100)
+			{
 				percent = 100;
+			}
 
 			ProgressPercent = percent;
 		}
@@ -962,6 +981,11 @@ namespace KrahmerSoft.MediaTesterLib
 		private void OnQuickTestCompleted(VerifiedBlock block)
 		{
 			QuickTestCompleted?.Invoke(this, new VerifiedBlockEventArgs(block));
+		}
+
+		private void OnFileDeleted(int totalFiles, int deleledFiles)
+		{
+			FileDeleted?.Invoke(this, new FileDeletedEventArgs(totalFiles, deleledFiles));
 		}
 	}
 }

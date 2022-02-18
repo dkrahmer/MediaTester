@@ -49,8 +49,7 @@
             this.ActivityLogTextBox = new System.Windows.Forms.TextBox();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
-            this.VerifyBytesPerSecondStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.WriteBytesPerSecondStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.StatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.AboutLinkLabel = new System.Windows.Forms.LinkLabel();
             this.SaveOptionsButton = new System.Windows.Forms.Button();
             this.DefaultOptionsButton = new System.Windows.Forms.Button();
@@ -292,8 +291,7 @@
             this.StatusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ProgressBar,
-            this.VerifyBytesPerSecondStatusLabel,
-            this.WriteBytesPerSecondStatusLabel});
+            this.StatusLabel});
             this.StatusStrip.Location = new System.Drawing.Point(0, 579);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
@@ -306,17 +304,11 @@
             this.ProgressBar.Name = "ProgressBar";
             this.ProgressBar.Size = new System.Drawing.Size(200, 22);
             // 
-            // ReadBytesPerSecondStatusLabel
+            // StatusLabel
             // 
-            this.VerifyBytesPerSecondStatusLabel.Name = "ReadBytesPerSecondStatusLabel";
-            this.VerifyBytesPerSecondStatusLabel.Size = new System.Drawing.Size(18, 24);
-            this.VerifyBytesPerSecondStatusLabel.Text = "...";
-            // 
-            // WriteBytesPerSecondStatusLabel
-            // 
-            this.WriteBytesPerSecondStatusLabel.Name = "WriteBytesPerSecondStatusLabel";
-            this.WriteBytesPerSecondStatusLabel.Size = new System.Drawing.Size(18, 24);
-            this.WriteBytesPerSecondStatusLabel.Text = "...";
+            this.StatusLabel.Name = "StatusLabel";
+            this.StatusLabel.Size = new System.Drawing.Size(18, 24);
+            this.StatusLabel.Text = "...";
             // 
             // AboutLinkLabel
             // 
@@ -450,11 +442,11 @@
             this.WrittenBytesLabel.TabIndex = 7;
             this.WrittenBytesLabel.Text = "---";
             // 
-            // ReadSpeedLabel
+            // VerifySpeedLabel
             // 
             this.VerifySpeedLabel.AutoSize = true;
             this.VerifySpeedLabel.Location = new System.Drawing.Point(85, 94);
-            this.VerifySpeedLabel.Name = "ReadSpeedLabel";
+            this.VerifySpeedLabel.Name = "VerifySpeedLabel";
             this.VerifySpeedLabel.Size = new System.Drawing.Size(27, 20);
             this.VerifySpeedLabel.TabIndex = 6;
             this.VerifySpeedLabel.Text = "---";
@@ -580,8 +572,7 @@
 		private System.Windows.Forms.Button DefaultOptionsButton;
 		private System.Windows.Forms.Button AbortButton;
 		private System.Windows.Forms.ToolStripProgressBar ProgressBar;
-		private System.Windows.Forms.ToolStripStatusLabel VerifyBytesPerSecondStatusLabel;
-		private System.Windows.Forms.ToolStripStatusLabel WriteBytesPerSecondStatusLabel;
+		private System.Windows.Forms.ToolStripStatusLabel StatusLabel;
 		private System.Windows.Forms.GroupBox StatisticsGroupBox;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label3;
