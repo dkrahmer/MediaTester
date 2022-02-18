@@ -131,14 +131,7 @@ namespace KrahmerSoft.MediaTesterCli
 
 		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long verifyBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
 		{
-			if (bytesFailed == 0)
-			{
-				WriteLog(mediaTester, $"Verified {(isQuickTest ? "quick test " : string.Empty)}block {absoluteDataBlockIndex:#,##0}. Byte index: {absoluteDataByteIndex:#,##0} / {mediaTester.TotalTargetBytes:#,##0}. {(isQuickTest ? string.Empty : verifyBytesPerSecond.ToString("#,##0") + "B/sec ")}({mediaTester.ProgressPercent:0.00}%)");
-			}
-			else
-			{
-				WriteLog(mediaTester, $"FAILED {(isQuickTest ? "quick test " : string.Empty)}block {absoluteDataBlockIndex:#,##0}! Byte index: {absoluteDataByteIndex:#,##0} / {mediaTester.TotalTargetBytes:#,##0}. {(isQuickTest ? string.Empty : verifyBytesPerSecond.ToString("#,##0") + "B/sec ")}({mediaTester.ProgressPercent:0.00}%)");
-			}
+			WriteLog(mediaTester, $"{(bytesFailed == 0 ? "Verified" : "FAILED")} {(isQuickTest ? "quick test " : string.Empty)}block {absoluteDataBlockIndex,3:#,##0}. Byte index: {absoluteDataByteIndex,14:#,##0} / {mediaTester.TotalTargetBytes:#,##0}. {(isQuickTest ? string.Empty : verifyBytesPerSecond.ToString("#,##0") + "B/sec ")}({mediaTester.ProgressPercent:0.00}%)");
 		}
 
 		private static void AfterQuickTest(object sender, VerifiedBlockEventArgs e)
