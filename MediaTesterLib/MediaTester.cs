@@ -212,7 +212,7 @@ namespace KrahmerSoft.MediaTesterLib
 		/// <summary>
 		/// Verify all the test files.
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Return true if every byte is correct, false otherwise.</returns>
 		public bool VerifyTestFiles()
 		{
 			TotalBytesVerified = 0;
@@ -249,13 +249,13 @@ namespace KrahmerSoft.MediaTesterLib
 
 				if (Options.StopProcessingOnFailure && !success)
 				{
-					return success;
+					return allFilesSuccess;
 				}
 
 				if (TotalBytesVerified + TotalBytesFailed >= TotalTargetBytes)
 				{
 					// The requested number of bytes has been verified
-					return success;
+					return allFilesSuccess;
 				}
 			}
 
