@@ -108,8 +108,6 @@ namespace KrahmerSoft.MediaTesterLib
 		private bool _isBatchMode = false;
 
 		private Options _options;
-		private decimal _averageVerifyBytesPerSecond;
-		private long _totalVerifySpeedSamples;
 		public int _totalTargetFiles = 0;
 
 		public Options Options
@@ -170,9 +168,14 @@ namespace KrahmerSoft.MediaTesterLib
 			bool success;
 			_isBatchMode = true;
 
-			if (_options.MaxBytesToTest == -1)
+			if (_options.MaxBytesToTest <= -1)
 			{
 				TotalTargetBytes = GetAvailableBytes();
+			}
+			else if (_options.MaxBytesToTest > GetAvailableBytes())
+			{
+				TotalTargetBytes = GetAvailableBytes();
+				OnExceptionThrown(new Exception($"Not enough space to test the requested size. Downsizing to the available disk space: {TotalTargetBytes:#,##0} bytes"));
 			}
 			else
 			{
@@ -215,9 +218,14 @@ namespace KrahmerSoft.MediaTesterLib
 			TotalBytesVerified = 0;
 			TotalBytesFailed = 0;
 
-			if (_options.MaxBytesToTest == -1)
+			if (_options.MaxBytesToTest <= -1)
 			{
 				TotalTargetBytes = GetTestFilesSize(GetTestDirectory());
+			}
+			else if (_options.MaxBytesToTest > GetTestFilesSize(GetTestDirectory()))
+			{
+				TotalTargetBytes = GetTestFilesSize(GetTestDirectory());
+				OnExceptionThrown(new Exception($"Not enough space to verify the requested size. Downsizing to available test files: {TotalTargetBytes:#,##0} bytes"));
 			}
 			else
 			{
