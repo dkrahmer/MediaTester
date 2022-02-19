@@ -217,7 +217,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 			if (_options.MaxBytesToTest == -1)
 			{
-				TotalTargetBytes = GetAvailableBytes();
+				TotalTargetBytes = GetTestFilesSize(GetTestDirectory());
 			}
 			else
 			{
