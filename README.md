@@ -31,3 +31,7 @@ This repository contains 3 projects:
 - MediaTester: the GUI frontend. This project is based on WinForms, so it is Windows-only. 
 
 The code is developed in VS2022 and automatically styled with CodeMaid.
+
+### Debug and Testing
+
+I suggest to use [HxD](https://mh-nexus.de/en/hxd/), a fast and free hex editor, to alter the test files when you not have a fake media at hand.
