@@ -10,6 +10,14 @@ The MediaTester library, GUI, and CLI are released with a generous open source l
 
 -Doug Krahmer
 
+## Install
+
+MediaTester is a portable and compact executable, but it requires .NET 6 Desktop Runtime, which actually is not installed by default in Windows. 
+
+If you just want MediaTesterCli, you have to install .NET Runtime which is available for Windows, Mac OS and Linux.
+
+You can download the latest release of .NET 6 (Desktop) Runtime directly from [Microsoft](https://dotnet.microsoft.com/en-us/download/dotnet/6.0).
+
 ## Build Releases
 
 The final releases are generated from command line using `dotnet` tool. Open the Terminal directly in Visual Studio (View > Terminal) and launch the following command:
