@@ -631,8 +631,6 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
-
-
 		private void AbortButton_Click(object sender, EventArgs e)
 		{
 			try
@@ -659,18 +657,9 @@ namespace KrahmerSoft.MediaTester
 
 		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			string aboutMessage = $"MediaTester can test any media (SD, microSD, thumb, etc) \n"
-								+ $"and verify it stores the expected number of bytes. \n"
-								+ $"If you buy any storage media, you should use MediaTester \n"
-								+ $"to verify it or risk losing your data.\n"
-								+ $"\n"
-								+ $"Written by Doug Krahmer\n"
-								+ $"Released as public domain open source.\n"
-								+ $"https://github.com/dkrahmer/MediaTester (Click Help to view)\n\n"
-								+ $"\n"
-								+ $"Version: v{Assembly.GetEntryAssembly().GetName().Version}";
-
-			MessageBox.Show(aboutMessage, "About MediaTester", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, "https://github.com/dkrahmer/MediaTester/releases");
+			AboutForm form = new AboutForm();
+			form.versionLabel.Text = $"Version: { Assembly.GetEntryAssembly().GetName().Version}";
+			form.ShowDialog();
 		}
 
 		private void Main_Load(object sender, EventArgs e)

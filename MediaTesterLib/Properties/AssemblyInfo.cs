@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("KrahmerSoft")]
 [assembly: AssemblyProduct("MediaTesterLib")]
-[assembly: AssemblyCopyright("Public Domain, Copyright KrahmerSoft 2020")]
+[assembly: AssemblyCopyright("KrahmerSoft 2020, Fabiano Riccardi 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
