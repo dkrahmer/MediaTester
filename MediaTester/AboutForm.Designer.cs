@@ -33,21 +33,26 @@
             this.button1 = new System.Windows.Forms.Button();
             this.versionLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label2 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // linkLabelRepository
             // 
             this.linkLabelRepository.AutoSize = true;
-            this.linkLabelRepository.Location = new System.Drawing.Point(180, 223);
+            this.linkLabelRepository.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkLabelRepository.Location = new System.Drawing.Point(173, 284);
             this.linkLabelRepository.Name = "linkLabelRepository";
-            this.linkLabelRepository.Size = new System.Drawing.Size(124, 20);
+            this.linkLabelRepository.Size = new System.Drawing.Size(107, 23);
             this.linkLabelRepository.TabIndex = 2;
             this.linkLabelRepository.TabStop = true;
-            this.linkLabelRepository.Text = "Github repository";
+            this.linkLabelRepository.Text = "Source Code";
+            this.linkLabelRepository.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelRepository_LinkClicked);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(193, 306);
+            this.button1.Location = new System.Drawing.Point(362, 281);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(94, 29);
             this.button1.TabIndex = 3;
@@ -58,36 +63,59 @@
             // versionLabel
             // 
             this.versionLabel.AutoSize = true;
-            this.versionLabel.Location = new System.Drawing.Point(194, 262);
+            this.versionLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.versionLabel.Location = new System.Drawing.Point(57, 192);
             this.versionLabel.Name = "versionLabel";
-            this.versionLabel.Size = new System.Drawing.Size(94, 20);
+            this.versionLabel.Size = new System.Drawing.Size(53, 23);
             this.versionLabel.TabIndex = 4;
-            this.versionLabel.Text = "Version: 0.0.0";
-            this.versionLabel.Click += new System.EventHandler(this.versionLabel_Click);
+            this.versionLabel.Text = "v0.0.0";
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(26, 25);
+            this.label1.Location = new System.Drawing.Point(173, 19);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(432, 187);
+            this.label1.Size = new System.Drawing.Size(293, 236);
             this.label1.TabIndex = 5;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label1.Click += new System.EventHandler(this.label1_Click_3);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::KrahmerSoft.MediaTester.Properties.Resources.MediaTesterLogo;
+            this.pictureBox1.Location = new System.Drawing.Point(22, 19);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(128, 128);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Location = new System.Drawing.Point(28, 158);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(114, 25);
+            this.label2.TabIndex = 7;
+            this.label2.Text = "MediaTester";
             // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 353);
+            this.ClientSize = new System.Drawing.Size(482, 334);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.linkLabelRepository);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AboutForm";
             this.Text = "About";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -98,5 +126,7 @@
 		private System.Windows.Forms.Button button1;
 		public System.Windows.Forms.Label versionLabel;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.PictureBox pictureBox1;
+		public System.Windows.Forms.Label label2;
 	}
 }

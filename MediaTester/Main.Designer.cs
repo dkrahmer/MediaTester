@@ -29,6 +29,7 @@
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.TargetLabel = new System.Windows.Forms.Label();
             this.TargetTextBox = new System.Windows.Forms.TextBox();
             this.ChooseTargetButton = new System.Windows.Forms.Button();
@@ -533,6 +534,7 @@
             this.Controls.Add(this.VerifyOnlyButton);
             this.Controls.Add(this.WriteAndVerifyButton);
             this.Controls.Add(this.AbortButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(655, 545);
             this.Name = "Main";
             this.Text = "MediaTester";

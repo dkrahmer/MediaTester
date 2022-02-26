@@ -658,7 +658,10 @@ namespace KrahmerSoft.MediaTester
 		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			AboutForm form = new AboutForm();
-			form.versionLabel.Text = $"Version: { Assembly.GetEntryAssembly().GetName().Version}";
+			Assembly assembly = Assembly.GetExecutingAssembly();
+			System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+			string version = fvi.FileVersion;
+			form.versionLabel.Text = $"v{version}";
 			form.ShowDialog();
 		}
 
