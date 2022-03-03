@@ -2,7 +2,6 @@
 using System;
 using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -670,8 +669,8 @@ namespace KrahmerSoft.MediaTester
 
 		private static string GetVersion()
 		{
-			Assembly assembly = Assembly.GetExecutingAssembly();
-			FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+			string filePath = Environment.ProcessPath;
+			FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
 			return info.FileVersion;
 		}
 	}
