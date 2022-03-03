@@ -1,5 +1,6 @@
 ﻿using KrahmerSoft.MediaTesterLib;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -445,7 +446,7 @@ namespace KrahmerSoft.MediaTester
 			long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
 			ClearLog();
-			WriteLog($"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
+			WriteLog($"MediaTester v{GetVersion()}");
 			WriteLog($"Total reported media size: {lTargetTotalBytes.ToString("#,##0")}{BYTES}");
 			WriteLog($"Total reported available space: {lTargetAvailableBytes.ToString("#,##0")}{BYTES}");
 			WriteLog($"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
@@ -655,19 +656,23 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
-		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		private void Main_Load(object sender, EventArgs e)
+		{
+			Text += $" v{GetVersion()}";
+		}
+
+		private void button1_Click(object sender, EventArgs e)
 		{
 			AboutForm form = new AboutForm();
-			Assembly assembly = Assembly.GetExecutingAssembly();
-			System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-			string version = fvi.FileVersion;
-			form.versionLabel.Text = $"v{version}";
+			form.versionLabel.Text = $"v{GetVersion()}";
 			form.ShowDialog();
 		}
 
-		private void Main_Load(object sender, EventArgs e)
+		private static string GetVersion()
 		{
-			Text += $" v{Assembly.GetEntryAssembly().GetName().Version}";
+			Assembly assembly = Assembly.GetExecutingAssembly();
+			FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+			return info.FileVersion;
 		}
 	}
 }
