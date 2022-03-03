@@ -26,7 +26,7 @@ The final releases are generated from command line using `dotnet` tool. Open the
 
 where `ProjectName` can be `MediaTesterCLI` or `MediaTester`; `RuntimeIdentifier` is the target platform (CPU and OS) as specified [here](https://docs.microsoft.com/en-us/dotnet/core/rid-catalog).
 
-> :information_source: MediaTesterCli is officially distributed only for `win-x86`, `win-x64`, `linux-x64`, `linux-arm`, `linux-arm64`, and `osx-x64`, while MediaTester is only for `win-x86` and `win-x64`.
+> :information_source: MediaTester is distributed only for `win-x86` and `win-x64`, while MediaTesterCli is actually a test app, so it is not yet included in the official release. However, it was successfully tested on Raspberry OS (Bullseye, `linux-arm`) and on Windows 10. You should be able to compile MediaTesterCli for whatever architecture supported by .NET 6.
 
 ## Development
 
