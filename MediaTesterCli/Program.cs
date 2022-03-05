@@ -1,6 +1,7 @@
 ﻿using KrahmerSoft.MediaTesterLib;
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace KrahmerSoft.MediaTesterCli
 {
@@ -9,35 +10,62 @@ namespace KrahmerSoft.MediaTesterCli
 		private static void Main(string[] args)
 		{
 			string testDirectory = null;
-			if (args == null || args.Length < 1)
+			if (args == null || args.Length == 0)
 			{
 				while (string.IsNullOrEmpty(testDirectory))
 				{
 					Console.WriteLine();
 					Console.WriteLine();
-					Console.Write("Please enter a drive letter or path to test: ");
+					Console.Write("Please enter a drive letter or a full path: ");
 					testDirectory = Console.ReadLine();
-				}
-				if (!testDirectory.Contains(@":\"))
-				{
-					testDirectory = Path.Combine(testDirectory.Substring(0, 1).ToUpper() + @":\", MediaTester.TempSubDirectoryName);
 				}
 			}
 			else
 			{
-				testDirectory = args[0];
+				int pos = Array.IndexOf(args, "-d");
+				if (args.Length > pos)
+				{
+					testDirectory = args[pos + 1];
+				}
+
+				if (testDirectory == null)
+				{
+					Console.WriteLine("Path missing");
+					Environment.Exit(0);
+				}
 			}
 
-			testDirectory = testDirectory.TrimEnd('\\');
+			// Add :\ in case of single letter (e.g. C), since windows doesn't accept the drive letter as valid path
+			if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+			{
+				if (testDirectory.Length == 1)
+				{
+					testDirectory += @":\";
+				}
+			}
+
+			DirectoryInfo info = new(testDirectory);
+			if (info.Exists)
+			{
+				testDirectory = info.FullName;
+			}
+
+			if (!Directory.Exists(testDirectory))
+			{
+				Console.WriteLine("Path doesn't exist or is invalid");
+				Environment.Exit(0);
+			}
+
+			testDirectory = Path.TrimEndingDirectorySeparator(testDirectory);
 			if (!testDirectory.EndsWith(MediaTester.TempSubDirectoryName))
 			{
 				testDirectory = Path.Combine(testDirectory, MediaTester.TempSubDirectoryName);
 			}
 
 			Console.WriteLine();
-			Console.WriteLine($"Bytes per file: {MediaTester.FILE_SIZE.ToString("#,##0")}");
-			Console.WriteLine($"Data block size: {MediaTester.DATA_BLOCK_SIZE.ToString("#,##0")}");
-			Console.WriteLine($"Blocks per file: {MediaTester.DATA_BLOCKS_PER_FILE.ToString("#,##0")}");
+			Console.WriteLine($"Bytes per file: {MediaTester.FILE_SIZE:#,##0}");
+			Console.WriteLine($"Data block size: {MediaTester.DATA_BLOCK_SIZE:#,##0}");
+			Console.WriteLine($"Blocks per file: {MediaTester.DATA_BLOCKS_PER_FILE:#,##0}");
 			Console.WriteLine($"Writing temp files to: {testDirectory}...");
 			Console.WriteLine();
 
@@ -45,88 +73,79 @@ namespace KrahmerSoft.MediaTesterCli
 			{
 			};
 
-			mediaTester.AfterWriteBlock += AfterWriteBlock;
-			mediaTester.AfterQuickTest += AfterQuickTest;
-			mediaTester.AfterVerifyBlock += AfterVerifyBlock;
-			mediaTester.OnException += OnMediaTesterException;
+			mediaTester.BlockWritten += AfterWriteBlock;
+			mediaTester.QuickTestCompleted += AfterQuickTest;
+			mediaTester.BlockVerified += AfterVerifyBlock;
 
-			bool result = mediaTester.FullTest();
+			bool result = false;
+			try
+			{
+				result = mediaTester.FullTest();
+			}
+			catch (Exception ex)
+			{
+				LogException(mediaTester, ex);
+			}
 
 			Console.WriteLine();
 			Console.WriteLine("Media Test Summary...");
 			Console.WriteLine("------------------------------------------------");
 			Console.WriteLine("Result: " + (result ? "PASS" : "FAIL"));
 			Console.WriteLine($"Temp File Path: {mediaTester.Options.TestDirectory}");
-			Console.WriteLine($"Total bytes attempted: {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}");
+			Console.WriteLine($"Total bytes attempted: {mediaTester.TotalTargetBytes:#,##0}");
 
 			if (!mediaTester.Options.StopProcessingOnFailure || mediaTester.TotalBytesVerified > 0)
-				Console.WriteLine($"Verified bytes: {mediaTester.TotalBytesVerified.ToString("#,##0")}");
+				Console.WriteLine($"Verified bytes: {mediaTester.TotalBytesVerified:#,##0}");
 
 			if (!mediaTester.Options.StopProcessingOnFailure || mediaTester.TotalBytesFailed > 0)
-				Console.WriteLine($"Failed bytes: {mediaTester.TotalBytesFailed.ToString("#,##0")}");
+				Console.WriteLine($"Failed bytes: {mediaTester.TotalBytesFailed:#,##0}");
 
 			if (mediaTester.FirstFailingByteIndex > 0)
-				Console.WriteLine($"First failing byte index: {mediaTester.FirstFailingByteIndex.ToString("#,##0")}{(mediaTester.Options.QuickFirstFailingByteMethod ? " (quick method)" : string.Empty)}");
+				Console.WriteLine($"First failing byte index: {mediaTester.FirstFailingByteIndex:#,##0}{(mediaTester.Options.QuickFirstFailingByteMethod ? " (quick method)" : string.Empty)}");
 
-			if (!result)
-			{
-				Console.WriteLine();
-				for (int i = 0; i < 20; i++)
-				{
-					Console.Write(i % 2 == 0 ? string.Empty : "   ");
-					for (int j = 0; j < 15; j++)
-					{
-						Console.Write("FAIL!  ");
-					}
-					Console.WriteLine();
-				}
-			}
+			Console.WriteLine(result ? "SUCCESS!" : "FAIL!");
 
 			Console.WriteLine();
 			Console.WriteLine("Press enter to continue...");
 			Console.ReadLine();
 		}
 
-		private static void AfterWriteBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
+		private static void AfterWriteBlock(object sender, WritedBlockEventArgs e)
 		{
-			if (bytesFailedWrite == 0)
+			MediaTester mediaTester = sender as MediaTester;
+			if (e.BytesFailedWrite == 0)
 			{
-				WriteLog(mediaTester, $"Successfully wrote block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. {writeBytesPerSecond.ToString("#,##0")} B/sec ({mediaTester.ProgressPercent.ToString("0.00")}%)");
+				WriteLog(mediaTester, $"Successfully wrote block {e.AbsoluteDataBlockIndex:#,##0}. Byte index: {e.AbsoluteDataByteIndex:#,##0} / {mediaTester.TotalTargetBytes:#,##0}. {e.WriteBytesPerSecond:#,##0} B/sec ({mediaTester.ProgressPercent:0.00}%)");
 			}
 			else
 			{
-				WriteLog(mediaTester, $"FAILED writing block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. ({mediaTester.ProgressPercent.ToString("0.00")}%)");
+				WriteLog(mediaTester, $"FAILED writing block {e.AbsoluteDataBlockIndex:#,##0}. Byte index: {e.AbsoluteDataByteIndex:#,##0} / {mediaTester.TotalTargetBytes:#,##0}. ({mediaTester.ProgressPercent:0.00}%)");
 			}
 		}
 
-		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		private static void AfterVerifyBlock(object sender, VerifiedBlockEventArgs e)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
+			MediaTester mediaTester = sender as MediaTester;
+			AfterVerifyBlock(mediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.VerifyBytesPerSecond, e.BytesVerified, e.BytesFailed, false);
 		}
 
-		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
+		private static void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long verifyBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
 		{
-			if (bytesFailed == 0)
-			{
-				WriteLog(mediaTester, $"Verified {(isQuickTest ? "quick test " : string.Empty)}block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. {(isQuickTest ? string.Empty : readBytesPerSecond.ToString("#,##0") + "B/sec ")}({mediaTester.ProgressPercent.ToString("0.00")}%)");
-			}
-			else
-			{
-				WriteLog(mediaTester, $"FAILED {(isQuickTest ? "quick test " : string.Empty)}block {absoluteDataBlockIndex.ToString("#,##0")}! Byte index: {absoluteDataByteIndex.ToString("#,##0")} / {mediaTester.Options.MaxBytesToTest.ToString("#,##0")}. {(isQuickTest ? string.Empty : readBytesPerSecond.ToString("#,##0") + "B/sec ")}({mediaTester.ProgressPercent.ToString("0.00")}%)");
-			}
+			WriteLog(mediaTester, $"{(bytesFailed == 0 ? "Verified" : "FAILED")} {(isQuickTest ? "quick test " : string.Empty)}block {absoluteDataBlockIndex,3:#,##0}. Byte index: {absoluteDataByteIndex,14:#,##0} / {mediaTester.TotalTargetBytes:#,##0}. {(isQuickTest ? string.Empty : verifyBytesPerSecond.ToString("#,##0") + "B/sec ")}({mediaTester.ProgressPercent:0.00}%)");
 		}
 
-		private static void AfterQuickTest(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePathlong, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		private static void AfterQuickTest(object sender, VerifiedBlockEventArgs e)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePathlong, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
+			MediaTester mediaTester = sender as MediaTester;
+			AfterVerifyBlock(mediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.VerifyBytesPerSecond, e.BytesVerified, e.BytesFailed, true);
 		}
 
-		private static void OnMediaTesterException(MediaTester mediaTester, Exception exception)
+		private static void LogException(MediaTester mediaTester, Exception exception)
 		{
-			WriteLog(mediaTester, $"{exception.Message}");
+			WriteLog(mediaTester, exception.Message);
 			if (exception.InnerException != null)
 			{
-				OnMediaTesterException(mediaTester, exception.InnerException);
+				LogException(mediaTester, exception.InnerException);
 			}
 		}
 

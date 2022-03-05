@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
+using System.Text.Json;
 
 namespace KrahmerSoft.MediaTesterLib
 {
@@ -15,21 +15,29 @@ namespace KrahmerSoft.MediaTesterLib
 
 		public const string CONFIG_FILENAME = "MediaTesterOptions.json";
 
+		/// <summary>
+		/// Save option in file.
+		/// </summary>
+		/// <param name="filePath">The file path relative to executable location.</param>
 		public void Serialize(string filePath = CONFIG_FILENAME)
 		{
-			File.WriteAllText(filePath, JsonConvert.SerializeObject(this));
+			File.WriteAllText(filePath, JsonSerializer.Serialize(this, typeof(Options), new JsonSerializerOptions() { WriteIndented = true }));
 		}
 
+		/// <summary>
+		/// Read configuration file. If anything goes wrong just create a default object.
+		/// </summary>
+		/// <param name="filePath">The file path relative to executable location.</param>
+		/// <returns>Return the options read in file.</returns>
 		public static Options Deserialize(string filePath = CONFIG_FILENAME)
 		{
 			Options options;
 			try
 			{
-				options = JsonConvert.DeserializeObject<Options>(File.ReadAllText(filePath));
+				options = JsonSerializer.Deserialize<Options>(File.ReadAllText(filePath));
 			}
-			catch //(Exception ex)
+			catch
 			{
-				// If anything goes wrong just create a default object
 				options = new Options();
 			}
 

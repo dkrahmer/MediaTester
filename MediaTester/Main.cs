@@ -1,7 +1,7 @@
 ﻿using KrahmerSoft.MediaTesterLib;
 using System;
+using System.Diagnostics;
 using System.IO;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -10,9 +10,9 @@ namespace KrahmerSoft.MediaTester
 	public partial class Main : Form
 	{
 		private Options _mediaTesterOptions = Options.Deserialize();
-		private KrahmerSoft.MediaTesterLib.MediaTester _mediaTester;
+		private MediaTesterLib.MediaTester _mediaTester;
 		private Thread _mediaTesterThread;
-		private const string PALCEHOLDER_VALUE = "---";
+		private const string PLACEHOLDER_VALUE = "---";
 		private const string BYTES = " Bytes";
 		private const string BYTES_PER_SECOND = BYTES + "/sec";
 		private const string TEST_RESULTS_FILENAME_TEMPLATE = "MediaTesterResults_{0}_{1}.txt";
@@ -24,6 +24,8 @@ namespace KrahmerSoft.MediaTester
 			InitializeComponent();
 			UpdateUiFromOptions();
 			EnableControls();
+
+			FormClosing += Main_FormClosing;
 		}
 
 		private void UpdateUiFromOptions()
@@ -87,8 +89,8 @@ namespace KrahmerSoft.MediaTester
 
 		private void UpdateTargetInformation()
 		{
-			string targetTotalBytes = PALCEHOLDER_VALUE;
-			string targetAvailableBytes = PALCEHOLDER_VALUE;
+			string targetTotalBytes = PLACEHOLDER_VALUE;
+			string targetAvailableBytes = PLACEHOLDER_VALUE;
 			string targetDirectory = TargetTextBox.Text;
 
 			if (!string.IsNullOrWhiteSpace(targetDirectory))
@@ -122,18 +124,17 @@ namespace KrahmerSoft.MediaTester
 			UpdateUiFromOptions();
 		}
 
-		private delegate void EnableControlsDelegate(bool enable);
 		private void EnableControls(bool enable = true)
 		{
 			if (TestOptionsGgroupBox.InvokeRequired)
 			{
-				EnableControlsDelegate d = new EnableControlsDelegate(EnableControls);
-				Invoke(d, new object[] { enable });
+				BeginInvoke(() => EnableControls(enable));
 				return;
 			}
 
 			UpdateTargetInformation();
 			UpdateStatus(0, 0);
+			UpdateStatusLabel("");
 
 			TestOptionsGgroupBox.Enabled = enable;
 			RemoveTempDataFilesButton.Enabled = enable;
@@ -143,29 +144,18 @@ namespace KrahmerSoft.MediaTester
 			VerifyOnlyButton.Visible = enable;
 			AbortButton.Visible = !enable;
 			ProgressBar.Enabled = !enable;
+			AbortButton.Enabled = true;
 
 			if (!enable)
 			{
-				WriteSpeedLabel.Text = PALCEHOLDER_VALUE;
-				ReadSpeedLabel.Text = PALCEHOLDER_VALUE;
+				WriteSpeedLabel.Text = PLACEHOLDER_VALUE;
+				VerifySpeedLabel.Text = PLACEHOLDER_VALUE;
 			}
 		}
 
 		private void DisableControls()
 		{
 			EnableControls(false);
-		}
-
-		private void RemoveTempDataFilesButton_Click(object sender, EventArgs e)
-		{
-			if (!ValidateGui())
-				return;
-
-			DisableControls();
-			SaveOptions();
-			InitializeMediaTester();
-			_mediaTesterThread = new Thread(new ThreadStart(RemoveTempDataFilesGui));
-			_mediaTesterThread.Start();
 		}
 
 		private void WriteAndVerifyButton_Click(object sender, EventArgs e)
@@ -178,6 +168,7 @@ namespace KrahmerSoft.MediaTester
 
 			DisableControls();
 			SaveOptions();
+			ResetAverageCounters();
 			InitializeMediaTester();
 			_mediaTesterThread = new Thread(new ThreadStart(MediaTesterFullTest));
 			_mediaTesterThread.Start();
@@ -190,6 +181,7 @@ namespace KrahmerSoft.MediaTester
 
 			DisableControls();
 			SaveOptions();
+			ResetAverageCounters();
 			InitializeMediaTester();
 			_mediaTesterThread = new Thread(new ThreadStart(MediaTesterVerifyTestFiles));
 			_mediaTesterThread.Start();
@@ -206,31 +198,87 @@ namespace KrahmerSoft.MediaTester
 			return true;
 		}
 
+		private void RemoveTempDataFilesButton_Click(object sender, EventArgs e)
+		{
+			if (!ValidateGui())
+				return;
+
+			DisableControls();
+			AbortButton.Enabled = false;
+			SaveOptions();
+			InitializeMediaTester();
+			_mediaTesterThread = new Thread(new ThreadStart(RemoveTempDataFilesGui));
+			_mediaTesterThread.Start();
+		}
+
+		/// <summary>
+		/// Remove test file and show the progress bar.
+		/// </summary>
 		private void RemoveTempDataFilesGui()
 		{
 			try
 			{
-				RemoveTempDataFiles();
+				WriteLog($"Removing temp data files...");
+				UpdateStatusLabel("Removing files...");
+				_mediaTester.FileDeleted += FileDeletedProgressBar;
+
+				int filesDeleted = 0;
+
+				ProgressBar.Value = 0;
+				filesDeleted = _mediaTester.RemoveTempDataFiles();
+
+				WriteLog($"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+			}
+			catch (IOException)
+			{
+				WriteLog("An error raised during the cancellation of test files.");
+				WriteLog("Check the file permission, reconnect the drive and retry.");
+			}
+			catch (Exception ex)
+			{
+				LogException(_mediaTester, ex);
 			}
 			finally
 			{
+				_mediaTester.FileDeleted -= FileDeletedProgressBar;
 				ThreadCompleteEnableControls();
 			}
 		}
 
-		private void RemoveTempDataFiles()
+		private void FileDeletedProgressBar(object sender, FileDeletedEventArgs e)
 		{
-			WriteLog(_mediaTester, $"Removing temp data files...");
-			int filesDeleted = _mediaTester.RemoveTempDataFiles();
-			WriteLog(_mediaTester, $"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+			if (ActivityLogTextBox.InvokeRequired)
+			{
+				BeginInvoke(() => FileDeletedProgressBar(sender, e));
+				return;
+			}
+			ProgressBar.Value = (int) (1000 * ((float) e.removedFiles / e.totalFiles));
 		}
+
+		private enum ResultMediaTest
+		{ PASS, FAIL, USER_CANCEL, ERROR };
 
 		private void MediaTesterFullTest()
 		{
 			try
 			{
-				bool success = _mediaTester.FullTest();
-				LogTestCompletion(success);
+				ResultMediaTest result = ResultMediaTest.FAIL;
+				try
+				{
+					if (_mediaTester.FullTest())
+					{
+						result = ResultMediaTest.PASS;
+					}
+				}
+				catch (ThreadInterruptedException)
+				{
+					result = ResultMediaTest.USER_CANCEL;
+				}
+				catch (IOException)
+				{
+					result = ResultMediaTest.ERROR;
+				}
+				ElaborateTestResult(result);
 			}
 			finally
 			{
@@ -242,8 +290,23 @@ namespace KrahmerSoft.MediaTester
 		{
 			try
 			{
-				bool success = _mediaTester.VerifyTestFiles();
-				LogTestCompletion(success);
+				ResultMediaTest result = ResultMediaTest.FAIL;
+				try
+				{
+					if (_mediaTester.VerifyTestFiles())
+					{
+						result = ResultMediaTest.PASS;
+					}
+				}
+				catch (ThreadInterruptedException)
+				{
+					result = ResultMediaTest.USER_CANCEL;
+				}
+				catch (IOException)
+				{
+					result = ResultMediaTest.ERROR;
+				}
+				ElaborateTestResult(result);
 			}
 			finally
 			{
@@ -251,34 +314,53 @@ namespace KrahmerSoft.MediaTester
 			}
 		}
 
+		private void ElaborateTestResult(ResultMediaTest result)
+		{
+			if (result == ResultMediaTest.USER_CANCEL)
+			{
+				ClearLog();
+				WriteLog("The test was manually stopped by the user.");
+			}
+			else if (result == ResultMediaTest.ERROR)
+			{
+				ClearLog();
+				WriteLog("An error raised during the test and it was interrupted.");
+				WriteLog("Check the file permission, reconnect the drive and retry.");
+			}
+			else
+			{
+				LogTestCompletion(result == ResultMediaTest.PASS);
+			}
+		}
+
 		private void LogTestCompletion(bool success)
 		{
 			if (_averageWriteBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog($"Average write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
-			if (_averageReadBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+			if (_averageVerifyBytesPerSecond > 0)
+				WriteLog($"Average verify speed: {_averageVerifyBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 			{
-				RemoveTempDataFiles();
+				RemoveTempDataFilesNoProgressBar();
 			}
 
 			if (success)
 			{
 				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
-				WriteLog(_mediaTester, $"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
-				WriteLog(_mediaTester, $"Media test PASSED!");
+				WriteLog($"Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES} of {lTargetTotalBytes.ToString("#,##0")}{BYTES} total.");
+				WriteLog($"Media test PASSED!");
 				// WriteLog(_mediaTester, $"Information: Not all bytes are directly testable because directory and filenames take up additional space on the media.");
 
 				if (!_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 				{
-					WriteLog(_mediaTester, $"Notice: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
+					WriteLog($"Notice: Be sure to delete the temporary directory before using the media. '{_mediaTester.GetTestDirectory()}'");
 				}
 			}
 			else
 			{
-				WriteLog(_mediaTester, $"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
+				WriteLog($"Media test FAILED! First failing byte: {_mediaTester.FirstFailingByteIndex.ToString("#,##0")}. Verified {_mediaTester.TotalBytesVerified.ToString("#,##0")}{BYTES}.");
 			}
 
 			if (_mediaTesterOptions.SaveTestResultsFileToMedia && (success || _mediaTesterOptions.RemoveTempDataFilesUponCompletion))
@@ -286,43 +368,87 @@ namespace KrahmerSoft.MediaTester
 				string dateTime = DateTime.Now.ToString(TEST_RESULTS_FILENAME_DATETIME_FORMAT);
 				string testResultsFilePath = Path.Combine(_mediaTester.Options.TestDirectory, string.Format(TEST_RESULTS_FILENAME_TEMPLATE, dateTime, success ? "PASS" : "FAIL"));
 				string testResultsLog = ActivityLogTextBox.Text;
-				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
 				int spaceNeeded = testResultsLog.Length + (int) Math.Pow(2, 16);
 				bool enoughSpace = true;
-				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true))
+				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out _, actual: true))
 				{
-					if (_mediaTester.RemoveTempDataFiles(1) < 1)
+					// Try to remove just one file, so the remainings can be reused for further tests
+					if (_mediaTester.RemoveTempDataFiles(1) == 0)
 					{
 						enoughSpace = false;
-						break; // No files deleted
+						break;
 					}
 				}
 
 				if (enoughSpace)
 				{
 					File.WriteAllText(testResultsFilePath, testResultsLog);
-					WriteLog(_mediaTester, $"Wrote test results file '{testResultsFilePath}'");
+					WriteLog($"Wrote test results file '{testResultsFilePath}'");
 				}
 				else
 				{
-					WriteLog(_mediaTester, $"Not enough free space to write test results file '{testResultsFilePath}'");
+					WriteLog($"Not enough free space to write test results file '{testResultsFilePath}'");
 				}
 			}
+		}
+
+		/// <summary>
+		/// Remove test files after write+verify. This method do no update the progress bar!
+		/// </summary>
+		private void RemoveTempDataFilesNoProgressBar()
+		{
+			WriteLog($"Removing temp data files...");
+			UpdateStatusLabel("Cleaning up...");
+
+			int filesDeleted = 0;
+			try
+			{
+				filesDeleted = _mediaTester.RemoveTempDataFiles();
+			}
+			catch (Exception ex)
+			{
+				LogException(_mediaTester, ex);
+			}
+
+			WriteLog($"Removed {filesDeleted} temp data file{(filesDeleted == 1 ? string.Empty : "s")}.");
+		}
+
+		private void UpdateStatusLabel(string text)
+		{
+			if (StatusStrip.InvokeRequired)
+			{
+				BeginInvoke(() => { StatusLabel.Text = text; });
+				return;
+			}
+			StatusLabel.Text = text;
 		}
 
 		private void InitializeMediaTester()
 		{
 			UpdateOptionsFromUi();
 			_mediaTester = new MediaTesterLib.MediaTester(_mediaTesterOptions);
-			_mediaTester.OnException += OnMediaTesterException;
-			_mediaTester.AfterQuickTest += AfterQuickTest;
-			_mediaTester.AfterVerifyBlock += AfterVerifyBlock;
-			_mediaTester.AfterWriteBlock += AfterWriteBlock;
+			_mediaTester.ExceptionThrown += (s, e) => { LogException(s as MediaTesterLib.MediaTester, e.Exception); };
+			_mediaTester.QuickTestCompleted += (s, e) =>
+			{
+				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.VerifyBytesPerSecond, e.BytesVerified, e.BytesFailed, true);
+			};
+			_mediaTester.BlockVerified += (s, e) =>
+			{
+				AfterVerifyBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.VerifyBytesPerSecond, e.BytesVerified, e.BytesFailed, false);
+			};
+			_mediaTester.BlockWritten += (s, e) =>
+			{
+				AfterWriteBlock(s as MediaTesterLib.MediaTester, e.AbsoluteDataBlockIndex, e.AbsoluteDataByteIndex, e.TestFilePath, e.WriteBytesPerSecond, e.BytesWritten, e.BytesFailedWrite);
+			};
 
-			ClearLog(null, null);
-			WriteLog(_mediaTester, $"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
-			WriteLog(_mediaTester, $"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
+			long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
+
+			ClearLog();
+			WriteLog($"MediaTester v{GetVersion()}");
+			WriteLog($"Total reported media size: {lTargetTotalBytes.ToString("#,##0")}{BYTES}");
+			WriteLog($"Total reported available space: {lTargetAvailableBytes.ToString("#,##0")}{BYTES}");
+			WriteLog($"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
 			_startDateTime = DateTime.Now;
 		}
 
@@ -337,8 +463,8 @@ namespace KrahmerSoft.MediaTester
 		private void AfterWriteBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
 		{
 			UpdateStatus(writeBytesPerSecond: writeBytesPerSecond,
-				writeBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesWritten,
-				readBytesRemaining: mediaTester.Options.MaxBytesToTest);
+				writeBytesRemaining: mediaTester.TotalTargetBytes - mediaTester.TotalBytesWritten,
+				verifyBytesRemaining: mediaTester.TotalTargetBytes);
 
 			if (bytesFailedWrite == 0)
 			{
@@ -346,59 +472,53 @@ namespace KrahmerSoft.MediaTester
 			}
 			else
 			{
-				WriteLog(mediaTester, $"FAILED writing block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}.");
+				WriteLog($"FAILED writing block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}.");
 			}
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
-		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
-		}
-
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
+		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long verifyBytesPerSecond, int bytesVerified, int bytesFailed, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
-				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
-					verifyBytesPerSecond: verifyBytesPerSecond,
+			{
+				UpdateStatus(verifyBytesPerSecond: verifyBytesPerSecond,
 					writeBytesRemaining: 0,
-					readBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
+					verifyBytesRemaining: mediaTester.TotalTargetBytes - mediaTester.TotalBytesVerified - mediaTester.TotalBytesFailed);
+			}
 
 			if (bytesFailed == 0)
 			{
 				if (isQuickTest)
-					WriteLog(mediaTester, $"{(isQuickTest ? "Quick test: " : string.Empty)}Verified block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
+					WriteLog($"{(isQuickTest ? "Quick test: " : string.Empty)}Verified block {absoluteDataBlockIndex.ToString("#,##0")}. Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
 			}
 			else
 			{
-				WriteLog(mediaTester, $"{(isQuickTest ? "Quick test: " : string.Empty)}FAILED block {absoluteDataBlockIndex.ToString("#,##0")}! Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
+				WriteLog($"{(isQuickTest ? "Quick test: " : string.Empty)}FAILED block {absoluteDataBlockIndex.ToString("#,##0")}! Byte index: {absoluteDataByteIndex.ToString("#,##0")}");
 				if (isQuickTest)
 				{
-					WriteLog(mediaTester, "Identifying first failing byte...");
+					WriteLog("Identifying first failing byte...");
 				}
 			}
 		}
 
-		private void AfterQuickTest(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		/// <summary>
+		/// Write Exception message on log. Since exception may be nested, this function is recursive.
+		/// </summary>
+		/// <param name="mediaTester"></param>
+		/// <param name="exception"></param>
+		private void LogException(MediaTesterLib.MediaTester mediaTester, Exception exception)
 		{
-			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
-		}
-
-		private void OnMediaTesterException(MediaTesterLib.MediaTester mediaTester, Exception exception)
-		{
-			WriteLog(mediaTester, $"{exception.Message}");
+			WriteLog($"{exception.Message}");
 			if (exception.InnerException != null)
 			{
-				OnMediaTesterException(mediaTester, exception.InnerException);
+				LogException(mediaTester, exception.InnerException);
 			}
 		}
 
-		private delegate void WriteLogDelegate(MediaTesterLib.MediaTester mediaTester, string message);
-		private void WriteLog(MediaTesterLib.MediaTester mediaTester, string message)
+		private void WriteLog(string message)
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				WriteLogDelegate d = new WriteLogDelegate(WriteLog);
-				Invoke(d, new object[] { mediaTester, message });
+				BeginInvoke(() => WriteLog(message));
 				return;
 			}
 
@@ -411,23 +531,23 @@ namespace KrahmerSoft.MediaTester
 				ActivityLogTextBox.AppendText((ActivityLogTextBox.Text.Length == 0 ? string.Empty : "\r\n") + message);
 			}
 		}
-		private void ClearLog(object p1, object p2)
+
+		private void ClearLog()
 		{
-			WriteLog(null, null);
+			WriteLog(null);
 		}
 
-		private delegate void UpdateStatusDelegate(long readBytesPerSecond, long writeBytesPerSecond, long writeBytesRemaining, long readBytesRemaining, long verifyBytesPerSecond);
-		private void UpdateStatus(long readBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long readBytesRemaining = 0, long verifyBytesPerSecond = 0)
+		private void UpdateStatus(long verifyBytesPerSecond = -1, long writeBytesPerSecond = -1, long writeBytesRemaining = 0, long verifyBytesRemaining = 0)
 		{
+			// e.g. 2 means that read is 2 times faster that write
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				UpdateStatusDelegate d = new UpdateStatusDelegate(UpdateStatus);
-				Invoke(d, new object[] { readBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, readBytesRemaining, verifyBytesPerSecond });
+				BeginInvoke(() => UpdateStatus(verifyBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, verifyBytesRemaining));
 				return;
 			}
 
-			UpdateSpeedAverage(readBytesPerSecond, writeBytesPerSecond);
+			UpdateSpeedAverage(verifyBytesPerSecond, writeBytesPerSecond);
 
 			decimal bytesPerSecond = 0;
 
@@ -435,75 +555,79 @@ namespace KrahmerSoft.MediaTester
 			{
 				bytesPerSecond = _averageWriteBytesPerSecond;
 			}
-			else if (readBytesPerSecond > 0)
+			else if (verifyBytesPerSecond > 0)
 			{
-				bytesPerSecond = _averageReadBytesPerSecond;
+				bytesPerSecond = _averageVerifyBytesPerSecond;
 			}
 
 			TimeSpan? elapsedTime = null;
 			TimeSpan? writeTimeRemaining = null;
-			TimeSpan? readTimeRemaining = null;
+			TimeSpan? verifyTimeRemaining = null;
 			TimeSpan? totalTimeRemaining = null;
 
 			if (_startDateTime != null)
 			{
 				elapsedTime = new TimeSpan(0, 0, (int) (DateTime.Now - _startDateTime.Value).TotalSeconds);
-				writeTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((decimal) writeBytesRemaining / bytesPerSecond));
+
+				int seconds = bytesPerSecond < 0.01M ? 0 : (int) (writeBytesRemaining / bytesPerSecond);
+				writeTimeRemaining = new TimeSpan(0, 0, seconds);
+
+				// Assume read speed is the same as write speed since we do not know for sure
 				if (verifyBytesPerSecond > 1000)
 				{
-					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((decimal) readBytesRemaining / verifyBytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+					int remaingReadseconds = bytesPerSecond < 0.01M ? 0 : (int) ((decimal) verifyBytesRemaining / verifyBytesPerSecond);
+					verifyTimeRemaining = new TimeSpan(0, 0, remaingReadseconds);
 				}
 				else
 				{
-					readTimeRemaining = new TimeSpan(0, 0, bytesPerSecond < .01M ? 0 : (int) ((writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1M)
-										* (decimal) readBytesRemaining / bytesPerSecond)); // Assume read speed is the same as write speed since we do not know for sure.
+					decimal ratio = writeBytesPerSecond > 0 ? EstimatedReadVsWriteSpeedRatio : 1;
+					int remaingVerifySeconds = bytesPerSecond < 0.01M ? 0 : (int) (
+										verifyBytesRemaining / bytesPerSecond / ratio);
+					verifyTimeRemaining = new TimeSpan(0, 0, remaingVerifySeconds);
 				}
-				totalTimeRemaining = writeTimeRemaining + readTimeRemaining;
+				totalTimeRemaining = writeTimeRemaining + verifyTimeRemaining;
 			}
 
 			// Display to the user...
-			ElapsedTimeLabel.Text = elapsedTime?.ToString() ?? PALCEHOLDER_VALUE;
-			TotalTimeRemainingLabel.Text = totalTimeRemaining?.ToString() ?? PALCEHOLDER_VALUE;
+			ElapsedTimeLabel.Text = elapsedTime?.ToString() ?? PLACEHOLDER_VALUE;
+			TotalTimeRemainingLabel.Text = totalTimeRemaining?.ToString() ?? PLACEHOLDER_VALUE;
 
 			if (_mediaTester != null)
 			{
-				WrittenBytesLabel.Text = (_mediaTester?.TotalBytesWritten.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
-				VerifiedBytesLabel.Text = (_mediaTester?.TotalBytesVerified.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
-				FailedBytesLabel.Text = (_mediaTester?.TotalBytesFailed.ToString("#,##0") ?? PALCEHOLDER_VALUE) + BYTES;
+				WrittenBytesLabel.Text = (_mediaTester?.TotalBytesWritten.ToString("#,##0") ?? PLACEHOLDER_VALUE) + BYTES;
+				VerifiedBytesLabel.Text = (_mediaTester?.TotalBytesVerified.ToString("#,##0") ?? PLACEHOLDER_VALUE) + BYTES;
+				FailedBytesLabel.Text = (_mediaTester?.TotalBytesFailed.ToString("#,##0") ?? PLACEHOLDER_VALUE) + BYTES;
 			}
 
 			ProgressBar.Value = _mediaTester == null ? 0 : (int) (10M * _mediaTester.ProgressPercent);
 		}
 
-		private long _totalReadSpeedSamples = 0;
-		private long _totalWriteSpeedSamples = 0;
-		private decimal _averageReadBytesPerSecond = 0;
-		private decimal _averageWriteBytesPerSecond = 0;
+		private long _totalVerifySpeedSamples;
+		private long _totalWriteSpeedSamples;
+		private decimal _averageVerifyBytesPerSecond;
+		private decimal _averageWriteBytesPerSecond;
 
-		private void UpdateSpeedAverage(long readBytesPerSecond = -1, long writeBytesPerSecond = -1)
+		private void ResetAverageCounters()
+		{
+			_totalVerifySpeedSamples = 0;
+			_totalWriteSpeedSamples = 0;
+			_averageVerifyBytesPerSecond = 0;
+			_averageWriteBytesPerSecond = 0;
+		}
+
+		private void UpdateSpeedAverage(long verifyBytesPerSecond = -1, long writeBytesPerSecond = -1)
 		{
 			if (writeBytesPerSecond > 0)
 			{
-				WriteBytesPerSecondStatusLabel.Text = "Write: " + writeBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
+				StatusLabel.Text = $"Write: {writeBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
 				Helpers.UpdateAverage(ref _averageWriteBytesPerSecond, ref _totalWriteSpeedSamples, ref writeBytesPerSecond);
 				WriteSpeedLabel.Text = _averageWriteBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
-			else
+			else if (verifyBytesPerSecond > 0)
 			{
-				WriteBytesPerSecondStatusLabel.Text = string.Empty;
-				_totalWriteSpeedSamples = 0;
-			}
-
-			if (readBytesPerSecond > 0)
-			{
-				ReadBytesPerSecondStatusLabel.Text = "Read: " + readBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
-				Helpers.UpdateAverage(ref _averageReadBytesPerSecond, ref _totalReadSpeedSamples, ref readBytesPerSecond);
-				ReadSpeedLabel.Text = _averageReadBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
-			}
-			else
-			{
-				ReadBytesPerSecondStatusLabel.Text = string.Empty;
-				_totalReadSpeedSamples = 0;
+				StatusLabel.Text = $"Verify: {verifyBytesPerSecond:#,##0}{BYTES_PER_SECOND}";
+				Helpers.UpdateAverage(ref _averageVerifyBytesPerSecond, ref _totalVerifySpeedSamples, ref verifyBytesPerSecond);
+				VerifySpeedLabel.Text = _averageVerifyBytesPerSecond.ToString("#,##0") + BYTES_PER_SECOND;
 			}
 		}
 
@@ -511,33 +635,43 @@ namespace KrahmerSoft.MediaTester
 		{
 			try
 			{
-				_mediaTesterThread?.Abort();
+				_mediaTesterThread?.Interrupt();
 				_startDateTime = null;
 			}
-			catch //(Exception ex)
+			catch
 			{
 			}
 		}
 
-		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		private void Main_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			string aboutMessage = $"MediaTester can test any media (SD, microSD, thumb, etc) \n"
-								+ $"and verify it stores the expected number of bytes. \n"
-								+ $"If you buy any storage media, you should use MediaTester \n"
-								+ $"to verify it or risk losing your data.\n"
-								+ $"\n"
-								+ $"Written by Doug Krahmer\n"
-								+ $"Released as plublic domain open source.\n"
-								+ $"https://github.com/dkrahmer/MediaTester (Click Help to view)\n\n"
-								+ $"\n"
-								+ $"Version: v{Assembly.GetEntryAssembly().GetName().Version}";
-
-			MessageBox.Show(aboutMessage, "About MediaTester", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, "https://github.com/dkrahmer/MediaTester/releases");
+			try
+			{
+				_mediaTesterThread?.Interrupt();
+				_mediaTesterThread?.Join();
+			}
+			catch
+			{
+			}
 		}
 
 		private void Main_Load(object sender, EventArgs e)
 		{
-			Text += $" v{Assembly.GetEntryAssembly().GetName().Version}";
+			Text += $" v{GetVersion()}";
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			AboutForm form = new AboutForm();
+			form.versionLabel.Text = $"v{GetVersion()}";
+			form.ShowDialog();
+		}
+
+		private static string GetVersion()
+		{
+			string filePath = Environment.ProcessPath;
+			FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
+			return info.FileVersion;
 		}
 	}
 }
