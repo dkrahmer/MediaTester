@@ -6,19 +6,20 @@ using System.Threading;
 
 namespace KrahmerSoft.MediaTesterLib
 {
-	public readonly record struct WrittenBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long WriteBytesPerSecond, int BytesWritten, int BytesFailedWrite);
-	public readonly record struct VerifiedBlock(long AbsoluteDataBlockIndex, long AbsoluteDataByteIndex, string TestFilePath, long VerifyBytesPerSecond, int BytesVerified, int BytesFailed);
+
+
+
 
 	public class VerifiedBlockEventArgs : EventArgs
 	{
-		public VerifiedBlockEventArgs(VerifiedBlock block)
+		public VerifiedBlockEventArgs(long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed)
 		{
-			AbsoluteDataBlockIndex = block.AbsoluteDataBlockIndex;
-			AbsoluteDataByteIndex = block.AbsoluteDataByteIndex;
-			TestFilePath = block.TestFilePath;
-			VerifyBytesPerSecond = block.VerifyBytesPerSecond;
-			BytesVerified = block.BytesVerified;
-			BytesFailed = block.BytesFailed;
+			AbsoluteDataBlockIndex = absoluteDataBlockIndex;
+			AbsoluteDataByteIndex = absoluteDataByteIndex;
+			TestFilePath = testFilePath;
+			VerifyBytesPerSecond = readBytesPerSecond;
+			BytesVerified = bytesVerified;
+			BytesFailed = bytesFailed;
 		}
 
 		public long AbsoluteDataBlockIndex;
@@ -29,16 +30,16 @@ namespace KrahmerSoft.MediaTesterLib
 		public int BytesFailed;
 	}
 
-	public class WritedBlockEventArgs : EventArgs
+	public class WrittenBlockEventArgs : EventArgs
 	{
-		public WritedBlockEventArgs(WrittenBlock block)
+		public WrittenBlockEventArgs(long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
 		{
-			AbsoluteDataBlockIndex = block.AbsoluteDataBlockIndex;
-			AbsoluteDataByteIndex = block.AbsoluteDataByteIndex;
-			TestFilePath = block.TestFilePath;
-			WriteBytesPerSecond = block.WriteBytesPerSecond;
-			BytesWritten = block.BytesWritten;
-			BytesFailedWrite = block.BytesFailedWrite;
+			AbsoluteDataBlockIndex = absoluteDataBlockIndex;
+			AbsoluteDataByteIndex = absoluteDataByteIndex;
+			TestFilePath = testFilePath;
+			WriteBytesPerSecond = writeBytesPerSecond;
+			BytesWritten = bytesWritten;
+			BytesFailedWrite = bytesFailedWrite;
 		}
 
 		public long AbsoluteDataBlockIndex;
@@ -94,7 +95,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 		public event EventHandler<VerifiedBlockEventArgs> BlockVerified;
 
-		public event EventHandler<WritedBlockEventArgs> BlockWritten;
+		public event EventHandler<WrittenBlockEventArgs> BlockWritten;
 
 		public event EventHandler<FileDeletedEventArgs> FileDeleted;
 
@@ -337,7 +338,7 @@ namespace KrahmerSoft.MediaTesterLib
 		public static long GetAvailableBytes(string directory, out long totalSize, bool actual = false)
 		{
 			// TODO catch exception if disk is removed (System.IO.DriveNotFoundException)
-			DriveInfo driveInfo = new(directory);
+			DriveInfo driveInfo = new DriveInfo(directory);
 			totalSize = driveInfo.TotalSize;
 			long freeSpace = driveInfo.AvailableFreeSpace;
 			if (actual)
@@ -436,7 +437,7 @@ namespace KrahmerSoft.MediaTesterLib
 						SetProgressPercent(absoluteDataByteIndex + DATA_BLOCK_SIZE, 1);
 						bool success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond);
 						IsSuccess &= success;
-						OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed));
+						OnQuickTestCompleted(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed));
 						if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 						{
 							success = false;
@@ -451,7 +452,7 @@ namespace KrahmerSoft.MediaTesterLib
 							SetProgressPercent(absoluteDataByteIndex + DATA_BLOCK_SIZE, 1);
 							success = VerifyTestFileDataBlock(testFileIndex, testFilePath, checkIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
 							IsSuccess &= success;
-							OnQuickTestCompleted(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed));
+							OnQuickTestCompleted(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed));
 							if (bytesFailed > 0 && Options.QuickFirstFailingByteMethod)
 							{
 								success = false;
@@ -600,12 +601,12 @@ namespace KrahmerSoft.MediaTesterLib
 
 						TotalBytesWritten += dataBlockSize;
 						SetProgressPercent(TotalBytesWritten, 1);
-						OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
+						OnBlockWritten(new WrittenBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
 					}
 					catch (Exception ex)
 					{
 						IsSuccess = false;
-						OnBlockWritten(new WrittenBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
+						OnBlockWritten(new WrittenBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
 						OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
 						throw;
 					}
@@ -672,7 +673,7 @@ namespace KrahmerSoft.MediaTesterLib
 						long verifiedBytesPerSecond = (long) (dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
 						lastElapsedSeconds = elapsedSeconds;
 
-						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, verifiedBytesPerSecond, blockBytesVerified, blockBytesFailed));
+						OnBlockVerified(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, verifiedBytesPerSecond, blockBytesVerified, blockBytesFailed));
 					}
 					catch
 					{
@@ -682,7 +683,7 @@ namespace KrahmerSoft.MediaTesterLib
 						if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
 							exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
 
-						OnBlockVerified(new VerifiedBlock(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed));
+						OnBlockVerified(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed));
 						throw;
 					}
 
@@ -751,7 +752,7 @@ namespace KrahmerSoft.MediaTesterLib
 				if (!File.Exists(testFilePath))
 					break;
 
-				FileInfo fileInfo = new(testFilePath);
+				FileInfo fileInfo = new FileInfo(testFilePath);
 				totalBytes += fileInfo.Length;
 			}
 
@@ -976,19 +977,19 @@ namespace KrahmerSoft.MediaTesterLib
 			ExceptionThrown?.Invoke(this, new ExceptionEventArgs(ex));
 		}
 
-		private void OnBlockWritten(WrittenBlock writtenBlock)
+		private void OnBlockWritten(WrittenBlockEventArgs writtenBlock)
 		{
-			BlockWritten?.Invoke(this, new WritedBlockEventArgs(writtenBlock));
+			BlockWritten?.Invoke(this, writtenBlock);
 		}
 
-		private void OnBlockVerified(VerifiedBlock block)
+		private void OnBlockVerified(VerifiedBlockEventArgs block)
 		{
-			BlockVerified?.Invoke(this, new VerifiedBlockEventArgs(block));
+			BlockVerified?.Invoke(this, block);
 		}
 
-		private void OnQuickTestCompleted(VerifiedBlock block)
+		private void OnQuickTestCompleted(VerifiedBlockEventArgs block)
 		{
-			QuickTestCompleted?.Invoke(this, new VerifiedBlockEventArgs(block));
+			QuickTestCompleted?.Invoke(this, block);
 		}
 
 		private void OnFileDeleted(int totalFiles, int deleledFiles)
