@@ -553,66 +553,70 @@ namespace KrahmerSoft.MediaTesterLib
 				// Known current issues in .NET 6:
 				// - https://github.com/dotnet/runtime/issues/62851
 				// - https://github.com/dotnet/runtime/issues/27408
-				using var file = new FileStream(testFilePath, FileMode.Create, FileAccess.Write, FileShare.Read,
-												DATA_BLOCK_SIZE, FileFlagNoBuffering | FileOptions.WriteThrough);
-				using var fileWriter = new BinaryWriter(file);
-
-				// Check if the free space changed after creating the file since
-				// adding a directory or file to the FAT can decrease available space
-				freeSpace = GetAvailableBytes(true);
-				if (actualTestFileSize > freeSpace)
+				using (var file = new FileStream(testFilePath, FileMode.Create, FileAccess.Write, FileShare.Read,
+												DATA_BLOCK_SIZE, FileFlagNoBuffering | FileOptions.WriteThrough))
 				{
-					actualTestFileSize = (int) freeSpace;
-				}
-
-				long lastWriteBytesPerSecond = 0;
-				int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
-				double lastTimestamp = 0;
-				for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
-				{
-					int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
-						? (int) (actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
-					long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
-					long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
-
-					try
+					using (var fileWriter = new BinaryWriter(file))
 					{
-						var dataBlock = GenerateDataBlock(testFileIndex, dataBlockIndex, dataBlockSize);
 
-						fileWriter.Write(dataBlock);
-						//fileWriter.Flush(); // Force the data to finish writing to the device
-						//file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
-
-						long writeBytesPerSecond;
-
-						if (dataBlockSize == DATA_BLOCK_SIZE)
+						// Check if the free space changed after creating the file since
+						// adding a directory or file to the FAT can decrease available space
+						freeSpace = GetAvailableBytes(true);
+						if (actualTestFileSize > freeSpace)
 						{
-							double now = stopwatch.Elapsed.TotalSeconds;
-							double time = now - lastTimestamp;
-							lastTimestamp = now;
-							writeBytesPerSecond = (long) (dataBlockSize / time);
-							lastWriteBytesPerSecond = writeBytesPerSecond;
-						}
-						else
-						{
-							// prevent an artificial rate spike on the last block
-							writeBytesPerSecond = lastWriteBytesPerSecond;
+							actualTestFileSize = (int) freeSpace;
 						}
 
-						TotalBytesWritten += dataBlockSize;
-						SetProgressPercent(TotalBytesWritten, 1);
-						OnBlockWritten(new WrittenBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
-					}
-					catch (Exception ex)
-					{
-						IsSuccess = false;
-						OnBlockWritten(new WrittenBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
-						OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
-						throw;
-					}
+						long lastWriteBytesPerSecond = 0;
+						int lastDataBlockIndex = GetLastDataBlockIndex(actualTestFileSize);
+						double lastTimestamp = 0;
+						for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
+						{
+							int dataBlockSize = (dataBlockIndex == lastDataBlockIndex && actualTestFileSize % DATA_BLOCK_SIZE != 0)
+								? (int) (actualTestFileSize % DATA_BLOCK_SIZE) : DATA_BLOCK_SIZE;
+							long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
+							long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
 
-					// yields once in a while to allow thread interruption
-					Thread.Sleep(0);
+							try
+							{
+								var dataBlock = GenerateDataBlock(testFileIndex, dataBlockIndex, dataBlockSize);
+
+								fileWriter.Write(dataBlock);
+								//fileWriter.Flush(); // Force the data to finish writing to the device
+								//file.Flush(true);   // Clear all intermediate file buffers (OS I/O cache, etc)
+
+								long writeBytesPerSecond;
+
+								if (dataBlockSize == DATA_BLOCK_SIZE)
+								{
+									double now = stopwatch.Elapsed.TotalSeconds;
+									double time = now - lastTimestamp;
+									lastTimestamp = now;
+									writeBytesPerSecond = (long) (dataBlockSize / time);
+									lastWriteBytesPerSecond = writeBytesPerSecond;
+								}
+								else
+								{
+									// prevent an artificial rate spike on the last block
+									writeBytesPerSecond = lastWriteBytesPerSecond;
+								}
+
+								TotalBytesWritten += dataBlockSize;
+								SetProgressPercent(TotalBytesWritten, 1);
+								OnBlockWritten(new WrittenBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, writeBytesPerSecond, dataBlockSize, 0));
+							}
+							catch (Exception ex)
+							{
+								IsSuccess = false;
+								OnBlockWritten(new WrittenBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize));
+								OnExceptionThrown(new Exception($"Unable to write block to file '{testFilePath}'.", ex));
+								throw;
+							}
+
+							// yields once in a while to allow thread interruption
+							Thread.Sleep(0);
+						}
+					}
 				}
 			}
 			catch (Exception ex)
@@ -643,59 +647,62 @@ namespace KrahmerSoft.MediaTesterLib
 
 			try
 			{
-				using var fileReader = new FileStream(testFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, DATA_BLOCK_SIZE,
-					FileFlagNoBuffering | FileOptions.SequentialScan);
-				int lastDataBlockIndex = GetLastDataBlockIndex((int) fileReader.Length);
-				var stopwatch = new Stopwatch();
-				stopwatch.Start();
-				double lastElapsedSeconds = 0;
-				for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
+				using (var fileReader = new FileStream(testFilePath, FileMode.Open, FileAccess.Read, FileShare.Read, DATA_BLOCK_SIZE,
+					FileFlagNoBuffering | FileOptions.SequentialScan))
 				{
-					long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
-					long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
-					try
+
+					int lastDataBlockIndex = GetLastDataBlockIndex((int) fileReader.Length);
+					var stopwatch = new Stopwatch();
+					stopwatch.Start();
+					double lastElapsedSeconds = 0;
+					for (int dataBlockIndex = 0; dataBlockIndex <= lastDataBlockIndex; dataBlockIndex++)
 					{
-						bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out _);
-						success &= blockSuccess;
-						IsSuccess &= success;
-						bytesVerified += blockBytesVerified;
-						bytesFailed += blockBytesFailed;
-						if (updateTotalBytes)
+						long absoluteDataBlockIndex = GetAbsoluteDataBlockIndex(testFileIndex, dataBlockIndex);
+						long absoluteDataByteIndex = GetAbsoluteDataByteIndex(testFileIndex, dataBlockIndex);
+						try
 						{
-							TotalBytesVerified += blockBytesVerified;
-							TotalBytesFailed += blockBytesFailed;
+							bool blockSuccess = VerifyTestFileDataBlock(fileReader, testFileIndex, dataBlockIndex, out int blockBytesVerified, out int blockBytesFailed, out _);
+							success &= blockSuccess;
+							IsSuccess &= success;
+							bytesVerified += blockBytesVerified;
+							bytesFailed += blockBytesFailed;
+							if (updateTotalBytes)
+							{
+								TotalBytesVerified += blockBytesVerified;
+								TotalBytesFailed += blockBytesFailed;
+							}
+
+							int dataBlockSize = blockBytesVerified + blockBytesFailed;
+							SetProgressPercent(absoluteDataByteIndex + dataBlockSize, 2);
+
+							double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
+							long verifiedBytesPerSecond = (long) (dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
+							lastElapsedSeconds = elapsedSeconds;
+
+							OnBlockVerified(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, verifiedBytesPerSecond, blockBytesVerified, blockBytesFailed));
+						}
+						catch
+						{
+							success = false;
+							IsSuccess &= success;
+							long exceptionBlockBytesFailed = fileReader.Length - (dataBlockIndex * DATA_BLOCK_SIZE);
+							if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
+								exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
+
+							OnBlockVerified(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed));
+							throw;
 						}
 
-						int dataBlockSize = blockBytesVerified + blockBytesFailed;
-						SetProgressPercent(absoluteDataByteIndex + dataBlockSize, 2);
-
-						double elapsedSeconds = stopwatch.Elapsed.TotalSeconds;
-						long verifiedBytesPerSecond = (long) (dataBlockSize / (elapsedSeconds - lastElapsedSeconds));
-						lastElapsedSeconds = elapsedSeconds;
-
-						OnBlockVerified(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, verifiedBytesPerSecond, blockBytesVerified, blockBytesFailed));
-					}
-					catch
-					{
-						success = false;
-						IsSuccess &= success;
-						long exceptionBlockBytesFailed = fileReader.Length - (dataBlockIndex * DATA_BLOCK_SIZE);
-						if (exceptionBlockBytesFailed > DATA_BLOCK_SIZE)
-							exceptionBlockBytesFailed = DATA_BLOCK_SIZE;
-
-						OnBlockVerified(new VerifiedBlockEventArgs(absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, (int) exceptionBlockBytesFailed));
-						throw;
-					}
-
-					if (Options.StopProcessingOnFailure && !success)
-						return success;
-
-					if (updateTotalBytes)
-					{
-						if (TotalBytesVerified + TotalBytesFailed >= TotalTargetBytes)
-						{
-							// The requested number of bytes has been verified
+						if (Options.StopProcessingOnFailure && !success)
 							return success;
+
+						if (updateTotalBytes)
+						{
+							if (TotalBytesVerified + TotalBytesFailed >= TotalTargetBytes)
+							{
+								// The requested number of bytes has been verified
+								return success;
+							}
 						}
 					}
 				}
@@ -771,8 +778,10 @@ namespace KrahmerSoft.MediaTesterLib
 		/// <returns></returns>
 		private bool VerifyTestFileDataBlock(int testFileIndex, string testFilePath, int dataBlockIndex, out int bytesVerified, out int bytesFailed, out long readBytesPerSecond)
 		{
-			using var file = File.OpenRead(testFilePath);
-			return VerifyTestFileDataBlock(file, testFileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
+			using (var file = File.OpenRead(testFilePath))
+			{
+				return VerifyTestFileDataBlock(file, testFileIndex, dataBlockIndex, out bytesVerified, out bytesFailed, out readBytesPerSecond);
+			}
 		}
 
 		/// <summary>
