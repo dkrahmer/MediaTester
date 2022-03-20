@@ -290,6 +290,7 @@
             this.ActivityLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ActivityLogTextBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ActivityLogTextBox.Location = new System.Drawing.Point(13, 369);
             this.ActivityLogTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ActivityLogTextBox.Multiline = true;
@@ -406,7 +407,7 @@
             // ElapsedTimeLabel
             // 
             this.ElapsedTimeLabel.AutoSize = true;
-            this.ElapsedTimeLabel.Location = new System.Drawing.Point(85, 182);
+            this.ElapsedTimeLabel.Location = new System.Drawing.Point(85, 184);
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
             this.ElapsedTimeLabel.Size = new System.Drawing.Size(27, 20);
             this.ElapsedTimeLabel.TabIndex = 11;
@@ -415,7 +416,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 182);
+            this.label7.Location = new System.Drawing.Point(7, 184);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(61, 20);
             this.label7.TabIndex = 10;
@@ -433,7 +434,7 @@
             // VerifiedBytesLabel
             // 
             this.VerifiedBytesLabel.AutoSize = true;
-            this.VerifiedBytesLabel.Location = new System.Drawing.Point(85, 122);
+            this.VerifiedBytesLabel.Location = new System.Drawing.Point(85, 124);
             this.VerifiedBytesLabel.Name = "VerifiedBytesLabel";
             this.VerifiedBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.VerifiedBytesLabel.TabIndex = 8;
@@ -442,7 +443,7 @@
             // WrittenBytesLabel
             // 
             this.WrittenBytesLabel.AutoSize = true;
-            this.WrittenBytesLabel.Location = new System.Drawing.Point(85, 62);
+            this.WrittenBytesLabel.Location = new System.Drawing.Point(85, 64);
             this.WrittenBytesLabel.Name = "WrittenBytesLabel";
             this.WrittenBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.WrittenBytesLabel.TabIndex = 7;
@@ -478,7 +479,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 122);
+            this.label4.Location = new System.Drawing.Point(7, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 20);
             this.label4.TabIndex = 3;
@@ -487,7 +488,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 65);
+            this.label3.Location = new System.Drawing.Point(7, 64);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 20);
             this.label3.TabIndex = 2;
@@ -496,7 +497,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 95);
+            this.label2.Location = new System.Drawing.Point(7, 94);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 20);
             this.label2.TabIndex = 1;
@@ -539,8 +540,8 @@
             // Main
             // 
             this.AcceptButton = this.WriteAndVerifyButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(637, 588);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.RemoveTempDataFilesButton);
