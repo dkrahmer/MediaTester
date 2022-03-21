@@ -41,7 +41,7 @@
             // linkLabelRepository
             // 
             this.linkLabelRepository.AutoSize = true;
-            this.linkLabelRepository.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.linkLabelRepository.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.linkLabelRepository.Location = new System.Drawing.Point(173, 284);
             this.linkLabelRepository.Name = "linkLabelRepository";
             this.linkLabelRepository.Size = new System.Drawing.Size(107, 23);
@@ -53,6 +53,7 @@
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(362, 281);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(94, 29);
             this.button1.TabIndex = 3;
@@ -63,7 +64,7 @@
             // versionLabel
             // 
             this.versionLabel.AutoSize = true;
-            this.versionLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.versionLabel.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.versionLabel.Location = new System.Drawing.Point(57, 192);
             this.versionLabel.Name = "versionLabel";
             this.versionLabel.Size = new System.Drawing.Size(53, 23);
@@ -85,6 +86,7 @@
             // 
             this.pictureBox1.Image = global::KrahmerSoft.MediaTester.Properties.Resources.MediaTesterLogo;
             this.pictureBox1.Location = new System.Drawing.Point(22, 19);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(128, 128);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -94,7 +96,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 11F);
             this.label2.Location = new System.Drawing.Point(28, 158);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(114, 25);
@@ -103,8 +105,8 @@
             // 
             // AboutForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(482, 334);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pictureBox1);
@@ -112,7 +114,9 @@
             this.Controls.Add(this.versionLabel);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.linkLabelRepository);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AboutForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "About";

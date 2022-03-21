@@ -92,6 +92,7 @@
             this.TargetTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.TargetTextBox.Location = new System.Drawing.Point(61, 34);
+            this.TargetTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TargetTextBox.Name = "TargetTextBox";
             this.TargetTextBox.Size = new System.Drawing.Size(238, 27);
             this.TargetTextBox.TabIndex = 1;
@@ -101,6 +102,7 @@
             // 
             this.ChooseTargetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ChooseTargetButton.Location = new System.Drawing.Point(306, 32);
+            this.ChooseTargetButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChooseTargetButton.Name = "ChooseTargetButton";
             this.ChooseTargetButton.Size = new System.Drawing.Size(28, 31);
             this.ChooseTargetButton.TabIndex = 2;
@@ -112,6 +114,7 @@
             // 
             this.StopProcessingOnFailureCheckBox.AutoSize = true;
             this.StopProcessingOnFailureCheckBox.Location = new System.Drawing.Point(9, 149);
+            this.StopProcessingOnFailureCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StopProcessingOnFailureCheckBox.Name = "StopProcessingOnFailureCheckBox";
             this.StopProcessingOnFailureCheckBox.Size = new System.Drawing.Size(233, 24);
             this.StopProcessingOnFailureCheckBox.TabIndex = 3;
@@ -122,7 +125,7 @@
             // TotalBytesToTestLabel
             // 
             this.TotalBytesToTestLabel.AutoSize = true;
-            this.TotalBytesToTestLabel.Location = new System.Drawing.Point(5, 117);
+            this.TotalBytesToTestLabel.Location = new System.Drawing.Point(5, 118);
             this.TotalBytesToTestLabel.Name = "TotalBytesToTestLabel";
             this.TotalBytesToTestLabel.Size = new System.Drawing.Size(131, 20);
             this.TotalBytesToTestLabel.TabIndex = 5;
@@ -135,6 +138,7 @@
             this.MaxBytesToTestComboBox.Items.AddRange(new object[] {
             "All Available Bytes"});
             this.MaxBytesToTestComboBox.Location = new System.Drawing.Point(147, 114);
+            this.MaxBytesToTestComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaxBytesToTestComboBox.Name = "MaxBytesToTestComboBox";
             this.MaxBytesToTestComboBox.Size = new System.Drawing.Size(155, 28);
             this.MaxBytesToTestComboBox.TabIndex = 6;
@@ -143,6 +147,7 @@
             // 
             this.QuickTestAfterEachFileCheckBox.AutoSize = true;
             this.QuickTestAfterEachFileCheckBox.Location = new System.Drawing.Point(9, 178);
+            this.QuickTestAfterEachFileCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.QuickTestAfterEachFileCheckBox.Name = "QuickTestAfterEachFileCheckBox";
             this.QuickTestAfterEachFileCheckBox.Size = new System.Drawing.Size(323, 24);
             this.QuickTestAfterEachFileCheckBox.TabIndex = 7;
@@ -155,6 +160,7 @@
             // 
             this.QuickFirstFailingByteMethodCheckBox.AutoSize = true;
             this.QuickFirstFailingByteMethodCheckBox.Location = new System.Drawing.Point(9, 209);
+            this.QuickFirstFailingByteMethodCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.QuickFirstFailingByteMethodCheckBox.Name = "QuickFirstFailingByteMethodCheckBox";
             this.QuickFirstFailingByteMethodCheckBox.Size = new System.Drawing.Size(206, 24);
             this.QuickFirstFailingByteMethodCheckBox.TabIndex = 8;
@@ -167,8 +173,9 @@
             // 
             this.WriteAndVerifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.WriteAndVerifyButton.Location = new System.Drawing.Point(361, 320);
+            this.WriteAndVerifyButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.WriteAndVerifyButton.Name = "WriteAndVerifyButton";
-            this.WriteAndVerifyButton.Size = new System.Drawing.Size(129, 43);
+            this.WriteAndVerifyButton.Size = new System.Drawing.Size(129, 42);
             this.WriteAndVerifyButton.TabIndex = 9;
             this.WriteAndVerifyButton.Text = "Write and Verify";
             this.toolTip1.SetToolTip(this.WriteAndVerifyButton, "Write test data to media then read back to verify data was stored correctly.\nOnly" +
@@ -180,8 +187,9 @@
             // 
             this.VerifyOnlyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.VerifyOnlyButton.Location = new System.Drawing.Point(495, 320);
+            this.VerifyOnlyButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.VerifyOnlyButton.Name = "VerifyOnlyButton";
-            this.VerifyOnlyButton.Size = new System.Drawing.Size(129, 43);
+            this.VerifyOnlyButton.Size = new System.Drawing.Size(129, 42);
             this.VerifyOnlyButton.TabIndex = 10;
             this.VerifyOnlyButton.Text = "Verify Only";
             this.toolTip1.SetToolTip(this.VerifyOnlyButton, "Verify previous written test data.\nWill not write anything to media.");
@@ -207,8 +215,10 @@
             this.TestOptionsGgroupBox.Controls.Add(this.TargetLabel);
             this.TestOptionsGgroupBox.Controls.Add(this.QuickTestAfterEachFileCheckBox);
             this.TestOptionsGgroupBox.Location = new System.Drawing.Point(13, 15);
+            this.TestOptionsGgroupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TestOptionsGgroupBox.Name = "TestOptionsGgroupBox";
-            this.TestOptionsGgroupBox.Size = new System.Drawing.Size(341, 297);
+            this.TestOptionsGgroupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.TestOptionsGgroupBox.Size = new System.Drawing.Size(341, 298);
             this.TestOptionsGgroupBox.TabIndex = 11;
             this.TestOptionsGgroupBox.TabStop = false;
             this.TestOptionsGgroupBox.Text = "Test Options";
@@ -217,6 +227,7 @@
             // 
             this.SaveTestResultsFileToMediaCheckBox.AutoSize = true;
             this.SaveTestResultsFileToMediaCheckBox.Location = new System.Drawing.Point(9, 266);
+            this.SaveTestResultsFileToMediaCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SaveTestResultsFileToMediaCheckBox.Name = "SaveTestResultsFileToMediaCheckBox";
             this.SaveTestResultsFileToMediaCheckBox.Size = new System.Drawing.Size(257, 24);
             this.SaveTestResultsFileToMediaCheckBox.TabIndex = 14;
@@ -229,7 +240,8 @@
             // RemoveTempDataFilesUponCompletionCheckBox
             // 
             this.RemoveTempDataFilesUponCompletionCheckBox.AutoSize = true;
-            this.RemoveTempDataFilesUponCompletionCheckBox.Location = new System.Drawing.Point(9, 237);
+            this.RemoveTempDataFilesUponCompletionCheckBox.Location = new System.Drawing.Point(9, 238);
+            this.RemoveTempDataFilesUponCompletionCheckBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RemoveTempDataFilesUponCompletionCheckBox.Name = "RemoveTempDataFilesUponCompletionCheckBox";
             this.RemoveTempDataFilesUponCompletionCheckBox.Size = new System.Drawing.Size(307, 24);
             this.RemoveTempDataFilesUponCompletionCheckBox.TabIndex = 13;
@@ -278,7 +290,9 @@
             this.ActivityLogTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.ActivityLogTextBox.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ActivityLogTextBox.Location = new System.Drawing.Point(13, 369);
+            this.ActivityLogTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ActivityLogTextBox.Multiline = true;
             this.ActivityLogTextBox.Name = "ActivityLogTextBox";
             this.ActivityLogTextBox.ReadOnly = true;
@@ -314,8 +328,9 @@
             // SaveOptionsButton
             // 
             this.SaveOptionsButton.Location = new System.Drawing.Point(13, 320);
+            this.SaveOptionsButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.SaveOptionsButton.Name = "SaveOptionsButton";
-            this.SaveOptionsButton.Size = new System.Drawing.Size(129, 43);
+            this.SaveOptionsButton.Size = new System.Drawing.Size(129, 42);
             this.SaveOptionsButton.TabIndex = 16;
             this.SaveOptionsButton.Text = "Save Options";
             this.SaveOptionsButton.UseVisualStyleBackColor = true;
@@ -324,8 +339,9 @@
             // DefaultOptionsButton
             // 
             this.DefaultOptionsButton.Location = new System.Drawing.Point(148, 320);
+            this.DefaultOptionsButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.DefaultOptionsButton.Name = "DefaultOptionsButton";
-            this.DefaultOptionsButton.Size = new System.Drawing.Size(129, 43);
+            this.DefaultOptionsButton.Size = new System.Drawing.Size(129, 42);
             this.DefaultOptionsButton.TabIndex = 17;
             this.DefaultOptionsButton.Text = "Default Options";
             this.DefaultOptionsButton.UseVisualStyleBackColor = true;
@@ -335,8 +351,9 @@
             // 
             this.AbortButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.AbortButton.Location = new System.Drawing.Point(361, 320);
+            this.AbortButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.AbortButton.Name = "AbortButton";
-            this.AbortButton.Size = new System.Drawing.Size(264, 43);
+            this.AbortButton.Size = new System.Drawing.Size(264, 42);
             this.AbortButton.TabIndex = 18;
             this.AbortButton.Text = "Abort Operation";
             this.AbortButton.UseVisualStyleBackColor = true;
@@ -361,7 +378,9 @@
             this.StatisticsGroupBox.Controls.Add(this.label2);
             this.StatisticsGroupBox.Controls.Add(this.label1);
             this.StatisticsGroupBox.Location = new System.Drawing.Point(361, 15);
+            this.StatisticsGroupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StatisticsGroupBox.Name = "StatisticsGroupBox";
+            this.StatisticsGroupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StatisticsGroupBox.Size = new System.Drawing.Size(264, 246);
             this.StatisticsGroupBox.TabIndex = 19;
             this.StatisticsGroupBox.TabStop = false;
@@ -388,7 +407,7 @@
             // ElapsedTimeLabel
             // 
             this.ElapsedTimeLabel.AutoSize = true;
-            this.ElapsedTimeLabel.Location = new System.Drawing.Point(85, 183);
+            this.ElapsedTimeLabel.Location = new System.Drawing.Point(85, 184);
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
             this.ElapsedTimeLabel.Size = new System.Drawing.Size(27, 20);
             this.ElapsedTimeLabel.TabIndex = 11;
@@ -397,7 +416,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 183);
+            this.label7.Location = new System.Drawing.Point(7, 184);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(61, 20);
             this.label7.TabIndex = 10;
@@ -415,7 +434,7 @@
             // VerifiedBytesLabel
             // 
             this.VerifiedBytesLabel.AutoSize = true;
-            this.VerifiedBytesLabel.Location = new System.Drawing.Point(85, 123);
+            this.VerifiedBytesLabel.Location = new System.Drawing.Point(85, 124);
             this.VerifiedBytesLabel.Name = "VerifiedBytesLabel";
             this.VerifiedBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.VerifiedBytesLabel.TabIndex = 8;
@@ -424,7 +443,7 @@
             // WrittenBytesLabel
             // 
             this.WrittenBytesLabel.AutoSize = true;
-            this.WrittenBytesLabel.Location = new System.Drawing.Point(85, 63);
+            this.WrittenBytesLabel.Location = new System.Drawing.Point(85, 64);
             this.WrittenBytesLabel.Name = "WrittenBytesLabel";
             this.WrittenBytesLabel.Size = new System.Drawing.Size(27, 20);
             this.WrittenBytesLabel.TabIndex = 7;
@@ -460,7 +479,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 123);
+            this.label4.Location = new System.Drawing.Point(7, 124);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 20);
             this.label4.TabIndex = 3;
@@ -469,7 +488,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 65);
+            this.label3.Location = new System.Drawing.Point(7, 64);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(58, 20);
             this.label3.TabIndex = 2;
@@ -478,7 +497,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 95);
+            this.label2.Location = new System.Drawing.Point(7, 94);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(76, 20);
             this.label2.TabIndex = 1;
@@ -495,9 +514,11 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.button1.Image = global::KrahmerSoft.MediaTester.Properties.Resources.info;
             this.button1.Location = new System.Drawing.Point(564, 9);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(50, 32);
             this.button1.TabIndex = 21;
@@ -507,9 +528,10 @@
             // RemoveTempDataFilesButton
             // 
             this.RemoveTempDataFilesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.RemoveTempDataFilesButton.Location = new System.Drawing.Point(361, 267);
+            this.RemoveTempDataFilesButton.Location = new System.Drawing.Point(361, 268);
+            this.RemoveTempDataFilesButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.RemoveTempDataFilesButton.Name = "RemoveTempDataFilesButton";
-            this.RemoveTempDataFilesButton.Size = new System.Drawing.Size(264, 43);
+            this.RemoveTempDataFilesButton.Size = new System.Drawing.Size(264, 42);
             this.RemoveTempDataFilesButton.TabIndex = 20;
             this.RemoveTempDataFilesButton.Text = "Remove temp data files";
             this.RemoveTempDataFilesButton.UseVisualStyleBackColor = true;
@@ -518,8 +540,8 @@
             // Main
             // 
             this.AcceptButton = this.WriteAndVerifyButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(637, 588);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.RemoveTempDataFilesButton);
@@ -532,7 +554,9 @@
             this.Controls.Add(this.VerifyOnlyButton);
             this.Controls.Add(this.WriteAndVerifyButton);
             this.Controls.Add(this.AbortButton);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MinimumSize = new System.Drawing.Size(655, 535);
             this.Name = "Main";
             this.Text = "MediaTester";

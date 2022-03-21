@@ -128,7 +128,8 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (TestOptionsGgroupBox.InvokeRequired)
 			{
-				BeginInvoke(() => EnableControls(enable));
+				BeginInvoke((MethodInvoker) delegate
+				{ EnableControls(enable); });
 				return;
 			}
 
@@ -249,7 +250,8 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				BeginInvoke(() => FileDeletedProgressBar(sender, e));
+				BeginInvoke((MethodInvoker) delegate
+				{ FileDeletedProgressBar(sender, e); });
 				return;
 			}
 			ProgressBar.Value = (int) (1000 * ((float) e.removedFiles / e.totalFiles));
@@ -418,7 +420,8 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (StatusStrip.InvokeRequired)
 			{
-				BeginInvoke(() => { StatusLabel.Text = text; });
+				BeginInvoke((MethodInvoker) delegate
+				{ StatusLabel.Text = text; });
 				return;
 			}
 			StatusLabel.Text = text;
@@ -518,7 +521,8 @@ namespace KrahmerSoft.MediaTester
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				BeginInvoke(() => WriteLog(message));
+				BeginInvoke((MethodInvoker) delegate
+				{ WriteLog(message); });
 				return;
 			}
 
@@ -543,7 +547,8 @@ namespace KrahmerSoft.MediaTester
 			const decimal EstimatedReadVsWriteSpeedRatio = 2M;
 			if (ActivityLogTextBox.InvokeRequired)
 			{
-				BeginInvoke(() => UpdateStatus(verifyBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, verifyBytesRemaining));
+				BeginInvoke((MethodInvoker) delegate
+				{ UpdateStatus(verifyBytesPerSecond, writeBytesPerSecond, writeBytesRemaining, verifyBytesRemaining); });
 				return;
 			}
 
@@ -669,8 +674,8 @@ namespace KrahmerSoft.MediaTester
 
 		private static string GetVersion()
 		{
-			string filePath = Environment.ProcessPath;
-			FileVersionInfo info = System.Diagnostics.FileVersionInfo.GetVersionInfo(filePath);
+			string filePath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+			FileVersionInfo info = FileVersionInfo.GetVersionInfo(filePath);
 			return info.FileVersion;
 		}
 	}

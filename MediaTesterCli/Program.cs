@@ -110,7 +110,7 @@ namespace KrahmerSoft.MediaTesterCli
 			Console.ReadLine();
 		}
 
-		private static void AfterWriteBlock(object sender, WritedBlockEventArgs e)
+		private static void AfterWriteBlock(object sender, WrittenBlockEventArgs e)
 		{
 			MediaTester mediaTester = sender as MediaTester;
 			if (e.BytesFailedWrite == 0)
