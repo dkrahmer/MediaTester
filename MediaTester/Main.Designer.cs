@@ -69,7 +69,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.AboutButton = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.RemoveTempDataFilesButton = new System.Windows.Forms.Button();
             this.TestOptionsGgroupBox.SuspendLayout();
@@ -94,17 +94,17 @@
             this.TargetTextBox.Location = new System.Drawing.Point(61, 34);
             this.TargetTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TargetTextBox.Name = "TargetTextBox";
-            this.TargetTextBox.Size = new System.Drawing.Size(238, 27);
+            this.TargetTextBox.Size = new System.Drawing.Size(234, 27);
             this.TargetTextBox.TabIndex = 1;
             this.TargetTextBox.TextChanged += new System.EventHandler(this.TargetTextBox_TextChanged);
             // 
             // ChooseTargetButton
             // 
             this.ChooseTargetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChooseTargetButton.Location = new System.Drawing.Point(306, 32);
+            this.ChooseTargetButton.Location = new System.Drawing.Point(301, 32);
             this.ChooseTargetButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.ChooseTargetButton.Name = "ChooseTargetButton";
-            this.ChooseTargetButton.Size = new System.Drawing.Size(28, 31);
+            this.ChooseTargetButton.Size = new System.Drawing.Size(33, 31);
             this.ChooseTargetButton.TabIndex = 2;
             this.ChooseTargetButton.Text = "...";
             this.ChooseTargetButton.UseVisualStyleBackColor = true;
@@ -512,18 +512,19 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Write Avg";
             // 
-            // button1
+            // AboutButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button1.Image = global::KrahmerSoft.MediaTester.Properties.Resources.info;
-            this.button1.Location = new System.Drawing.Point(564, 9);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(50, 32);
-            this.button1.TabIndex = 21;
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.AboutButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.AboutButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.AboutButton.Image = global::KrahmerSoft.MediaTester.Properties.Resources.info;
+            this.AboutButton.Location = new System.Drawing.Point(564, 9);
+            this.AboutButton.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.AboutButton.Name = "AboutButton";
+            this.AboutButton.Size = new System.Drawing.Size(50, 32);
+            this.AboutButton.TabIndex = 21;
+            this.toolTip1.SetToolTip(this.AboutButton, "About");
+            this.AboutButton.UseVisualStyleBackColor = true;
+            this.AboutButton.Click += new System.EventHandler(this.OpenAboutWindow);
             // 
             // RemoveTempDataFilesButton
             // 
@@ -543,7 +544,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(120F, 120F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(637, 588);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.AboutButton);
             this.Controls.Add(this.RemoveTempDataFilesButton);
             this.Controls.Add(this.StatisticsGroupBox);
             this.Controls.Add(this.DefaultOptionsButton);
@@ -615,7 +616,7 @@
 		private System.Windows.Forms.CheckBox RemoveTempDataFilesUponCompletionCheckBox;
 		private System.Windows.Forms.Button RemoveTempDataFilesButton;
 		private System.Windows.Forms.CheckBox SaveTestResultsFileToMediaCheckBox;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button AboutButton;
 	}
 }
 

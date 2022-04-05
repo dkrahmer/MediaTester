@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MediaTester")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("KrahmerSoft")]
 [assembly: AssemblyProduct("MediaTester")]
 [assembly: AssemblyCopyright("KrahmerSoft 2020, Fabiano Riccardi 2022")]
 [assembly: AssemblyTrademark("")]

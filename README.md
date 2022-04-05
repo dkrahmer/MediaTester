@@ -16,7 +16,7 @@ Enjoy!
 
 MediaTester is a portable and compact executable, and it will work with the latest versions of Windows 10, without installing any additional software. This executable targets .NET 4.7.2, which is included by default since Windows 10 Version 1809. 
 
-If you want MediaTesterCli, you have to install .NET 6 (only the Runtime is needed, [download link](https://dotnet.microsoft.com/en-us/download/dotnet/6.0). ), because actually is not installed by default in Windows 10. It is available for Windows, Mac OS and Linux.
+About MediaTesterCli, you can target .NET 4.7.2 or .NET 6. In the latter case, you have to manually install the Runtime, [download link](https://dotnet.microsoft.com/en-us/download/dotnet/6.0). ), because actually is not installed by default in Windows 10, nor in any other OS. It is available for Windows, Mac OS, and Linux.
 
 ## Build Releases
 
@@ -26,7 +26,7 @@ Open the solution in Visual Studio, install the dependencies through Nuget and c
 
 ### MediaTesterCLI
 
-The final releases are generated from command line using `dotnet` tool. Open the Terminal directly in Visual Studio (View > Terminal) and launch the following command:
+If you target .NET 6, the final releases are generated from command line using `dotnet` tool. Open the Terminal directly in Visual Studio (View > Terminal) and launch the following command:
 
     dotnet publish <ProjectName> -r <RuntimeIdentifier> -c Release -p:PublishSingleFile=true --no-self-contained -p:PublishReadyToRun=true
 
@@ -40,12 +40,12 @@ This repository contains 3 projects:
 
 - MediaTesterLib: provides the core functionalities of the MediaTester apps, and it build on top .netstandard 2.0 to guarantee the maximum compability among the different .NET families.
 
-- MediaTesterCli: the command-line fronted, for every architecture supported by .NET6.
+- MediaTesterCli: the command-line fronted, for every architecture supported by .NET 6 and .NET 4.7.2.
 
 - MediaTester: the GUI frontend. This project is based on WinForms for .NET Framework 4.7.2, for the best compatibility with the latests versions of Windows 10/11.
 
-The code is developed in VS2022 and automatically styled with CodeMaid.
+The code is developed in VS2022.
 
 ### Debug and Testing
 
-I suggest to use [HxD](https://mh-nexus.de/en/hxd/), a fast and free hex editor, to alter the test files when you not have a fake media at hand.
+[HxD](https://mh-nexus.de/en/hxd/) can be used to alter test files if a bad media device is not available.

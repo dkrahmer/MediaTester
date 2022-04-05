@@ -18,7 +18,7 @@ namespace KrahmerSoft.MediaTester
 
 		private void linkLabelRepository_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			string url = "http://www.github.com/fabianoriccardi/MediaTester";
+			string url = "https://github.com/dkrahmer/MediaTester";
 
 			// hack because of this: https://github.com/dotnet/corefx/issues/10361
 			url = url.Replace("&", "^&");

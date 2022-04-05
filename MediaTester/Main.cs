@@ -665,7 +665,7 @@ namespace KrahmerSoft.MediaTester
 			Text += $" v{GetVersion()}";
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private void OpenAboutWindow(object sender, EventArgs e)
 		{
 			AboutForm form = new AboutForm();
 			form.versionLabel.Text = $"v{GetVersion()}";

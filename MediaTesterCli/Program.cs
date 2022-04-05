@@ -16,7 +16,7 @@ namespace KrahmerSoft.MediaTesterCli
 				{
 					Console.WriteLine();
 					Console.WriteLine();
-					Console.Write("Please enter a drive letter or a full path: ");
+					Console.Write("Please enter a drive letter or path: ");
 					testDirectory = Console.ReadLine();
 				}
 			}
