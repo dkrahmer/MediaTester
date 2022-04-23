@@ -293,9 +293,9 @@ fi
 		mkdir -p ${OUTPUT_DIRECTORY}MediaTesterCli
 		mkdir -p ${OUTPUT_DIRECTORY}MediaTesterLib
 		
-		rm ${OUTPUT_DIRECTORY}MediaTesterGui/*
-		rm ${OUTPUT_DIRECTORY}MediaTesterCli/*
-		rm ${OUTPUT_DIRECTORY}MediaTesterLib/*
+		rm -f ${OUTPUT_DIRECTORY}MediaTesterGui/*
+		rm -f ${OUTPUT_DIRECTORY}MediaTesterCli/*
+		rm -f ${OUTPUT_DIRECTORY}MediaTesterLib/*
 		
 		cp MediaTesterGui/bin/Release/net462/MediaTesterGui.exe ${OUTPUT_DIRECTORY}MediaTesterGui/
 		cp MediaTesterCli/bin/Release/net462/MediaTester.exe ${OUTPUT_DIRECTORY}MediaTesterCli/
