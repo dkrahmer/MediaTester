@@ -1,42 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net462</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <RootNamespace>KrahmerSoft.MediaTesterGui</RootNamespace>
-    <PackageId>KrahmerSoft.MediaTesterGui</PackageId>
-    <Authors>Doug Krahmer</Authors>
-    <Company>KrahmerSoft</Company>
-    <Copyright>GNU GPL, Copyright Doug Krahmer 2022</Copyright>
-    <PackageProjectUrl>https://github.com/dkrahmer/MediaTester</PackageProjectUrl>
-    <Version>0.5.1</Version>
-    <ApplicationIcon>MediaTesterLogo.ico</ApplicationIcon>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net462</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<RootNamespace>KrahmerSoft.MediaTesterGui</RootNamespace>
+		<PackageId>KrahmerSoft.MediaTesterGui</PackageId>
+		<Authors>Doug Krahmer</Authors>
+		<Company>KrahmerSoft</Company>
+		<Copyright>GNU GPL, Copyright Doug Krahmer 2022</Copyright>
+		<PackageProjectUrl>https://github.com/dkrahmer/MediaTester</PackageProjectUrl>
+		<Version>0.5.1</Version>
+		<ApplicationIcon>MediaTesterLogo.ico</ApplicationIcon>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Costura.Fody" Version="5.7.0">
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Costura.Fody" Version="5.7.0">
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MediaTesterLib\MediaTesterLib.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\MediaTesterLib\MediaTesterLib.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Properties\Settings.Designer.cs">
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 
 </Project>
