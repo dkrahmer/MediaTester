@@ -117,10 +117,113 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>147, 17</value>
-  </metadata>
-  <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="AnExceptionOccurredWhileTesting" xml:space="preserve">
+    <value>An exception occurred while testing.</value>
+  </data>
+  <data name="AverageReadSpeed" xml:space="preserve">
+    <value>Average read speed</value>
+  </data>
+  <data name="AverageWriteSpeed" xml:space="preserve">
+    <value>Average write speed</value>
+  </data>
+  <data name="BeSureToDeleteTemporaryDirectory" xml:space="preserve">
+    <value>Notice: Be sure to delete the temporary directory before using the media.</value>
+  </data>
+  <data name="Bytes" xml:space="preserve">
+    <value>Bytes</value>
+  </data>
+  <data name="BytesPerSecond" xml:space="preserve">
+    <value>Bytes/sec</value>
+  </data>
+  <data name="CheckDeviceAndFolderPermissions" xml:space="preserve">
+    <value>Check device and folder permissions or reconnect the drive and retry.</value>
+  </data>
+  <data name="ContinueWithTest" xml:space="preserve">
+    <value>MediaTester works best if no existing data exists on the target media.\nContinue with non-destructive test?</value>
+    <comment>Start test dialog body</comment>
+  </data>
+  <data name="ExceptionWhileRemovingTempFiles" xml:space="preserve">
+    <value>An exception occurred while removing temporary data file.</value>
+  </data>
+  <data name="Fail" xml:space="preserve">
+    <value>FAIL</value>
+    <comment>Used in results filename</comment>
+  </data>
+  <data name="FailedBlockByteIndex" xml:space="preserve">
+    <value>FAILED block {AbsoluteDataBlockIndex}! Byte index: {AbsoluteDataByteIndex}</value>
+  </data>
+  <data name="FailedWritingBlock" xml:space="preserve">
+    <value>FAILED writing block {AbsoluteDataBlockIndex}. Byte index: {AbsoluteDataByteIndex}.</value>
+  </data>
+  <data name="IdentifyingFirstFailingByte" xml:space="preserve">
+    <value>Identifying first failing byte...</value>
+  </data>
+  <data name="InvalidTarget" xml:space="preserve">
+    <value>Invalid target</value>
+    <comment>Invalid target dialog title</comment>
+  </data>
+  <data name="MediaTestFailed" xml:space="preserve">
+    <value>Media test FAILED! First failing byte: {FirstFailingByteIndex}. Verified {TotalBytesVerified} Bytes.</value>
+  </data>
+  <data name="MediaTestPassed" xml:space="preserve">
+    <value>Media test PASSED!</value>
+  </data>
+  <data name="NotEnoughFreeSpaceToWrite" xml:space="preserve">
+    <value>Not enough free space to write test results file</value>
+  </data>
+  <data name="Pass" xml:space="preserve">
+    <value>PASS</value>
+    <comment>Used in results filename</comment>
+  </data>
+  <data name="QuickTest" xml:space="preserve">
+    <value>Quick test</value>
+  </data>
+  <data name="Read" xml:space="preserve">
+    <value>Read</value>
+  </data>
+  <data name="RemovedTempDataFile" xml:space="preserve">
+    <value>Removed {FilesDeleted} temp data file.</value>
+  </data>
+  <data name="RemovedTempDataFiles" xml:space="preserve">
+    <value>Removed {FilesDeleted} temp data files.</value>
+  </data>
+  <data name="RemovingTempDataFiles" xml:space="preserve">
+    <value>Removing temp data files...</value>
+  </data>
+  <data name="ResultsFilename" xml:space="preserve">
+    <value>MediaTesterResults_{DateTime}_{PassFail}.txt</value>
+    <comment>Results filename (no spaces)</comment>
+  </data>
+  <data name="StartTest" xml:space="preserve">
+    <value>Start test?</value>
+    <comment>Start test dialog title</comment>
+  </data>
+  <data name="TemporaryDataPath" xml:space="preserve">
+    <value>Temporary data path</value>
+  </data>
+  <data name="TheSelectedTargetIsInvalid" xml:space="preserve">
+    <value>The selected target is invalid or does not exist!</value>
+    <comment>Invalid target dialog body</comment>
+  </data>
+  <data name="TheTestWasAborted" xml:space="preserve">
+    <value>The test was aborted by the user.</value>
+  </data>
+  <data name="TotalReportedAvailableSpace" xml:space="preserve">
+    <value>Total reported available space</value>
+  </data>
+  <data name="TotalReportedMediaSize" xml:space="preserve">
+    <value>Total reported media size</value>
+  </data>
+  <data name="VerifiedBlockByteIndex" xml:space="preserve">
+    <value>Verified block {AbsoluteDataBlockIndex}. Byte index: {AbsoluteDataByteIndex}</value>
+  </data>
+  <data name="VerifiedXBytesOfXTotal" xml:space="preserve">
+    <value>Verified {TotalBytesVerified} Bytes of {TargetTotalBytes} Bytes total.</value>
+  </data>
+  <data name="Write" xml:space="preserve">
+    <value>Write</value>
+  </data>
+  <data name="WroteTestResultsFile" xml:space="preserve">
+    <value>Wrote test results file</value>
+  </data>
 </root>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace KrahmerSoft.MediaTester
+namespace KrahmerSoft.MediaTesterGui
 {
 	internal static class Program
 	{
