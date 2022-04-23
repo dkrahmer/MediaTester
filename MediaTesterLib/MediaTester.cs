@@ -162,7 +162,7 @@ namespace KrahmerSoft.MediaTesterLib
 			catch (Exception ex)
 			{
 				IsSuccess = false;
-				OnException?.Invoke(this, new Exception("An unhandled exception ocurred while writing test data.", ex));
+				OnException?.Invoke(this, new Exception("An unexpected exception occurred while writing test data.", ex));
 				return false;
 			}
 		}

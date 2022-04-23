@@ -254,10 +254,10 @@ namespace KrahmerSoft.MediaTester
 		private void LogTestCompletion(bool success)
 		{
 			if (_averageWriteBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog(_mediaTester, $"Average write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_averageReadBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog(_mediaTester, $"Average read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 			{
@@ -531,7 +531,6 @@ namespace KrahmerSoft.MediaTester
 								+ $"to verify it or risk losing your data.\n"
 								+ $"\n"
 								+ $"Written by Doug Krahmer\n"
-								+ $"Released as plublic domain open source.\n"
 								+ $"https://github.com/dkrahmer/MediaTester (Click Help to view)\n\n"
 								+ $"\n"
 								+ $"Version: v{Assembly.GetEntryAssembly().GetName().Version}";
