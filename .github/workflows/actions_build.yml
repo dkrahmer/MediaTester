@@ -1,0 +1,77 @@
+name: Build
+
+on:
+  push:
+    branches:
+    - "**"
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: windows-2019
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Pull code from git
+      uses: actions/checkout@v3
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1.1
+        
+#    - name: Setup .NET
+#      uses: actions/setup-dotnet@v2
+#      with:
+#        dotnet-version: 5.0.x
+
+    - name: Setup Nuget
+      uses: nuget/setup-nuget@v1
+
+    - name: Restore nuget packages
+      run:  |
+        cd "$GITHUB_WORKSPACE"
+        ./build.sh --automation-mode --msbuild-path MSBuild.exe --restore
+
+    - name: Build
+      run:  |
+        cd "$GITHUB_WORKSPACE"
+        ./build.sh --automation-mode --msbuild-path MSBuild.exe --build
+
+#    - name: Run unit tests for .NET Framework v4.6.2
+#      run:  |
+#        cd "$GITHUB_WORKSPACE"
+#        ./build.sh --automation-mode --test-framework
+#
+#    - name: Run unit tests for .NET Core App v3.1
+#      run:  |
+#        cd "$GITHUB_WORKSPACE"
+#        ./build.sh --automation-mode --test-core
+
+    - name: Get assembly versions
+      shell: pwsh
+      run:  |
+        cd "$env:GITHUB_WORKSPACE"
+        echo "LIB_VER=$((Get-Item -Path '_output\MediaTesterLib\KrahmerSoft.MediaTesterLib.dll').VersionInfo.ProductVersion)" >> $Env:GITHUB_ENV
+        echo "CLI_VER=$((Get-Item -Path '_output\MediaTesterCli\MediaTester.exe').VersionInfo.ProductVersion)" >> $Env:GITHUB_ENV
+        echo "GUI_VER=$((Get-Item -Path '_output\MediaTesterGui\MediaTesterGui.exe').VersionInfo.ProductVersion)" >> $Env:GITHUB_ENV
+
+    - name: Create artifact - MediaTesterLib-v${{ env.LIB_VER }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: MediaTesterLib-${{ env.LIB_VER }}
+        path: _output/MediaTesterLib/*
+
+    - name: Create artifact - MediaTesterCli-v${{ env.CLI_VER }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: MediaTesterCli-${{ env.CLI_VER }}
+        path: _output/MediaTesterCli/*
+
+    - name: Create artifact - MediaTesterGui-v${{ env.GUI_VER }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: MediaTesterGui-${{ env.GUI_VER }}
+        path: _output/MediaTesterGui/*
