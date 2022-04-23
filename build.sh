@@ -59,11 +59,6 @@ Initialize()
 
 	SlnFile="MediaTester.sln"
 
-	if [[ "$NUGET" == "" ]]; then
-		# The nuget/setup-nuget build step sets $NUGET
-		NUGET=nuget.exe
-	fi
-
 	if [[ "$IS_BUILD" == "true" ]] && [[ "$MSBuildPath" == "" ]]; then
 		# List of MSBuild paths. Preferred paths listed first.
 		MSBuildPath=$(GetFirstFile \
@@ -282,8 +277,7 @@ fi
 	fi
 
 	if [[ "$RESTORE" == "true" ]]; then
-		#RunSolutionTarget "${SlnFile}" "Restore" "${MSBuildPath}"
-		"$NUGET" restore "${SlnFile}"
+		RunSolutionTarget "${SlnFile}" "Restore" "${MSBuildPath}"
 	fi
 
 	if [[ "$BUILD" == "true" ]]; then
