@@ -325,7 +325,7 @@ fi
 		if [ -d "_output" ]; then
 			echo ""
 			EchoInColor "_output:"
-			ls -goh "_output"
+			ls -hoRg "_output"
 		fi
 	fi
 } 2>&1 | tee "${BUILD_LOG_FILE}"
