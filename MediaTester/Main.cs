@@ -320,8 +320,12 @@ namespace KrahmerSoft.MediaTester
 			_mediaTester.AfterVerifyBlock += AfterVerifyBlock;
 			_mediaTester.AfterWriteBlock += AfterWriteBlock;
 
+			long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
+
 			ClearLog(null, null);
 			WriteLog(_mediaTester, $"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
+			WriteLog(_mediaTester, $"Total reported media size: {lTargetTotalBytes.ToString("#,##0")}{BYTES}");
+			WriteLog(_mediaTester, $"Total reported available space: {lTargetAvailableBytes.ToString("#,##0")}{BYTES}");
 			WriteLog(_mediaTester, $"Temporary data path: '{_mediaTester.GetTestDirectory()}'");
 			_startDateTime = DateTime.Now;
 		}
