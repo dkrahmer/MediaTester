@@ -72,6 +72,7 @@
             this.ReadAverageLabel = new System.Windows.Forms.Label();
             this.WriteAverageLabel = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.LanguageComboBox = new System.Windows.Forms.ComboBox();
             this.RemoveTempDataFilesButton = new System.Windows.Forms.Button();
             this.TestOptionsGgroupBox.SuspendLayout();
             this.StatusStrip.SuspendLayout();
@@ -350,6 +351,20 @@
             resources.ApplyResources(this.WriteAverageLabel, "WriteAverageLabel");
             this.WriteAverageLabel.Name = "WriteAverageLabel";
             // 
+            // LanguageComboBox
+            // 
+            this.LanguageComboBox.DisplayMember = "Description";
+            this.LanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LanguageComboBox.DropDownWidth = 100;
+            this.LanguageComboBox.FormattingEnabled = true;
+            resources.ApplyResources(this.LanguageComboBox, "LanguageComboBox");
+            this.LanguageComboBox.Name = "LanguageComboBox";
+            this.toolTip1.SetToolTip(this.LanguageComboBox, resources.GetString("LanguageComboBox.ToolTip"));
+            this.LanguageComboBox.ValueMember = "Code";
+            this.LanguageComboBox.DropDown += new System.EventHandler(this.LanguageComboBox_DropDown);
+            this.LanguageComboBox.DropDownClosed += new System.EventHandler(this.LanguageComboBox_DropDownClosed);
+            this.LanguageComboBox.SelectedValueChanged += new System.EventHandler(this.LanguageComboBox_SelectedValueChanged);
+            // 
             // RemoveTempDataFilesButton
             // 
             resources.ApplyResources(this.RemoveTempDataFilesButton, "RemoveTempDataFilesButton");
@@ -362,6 +377,7 @@
             this.AcceptButton = this.WriteAndVerifyButton;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.LanguageComboBox);
             this.Controls.Add(this.RemoveTempDataFilesButton);
             this.Controls.Add(this.StatisticsGroupBox);
             this.Controls.Add(this.DefaultOptionsButton);
@@ -431,6 +447,7 @@
 		private System.Windows.Forms.CheckBox RemoveTempDataFilesUponCompletionCheckBox;
 		private System.Windows.Forms.Button RemoveTempDataFilesButton;
 		private System.Windows.Forms.CheckBox SaveTestResultsFileToMediaCheckBox;
+		private System.Windows.Forms.ComboBox LanguageComboBox;
 	}
 }
 

@@ -163,7 +163,7 @@
     <value>2, 2, 2, 2</value>
   </data>
   <data name="TargetTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 20</value>
+    <value>163, 20</value>
   </data>
   <data name="TargetTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -184,13 +184,13 @@
     <value>Top, Right</value>
   </data>
   <data name="ChooseTargetButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>217, 21</value>
+    <value>213, 21</value>
   </data>
   <data name="ChooseTargetButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
   <data name="ChooseTargetButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>21, 20</value>
+    <value>25, 20</value>
   </data>
   <data name="ChooseTargetButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -381,7 +381,7 @@ Search for the last successful byte in reverse instead.
     <value>Top, Right</value>
   </data>
   <data name="WriteAndVerifyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 222</value>
+    <value>256, 222</value>
   </data>
   <data name="WriteAndVerifyButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -410,13 +410,13 @@ Non-destructive.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;WriteAndVerifyButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="VerifyOnlyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="VerifyOnlyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>358, 222</value>
+    <value>357, 222</value>
   </data>
   <data name="VerifyOnlyButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -444,7 +444,7 @@ Will not write anything to media.</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;VerifyOnlyButton.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="TestOptionsGgroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -647,7 +647,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>2, 2, 2, 2</value>
   </data>
   <data name="TestOptionsGgroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 193</value>
+    <value>242, 193</value>
   </data>
   <data name="TestOptionsGgroupBox.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -665,7 +665,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TestOptionsGgroupBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="ActivityLogTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -683,7 +683,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>Both</value>
   </data>
   <data name="ActivityLogTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>447, 112</value>
+    <value>446, 112</value>
   </data>
   <data name="ActivityLogTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -701,7 +701,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;ActivityLogTextBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
@@ -728,7 +728,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>1, 0, 10, 0</value>
   </data>
   <data name="StatusStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>465, 22</value>
+    <value>464, 22</value>
   </data>
   <data name="StatusStrip.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -743,7 +743,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="AboutLinkLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -752,7 +752,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>True</value>
   </data>
   <data name="AboutLinkLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>412, 7</value>
+    <value>411, 7</value>
   </data>
   <data name="AboutLinkLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -779,7 +779,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;AboutLinkLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="SaveOptionsButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>9, 222</value>
@@ -806,7 +806,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;SaveOptionsButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="DefaultOptionsButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>110, 222</value>
@@ -833,13 +833,13 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;DefaultOptionsButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="AbortButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="AbortButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 222</value>
+    <value>256, 222</value>
   </data>
   <data name="AbortButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -866,7 +866,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;AbortButton.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="StatisticsGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1292,7 +1292,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>13</value>
   </data>
   <data name="StatisticsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 24</value>
+    <value>256, 24</value>
   </data>
   <data name="StatisticsGroupBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1319,13 +1319,37 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;StatisticsGroupBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <data name="LanguageComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>368, 4</value>
+  </data>
+  <data name="LanguageComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 21</value>
+  </data>
+  <data name="LanguageComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="LanguageComboBox.ToolTip" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.Name" xml:space="preserve">
+    <value>LanguageComboBox</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="RemoveTempDataFilesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="RemoveTempDataFilesButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>257, 188</value>
+    <value>256, 188</value>
   </data>
   <data name="RemoveTempDataFilesButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1349,7 +1373,7 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>$this</value>
   </data>
   <data name="&gt;&gt;RemoveTempDataFilesButton.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1358,13 +1382,13 @@ Temp test data files will be removed, if necessary, to create space for the test
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>465, 396</value>
+    <value>464, 396</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>481, 371</value>
+    <value>480, 371</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>MediaTester</value>
