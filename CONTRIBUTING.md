@@ -46,7 +46,7 @@ If you cannot find an issue related to the language you are interested in, go ah
 		- Click: Add
     2. Copy the default strings
 		- Open Strings.resx
-		- Select all rows by pressing Ctrl-a
+		- Sort by name then select all rows by pressing Ctrl-a
 		- Copy with Ctrl-c
 		- Open the new Strings.??.resx
 		- Select the first row (String1) then paste with Ctrl-v
