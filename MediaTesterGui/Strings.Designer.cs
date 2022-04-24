@@ -115,6 +115,26 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restart required to change language.
+        /// </summary>
+        internal static string ChangeLanguageRestart {
+            get {
+                return ResourceManager.GetString("ChangeLanguageRestart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The application must restart to change the language.
+        ///Any unsaved settings will be lost.
+        ///Would you like to continue?.
+        /// </summary>
+        internal static string ChangeLanguageRestartDetails {
+            get {
+                return ResourceManager.GetString("ChangeLanguageRestartDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check device and folder permissions or reconnect the drive and retry..
         /// </summary>
         internal static string CheckDeviceAndFolderPermissions {
@@ -124,11 +144,31 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MediaTester works best if no existing data exists on the target media.\nContinue with non-destructive test?.
+        ///   Looks up a localized string similar to MediaTester works best if the target media is empty.
+        ///Continue with non-destructive test?.
         /// </summary>
         internal static string ContinueWithTest {
             get {
                 return ResourceManager.GetString("ContinueWithTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error Loading Options.
+        /// </summary>
+        internal static string ErrorLoadingOptions {
+            get {
+                return ResourceManager.GetString("ErrorLoadingOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error loading options config file.
+        ///Continuing with defaults..
+        /// </summary>
+        internal static string ErrorLoadingOptionsDetails {
+            get {
+                return ResourceManager.GetString("ErrorLoadingOptionsDetails", resourceCulture);
             }
         }
         
@@ -174,6 +214,25 @@ namespace KrahmerSoft.MediaTesterGui {
         internal static string IdentifyingFirstFailingByte {
             get {
                 return ResourceManager.GetString("IdentifyingFirstFailingByte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Language.
+        /// </summary>
+        internal static string InvalidLanguage {
+            get {
+                return ResourceManager.GetString("InvalidLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The configured language name ({InvalidLanguageName}) is invalid.
+        ///The system default will be used: {DefaultLanguageName}.
+        /// </summary>
+        internal static string InvalidLanguageDetails {
+            get {
+                return ResourceManager.GetString("InvalidLanguageDetails", resourceCulture);
             }
         }
         
@@ -282,6 +341,15 @@ namespace KrahmerSoft.MediaTesterGui {
         internal static string StartTest {
             get {
                 return ResourceManager.GetString("StartTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to System Default.
+        /// </summary>
+        internal static string SystemDefault {
+            get {
+                return ResourceManager.GetString("SystemDefault", resourceCulture);
             }
         }
         

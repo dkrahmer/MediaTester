@@ -1,5 +1,6 @@
 ﻿using KrahmerSoft.MediaTesterLib;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Threading;
@@ -9,21 +10,30 @@ namespace KrahmerSoft.MediaTesterGui
 {
 	public partial class Main : Form
 	{
-		private Options _mediaTesterOptions = Options.Deserialize();
-		private MediaTesterLib.MediaTester _mediaTester;
+		private Options _mediaTesterOptions;
+		private readonly bool[] _restartAfterClose;
+		private bool _isInitializing = false;
+		private MediaTester _mediaTester;
 		private Thread _mediaTesterThread;
 		private const string PLACEHOLDER_VALUE = "---";
 		private const string TEST_RESULTS_FILENAME_DATETIME_FORMAT = "yyyy-MM-dd_HH-mm-ss";
 		private DateTime? _startDateTime;
+		private Font _languageComboBoxClosedFont;
+		private Font _languageComboBoxOpenFont;
 
-		public Main()
+		public Main(Options mediaTesterOptions = null, bool[] restartAfterClose = null)
 		{
+			_isInitializing = true;
+			_mediaTesterOptions = mediaTesterOptions ?? Options.Deserialize();
+			_restartAfterClose = restartAfterClose;
+
 			Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 			InitializeComponent();
 			UpdateUiFromOptions();
 			EnableControls();
 
 			FormClosing += Main_FormClosing;
+			_isInitializing = false;
 		}
 
 		private void UpdateUiFromOptions()
@@ -42,8 +52,43 @@ namespace KrahmerSoft.MediaTesterGui
 			QuickFirstFailingByteMethodCheckBox.Checked = _mediaTesterOptions.QuickFirstFailingByteMethod;
 			RemoveTempDataFilesUponCompletionCheckBox.Checked = _mediaTesterOptions.RemoveTempDataFilesUponCompletion;
 			SaveTestResultsFileToMediaCheckBox.Checked = _mediaTesterOptions.SaveTestResultsFileToMedia;
+			_languageComboBoxOpenFont = LanguageComboBox.Font;
+			_languageComboBoxClosedFont = new Font("Courier New", _languageComboBoxOpenFont.Size, FontStyle.Regular);
+			LanguageComboBox.Font = _languageComboBoxClosedFont;
+			LanguageComboBox.Items.AddRange(Languages.Options);
+			SelectCurrentLanguageCode();
+
 
 			UpdateTargetInformation();
+		}
+
+		private void SelectCurrentLanguageCode()
+		{
+			string selectCode = Thread.CurrentThread.CurrentCulture.Name;
+			if (!SelectLanguageCode(selectCode))
+				SelectLanguageCode(Languages.Default);
+		}
+
+		private bool SelectLanguageCode(string selectCode)
+		{
+			_isInitializing = true;
+			try
+			{
+				for (int i = 0; i < Languages.Options.Length; i++)
+				{
+					if (Languages.Options[i].Code == selectCode)
+					{
+						LanguageComboBox.SelectedIndex = i;
+						return true;
+					}
+				}
+
+				return false;
+			}
+			finally
+			{
+				_isInitializing = false;
+			}
 		}
 
 		private void UpdateOptionsFromUi()
@@ -95,7 +140,7 @@ namespace KrahmerSoft.MediaTesterGui
 			{
 				if (Directory.Exists(targetDirectory))
 				{
-					long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(targetDirectory, out long lTargetTotalBytes, actual: true);
+					long lTargetAvailableBytes = MediaTester.GetAvailableBytes(targetDirectory, out long lTargetTotalBytes, actual: true);
 					targetTotalBytes = $"{lTargetTotalBytes:n0} {Strings.Bytes}";
 					targetAvailableBytes = $"{lTargetAvailableBytes:n0} {Strings.Bytes}";
 				}
@@ -266,7 +311,7 @@ namespace KrahmerSoft.MediaTesterGui
 
 			if (success)
 			{
-				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
+				long lTargetAvailableBytes = MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 				WriteLog(_mediaTester, Strings.VerifiedXBytesOfXTotal
 					.Replace("{TotalBytesVerified}", $"{_mediaTester.TotalBytesVerified:n0}")
 					.Replace("{TargetTotalBytes}", $"{lTargetTotalBytes:n0}"));
@@ -292,11 +337,11 @@ namespace KrahmerSoft.MediaTesterGui
 						.Replace("{DateTime}", DateTime.Now.ToString(TEST_RESULTS_FILENAME_DATETIME_FORMAT))
 						.Replace("{PassFail}", success ? Strings.Pass : Strings.Fail));
 				string testResultsLog = ActivityLogTextBox.Text;
-				long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
+				long lTargetAvailableBytes = MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out _, actual: true);
 
 				int spaceNeeded = testResultsLog.Length + (int) Math.Pow(2, 16);
 				bool enoughSpace = true;
-				while (spaceNeeded > MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out lTargetTotalBytes, actual: true))
+				while (spaceNeeded > MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out _, actual: true))
 				{
 					if (_mediaTester.RemoveTempDataFiles(1) < 1)
 					{
@@ -320,13 +365,13 @@ namespace KrahmerSoft.MediaTesterGui
 		private void InitializeMediaTester()
 		{
 			UpdateOptionsFromUi();
-			_mediaTester = new MediaTesterLib.MediaTester(_mediaTesterOptions);
+			_mediaTester = new MediaTester(_mediaTesterOptions);
 			_mediaTester.OnException += OnMediaTesterException;
 			_mediaTester.AfterQuickTest += AfterQuickTest;
 			_mediaTester.AfterVerifyBlock += AfterVerifyBlock;
 			_mediaTester.AfterWriteBlock += AfterWriteBlock;
 
-			long lTargetAvailableBytes = MediaTesterLib.MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
+			long lTargetAvailableBytes = MediaTester.GetAvailableBytes(_mediaTester.GetTestDirectory(), out long lTargetTotalBytes, actual: true);
 
 			ClearLog(null, null);
 			WriteLog(_mediaTester, $"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}");
@@ -344,7 +389,7 @@ namespace KrahmerSoft.MediaTesterGui
 			EnableControls();
 		}
 
-		private void AfterWriteBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
+		private void AfterWriteBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long writeBytesPerSecond, int bytesWritten, int bytesFailedWrite)
 		{
 			UpdateStatus(writeBytesPerSecond: writeBytesPerSecond,
 				writeBytesRemaining: mediaTester.Options.MaxBytesToTest - mediaTester.TotalBytesWritten,
@@ -362,12 +407,12 @@ namespace KrahmerSoft.MediaTesterGui
 			}
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		private void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
 		{
 			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, false);
 		}
 
-		private void AfterVerifyBlock(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
+		private void AfterVerifyBlock(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond, bool isQuickTest = false)
 		{
 			if (!isQuickTest)
 				UpdateStatus(readBytesPerSecond: readBytesPerSecond,
@@ -394,12 +439,12 @@ namespace KrahmerSoft.MediaTesterGui
 			}
 		}
 
-		private void AfterQuickTest(MediaTesterLib.MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
+		private void AfterQuickTest(MediaTester mediaTester, long absoluteDataBlockIndex, long absoluteDataByteIndex, string testFilePath, long readBytesPerSecond, int bytesVerified, int bytesFailed, long verifyBytesPerSecond)
 		{
 			AfterVerifyBlock(mediaTester, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, readBytesPerSecond, bytesVerified, bytesFailed, verifyBytesPerSecond, true);
 		}
 
-		private void OnMediaTesterException(MediaTesterLib.MediaTester mediaTester, Exception exception)
+		private void OnMediaTesterException(MediaTester mediaTester, Exception exception)
 		{
 			WriteLog(mediaTester, $"{exception.Message}");
 			if (exception.InnerException != null)
@@ -408,8 +453,8 @@ namespace KrahmerSoft.MediaTesterGui
 			}
 		}
 
-		private delegate void WriteLogDelegate(MediaTesterLib.MediaTester mediaTester, string message);
-		private void WriteLog(MediaTesterLib.MediaTester mediaTester, string message)
+		private delegate void WriteLogDelegate(MediaTester mediaTester, string message);
+		private void WriteLog(MediaTester mediaTester, string message)
 		{
 			if (ActivityLogTextBox.InvokeRequired)
 			{
@@ -579,6 +624,39 @@ namespace KrahmerSoft.MediaTesterGui
 			catch
 			{
 			}
+		}
+
+		private void LanguageComboBox_SelectedValueChanged(object sender, EventArgs e)
+		{
+			if (_isInitializing)
+				return;
+
+			string languageCode = (LanguageComboBox.SelectedItem as Languages.LanguageCode)?.Code;
+			if (languageCode == Thread.CurrentThread.CurrentCulture.Name)
+				return;
+
+			if (MessageBox.Show(Strings.ChangeLanguageRestartDetails, Strings.ChangeLanguageRestart, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				_mediaTesterOptions.LanguageCode = languageCode;
+
+				if (_restartAfterClose != null && _restartAfterClose.Length > 0)
+					_restartAfterClose[0] = true;
+				Close();
+			}
+			else
+			{
+				SelectCurrentLanguageCode();
+			}
+		}
+
+		private void LanguageComboBox_DropDownClosed(object sender, EventArgs e)
+		{
+			LanguageComboBox.Font = _languageComboBoxClosedFont;
+		}
+
+		private void LanguageComboBox_DropDown(object sender, EventArgs e)
+		{
+			LanguageComboBox.Font = _languageComboBoxOpenFont;
 		}
 	}
 }

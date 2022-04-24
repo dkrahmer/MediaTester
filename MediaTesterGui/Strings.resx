@@ -135,12 +135,28 @@
   <data name="BytesPerSecond" xml:space="preserve">
     <value>Bytes/sec</value>
   </data>
+  <data name="ChangeLanguageRestart" xml:space="preserve">
+    <value>Restart required to change language</value>
+  </data>
+  <data name="ChangeLanguageRestartDetails" xml:space="preserve">
+    <value>The application must restart to change the language.
+Any unsaved settings will be lost.
+Would you like to continue?</value>
+  </data>
   <data name="CheckDeviceAndFolderPermissions" xml:space="preserve">
     <value>Check device and folder permissions or reconnect the drive and retry.</value>
   </data>
   <data name="ContinueWithTest" xml:space="preserve">
-    <value>MediaTester works best if no existing data exists on the target media.\nContinue with non-destructive test?</value>
+    <value>MediaTester works best if the target media is empty.
+Continue with non-destructive test?</value>
     <comment>Start test dialog body</comment>
+  </data>
+  <data name="ErrorLoadingOptions" xml:space="preserve">
+    <value>Error Loading Options</value>
+  </data>
+  <data name="ErrorLoadingOptionsDetails" xml:space="preserve">
+    <value>Error loading options config file.
+Continuing with defaults.</value>
   </data>
   <data name="ExceptionWhileRemovingTempFiles" xml:space="preserve">
     <value>An exception occurred while removing temporary data file.</value>
@@ -157,6 +173,13 @@
   </data>
   <data name="IdentifyingFirstFailingByte" xml:space="preserve">
     <value>Identifying first failing byte...</value>
+  </data>
+  <data name="InvalidLanguage" xml:space="preserve">
+    <value>Invalid Language</value>
+  </data>
+  <data name="InvalidLanguageDetails" xml:space="preserve">
+    <value>The configured language name ({InvalidLanguageName}) is invalid.
+The system default will be used: {DefaultLanguageName}</value>
   </data>
   <data name="InvalidTarget" xml:space="preserve">
     <value>Invalid target</value>
@@ -197,6 +220,9 @@
   <data name="StartTest" xml:space="preserve">
     <value>Start test?</value>
     <comment>Start test dialog title</comment>
+  </data>
+  <data name="SystemDefault" xml:space="preserve">
+    <value>System Default</value>
   </data>
   <data name="TemporaryDataPath" xml:space="preserve">
     <value>Temporary data path</value>
