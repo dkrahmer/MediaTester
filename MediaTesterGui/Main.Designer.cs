@@ -83,17 +83,20 @@
             // 
             resources.ApplyResources(this.TargetLabel, "TargetLabel");
             this.TargetLabel.Name = "TargetLabel";
+            this.toolTip1.SetToolTip(this.TargetLabel, resources.GetString("TargetLabel.ToolTip"));
             // 
             // TargetTextBox
             // 
             resources.ApplyResources(this.TargetTextBox, "TargetTextBox");
             this.TargetTextBox.Name = "TargetTextBox";
+            this.toolTip1.SetToolTip(this.TargetTextBox, resources.GetString("TargetTextBox.ToolTip"));
             this.TargetTextBox.TextChanged += new System.EventHandler(this.TargetTextBox_TextChanged);
             // 
             // ChooseTargetButton
             // 
             resources.ApplyResources(this.ChooseTargetButton, "ChooseTargetButton");
             this.ChooseTargetButton.Name = "ChooseTargetButton";
+            this.toolTip1.SetToolTip(this.ChooseTargetButton, resources.GetString("ChooseTargetButton.ToolTip"));
             this.ChooseTargetButton.UseVisualStyleBackColor = true;
             this.ChooseTargetButton.Click += new System.EventHandler(this.ChooseTargetButton_Click);
             // 
@@ -108,14 +111,16 @@
             // 
             resources.ApplyResources(this.TotalBytesToTestLabel, "TotalBytesToTestLabel");
             this.TotalBytesToTestLabel.Name = "TotalBytesToTestLabel";
+            this.toolTip1.SetToolTip(this.TotalBytesToTestLabel, resources.GetString("TotalBytesToTestLabel.ToolTip"));
             // 
             // MaxBytesToTestComboBox
             // 
+            resources.ApplyResources(this.MaxBytesToTestComboBox, "MaxBytesToTestComboBox");
             this.MaxBytesToTestComboBox.FormattingEnabled = true;
             this.MaxBytesToTestComboBox.Items.AddRange(new object[] {
             resources.GetString("MaxBytesToTestComboBox.Items")});
-            resources.ApplyResources(this.MaxBytesToTestComboBox, "MaxBytesToTestComboBox");
             this.MaxBytesToTestComboBox.Name = "MaxBytesToTestComboBox";
+            this.toolTip1.SetToolTip(this.MaxBytesToTestComboBox, resources.GetString("MaxBytesToTestComboBox.ToolTip"));
             // 
             // QuickTestAfterEachFileCheckBox
             // 
@@ -166,6 +171,7 @@
             this.TestOptionsGgroupBox.Controls.Add(this.QuickTestAfterEachFileCheckBox);
             this.TestOptionsGgroupBox.Name = "TestOptionsGgroupBox";
             this.TestOptionsGgroupBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.TestOptionsGgroupBox, resources.GetString("TestOptionsGgroupBox.ToolTip"));
             // 
             // SaveTestResultsFileToMediaCheckBox
             // 
@@ -185,65 +191,73 @@
             // 
             resources.ApplyResources(this.TargetAvailableBytesLabel, "TargetAvailableBytesLabel");
             this.TargetAvailableBytesLabel.Name = "TargetAvailableBytesLabel";
+            this.toolTip1.SetToolTip(this.TargetAvailableBytesLabel, resources.GetString("TargetAvailableBytesLabel.ToolTip"));
             // 
             // TargetTotalBytesLabel
             // 
             resources.ApplyResources(this.TargetTotalBytesLabel, "TargetTotalBytesLabel");
             this.TargetTotalBytesLabel.Name = "TargetTotalBytesLabel";
+            this.toolTip1.SetToolTip(this.TargetTotalBytesLabel, resources.GetString("TargetTotalBytesLabel.ToolTip"));
             // 
             // TargetAvailableBytesLabelLabel
             // 
             resources.ApplyResources(this.TargetAvailableBytesLabelLabel, "TargetAvailableBytesLabelLabel");
             this.TargetAvailableBytesLabelLabel.Name = "TargetAvailableBytesLabelLabel";
+            this.toolTip1.SetToolTip(this.TargetAvailableBytesLabelLabel, resources.GetString("TargetAvailableBytesLabelLabel.ToolTip"));
             // 
             // TargetTotalBytesLabelLabel
             // 
             resources.ApplyResources(this.TargetTotalBytesLabelLabel, "TargetTotalBytesLabelLabel");
             this.TargetTotalBytesLabelLabel.Name = "TargetTotalBytesLabelLabel";
+            this.toolTip1.SetToolTip(this.TargetTotalBytesLabelLabel, resources.GetString("TargetTotalBytesLabelLabel.ToolTip"));
             // 
             // ActivityLogTextBox
             // 
             resources.ApplyResources(this.ActivityLogTextBox, "ActivityLogTextBox");
             this.ActivityLogTextBox.Name = "ActivityLogTextBox";
             this.ActivityLogTextBox.ReadOnly = true;
+            this.toolTip1.SetToolTip(this.ActivityLogTextBox, resources.GetString("ActivityLogTextBox.ToolTip"));
             // 
             // StatusStrip
             // 
+            resources.ApplyResources(this.StatusStrip, "StatusStrip");
             this.StatusStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ProgressBar,
             this.ReadBytesPerSecondStatusLabel,
             this.WriteBytesPerSecondStatusLabel});
-            resources.ApplyResources(this.StatusStrip, "StatusStrip");
             this.StatusStrip.Name = "StatusStrip";
+            this.toolTip1.SetToolTip(this.StatusStrip, resources.GetString("StatusStrip.ToolTip"));
             // 
             // ProgressBar
             // 
+            resources.ApplyResources(this.ProgressBar, "ProgressBar");
             this.ProgressBar.Maximum = 1000;
             this.ProgressBar.Name = "ProgressBar";
-            resources.ApplyResources(this.ProgressBar, "ProgressBar");
             // 
             // ReadBytesPerSecondStatusLabel
             // 
-            this.ReadBytesPerSecondStatusLabel.Name = "ReadBytesPerSecondStatusLabel";
             resources.ApplyResources(this.ReadBytesPerSecondStatusLabel, "ReadBytesPerSecondStatusLabel");
+            this.ReadBytesPerSecondStatusLabel.Name = "ReadBytesPerSecondStatusLabel";
             // 
             // WriteBytesPerSecondStatusLabel
             // 
-            this.WriteBytesPerSecondStatusLabel.Name = "WriteBytesPerSecondStatusLabel";
             resources.ApplyResources(this.WriteBytesPerSecondStatusLabel, "WriteBytesPerSecondStatusLabel");
+            this.WriteBytesPerSecondStatusLabel.Name = "WriteBytesPerSecondStatusLabel";
             // 
             // AboutLinkLabel
             // 
             resources.ApplyResources(this.AboutLinkLabel, "AboutLinkLabel");
             this.AboutLinkLabel.Name = "AboutLinkLabel";
             this.AboutLinkLabel.TabStop = true;
+            this.toolTip1.SetToolTip(this.AboutLinkLabel, resources.GetString("AboutLinkLabel.ToolTip"));
             this.AboutLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutLinkLabel_LinkClicked);
             // 
             // SaveOptionsButton
             // 
             resources.ApplyResources(this.SaveOptionsButton, "SaveOptionsButton");
             this.SaveOptionsButton.Name = "SaveOptionsButton";
+            this.toolTip1.SetToolTip(this.SaveOptionsButton, resources.GetString("SaveOptionsButton.ToolTip"));
             this.SaveOptionsButton.UseVisualStyleBackColor = true;
             this.SaveOptionsButton.Click += new System.EventHandler(this.SaveOptions_Click);
             // 
@@ -251,6 +265,7 @@
             // 
             resources.ApplyResources(this.DefaultOptionsButton, "DefaultOptionsButton");
             this.DefaultOptionsButton.Name = "DefaultOptionsButton";
+            this.toolTip1.SetToolTip(this.DefaultOptionsButton, resources.GetString("DefaultOptionsButton.ToolTip"));
             this.DefaultOptionsButton.UseVisualStyleBackColor = true;
             this.DefaultOptionsButton.Click += new System.EventHandler(this.DefaultOptionsButton_Click);
             // 
@@ -258,6 +273,7 @@
             // 
             resources.ApplyResources(this.AbortButton, "AbortButton");
             this.AbortButton.Name = "AbortButton";
+            this.toolTip1.SetToolTip(this.AbortButton, resources.GetString("AbortButton.ToolTip"));
             this.AbortButton.UseVisualStyleBackColor = true;
             this.AbortButton.Click += new System.EventHandler(this.AbortButton_Click);
             // 
@@ -280,84 +296,99 @@
             this.StatisticsGroupBox.Controls.Add(this.WriteAverageLabel);
             this.StatisticsGroupBox.Name = "StatisticsGroupBox";
             this.StatisticsGroupBox.TabStop = false;
+            this.toolTip1.SetToolTip(this.StatisticsGroupBox, resources.GetString("StatisticsGroupBox.ToolTip"));
             // 
             // TotalTimeRemainingLabel
             // 
             resources.ApplyResources(this.TotalTimeRemainingLabel, "TotalTimeRemainingLabel");
             this.TotalTimeRemainingLabel.Name = "TotalTimeRemainingLabel";
+            this.toolTip1.SetToolTip(this.TotalTimeRemainingLabel, resources.GetString("TotalTimeRemainingLabel.ToolTip"));
             // 
             // RemainingLabel
             // 
             resources.ApplyResources(this.RemainingLabel, "RemainingLabel");
             this.RemainingLabel.Name = "RemainingLabel";
+            this.toolTip1.SetToolTip(this.RemainingLabel, resources.GetString("RemainingLabel.ToolTip"));
             // 
             // ElapsedTimeLabel
             // 
             resources.ApplyResources(this.ElapsedTimeLabel, "ElapsedTimeLabel");
             this.ElapsedTimeLabel.Name = "ElapsedTimeLabel";
+            this.toolTip1.SetToolTip(this.ElapsedTimeLabel, resources.GetString("ElapsedTimeLabel.ToolTip"));
             // 
             // ElapsedLabel
             // 
             resources.ApplyResources(this.ElapsedLabel, "ElapsedLabel");
             this.ElapsedLabel.Name = "ElapsedLabel";
+            this.toolTip1.SetToolTip(this.ElapsedLabel, resources.GetString("ElapsedLabel.ToolTip"));
             // 
             // FailedBytesLabel
             // 
             resources.ApplyResources(this.FailedBytesLabel, "FailedBytesLabel");
             this.FailedBytesLabel.Name = "FailedBytesLabel";
+            this.toolTip1.SetToolTip(this.FailedBytesLabel, resources.GetString("FailedBytesLabel.ToolTip"));
             // 
             // VerifiedBytesLabel
             // 
             resources.ApplyResources(this.VerifiedBytesLabel, "VerifiedBytesLabel");
             this.VerifiedBytesLabel.Name = "VerifiedBytesLabel";
+            this.toolTip1.SetToolTip(this.VerifiedBytesLabel, resources.GetString("VerifiedBytesLabel.ToolTip"));
             // 
             // WrittenBytesLabel
             // 
             resources.ApplyResources(this.WrittenBytesLabel, "WrittenBytesLabel");
             this.WrittenBytesLabel.Name = "WrittenBytesLabel";
+            this.toolTip1.SetToolTip(this.WrittenBytesLabel, resources.GetString("WrittenBytesLabel.ToolTip"));
             // 
             // ReadSpeedLabel
             // 
             resources.ApplyResources(this.ReadSpeedLabel, "ReadSpeedLabel");
             this.ReadSpeedLabel.Name = "ReadSpeedLabel";
+            this.toolTip1.SetToolTip(this.ReadSpeedLabel, resources.GetString("ReadSpeedLabel.ToolTip"));
             // 
             // WriteSpeedLabel
             // 
             resources.ApplyResources(this.WriteSpeedLabel, "WriteSpeedLabel");
             this.WriteSpeedLabel.Name = "WriteSpeedLabel";
+            this.toolTip1.SetToolTip(this.WriteSpeedLabel, resources.GetString("WriteSpeedLabel.ToolTip"));
             // 
             // FailedLabel
             // 
             resources.ApplyResources(this.FailedLabel, "FailedLabel");
             this.FailedLabel.Name = "FailedLabel";
+            this.toolTip1.SetToolTip(this.FailedLabel, resources.GetString("FailedLabel.ToolTip"));
             // 
             // VerifiedLabel
             // 
             resources.ApplyResources(this.VerifiedLabel, "VerifiedLabel");
             this.VerifiedLabel.Name = "VerifiedLabel";
+            this.toolTip1.SetToolTip(this.VerifiedLabel, resources.GetString("VerifiedLabel.ToolTip"));
             // 
             // WrittenLabel
             // 
             resources.ApplyResources(this.WrittenLabel, "WrittenLabel");
             this.WrittenLabel.Name = "WrittenLabel";
+            this.toolTip1.SetToolTip(this.WrittenLabel, resources.GetString("WrittenLabel.ToolTip"));
             // 
             // ReadAverageLabel
             // 
             resources.ApplyResources(this.ReadAverageLabel, "ReadAverageLabel");
             this.ReadAverageLabel.Name = "ReadAverageLabel";
+            this.toolTip1.SetToolTip(this.ReadAverageLabel, resources.GetString("ReadAverageLabel.ToolTip"));
             // 
             // WriteAverageLabel
             // 
             resources.ApplyResources(this.WriteAverageLabel, "WriteAverageLabel");
             this.WriteAverageLabel.Name = "WriteAverageLabel";
+            this.toolTip1.SetToolTip(this.WriteAverageLabel, resources.GetString("WriteAverageLabel.ToolTip"));
             // 
             // LanguageComboBox
             // 
+            resources.ApplyResources(this.LanguageComboBox, "LanguageComboBox");
             this.LanguageComboBox.DisplayMember = "Description";
             this.LanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.LanguageComboBox.DropDownWidth = 100;
             this.LanguageComboBox.FormattingEnabled = true;
-            resources.ApplyResources(this.LanguageComboBox, "LanguageComboBox");
             this.LanguageComboBox.Name = "LanguageComboBox";
             this.toolTip1.SetToolTip(this.LanguageComboBox, resources.GetString("LanguageComboBox.ToolTip"));
             this.LanguageComboBox.ValueMember = "Code";
@@ -369,6 +400,7 @@
             // 
             resources.ApplyResources(this.RemoveTempDataFilesButton, "RemoveTempDataFilesButton");
             this.RemoveTempDataFilesButton.Name = "RemoveTempDataFilesButton";
+            this.toolTip1.SetToolTip(this.RemoveTempDataFilesButton, resources.GetString("RemoveTempDataFilesButton.ToolTip"));
             this.RemoveTempDataFilesButton.UseVisualStyleBackColor = true;
             this.RemoveTempDataFilesButton.Click += new System.EventHandler(this.RemoveTempDataFilesButton_Click);
             // 
@@ -390,6 +422,7 @@
             this.Controls.Add(this.WriteAndVerifyButton);
             this.Controls.Add(this.AbortButton);
             this.Name = "Main";
+            this.toolTip1.SetToolTip(this, resources.GetString("$this.ToolTip"));
             this.Load += new System.EventHandler(this.Main_Load);
             this.TestOptionsGgroupBox.ResumeLayout(false);
             this.TestOptionsGgroupBox.PerformLayout();

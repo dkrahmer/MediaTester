@@ -117,1167 +117,1010 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="TargetLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="TargetLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 23</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="TargetLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TargetLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 13</value>
-  </data>
-  <data name="TargetLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="TargetLabel.Text" xml:space="preserve">
     <value>Target</value>
   </data>
-  <data name="TargetLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
+  <data name="&gt;&gt;TargetTotalBytesLabelLabel.Name" xml:space="preserve">
+    <value>TargetTotalBytesLabelLabel</value>
   </data>
-  <data name="&gt;&gt;TargetLabel.Name" xml:space="preserve">
-    <value>TargetLabel</value>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="WriteAndVerifyButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 28</value>
   </data>
-  <data name="&gt;&gt;TargetLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TargetLabel.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TargetLabel.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="TargetTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="TargetTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>46, 22</value>
-  </data>
-  <data name="TargetTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="TargetTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>163, 20</value>
-  </data>
-  <data name="TargetTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;TargetTextBox.Name" xml:space="preserve">
-    <value>TargetTextBox</value>
-  </data>
-  <data name="&gt;&gt;TargetTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TargetTextBox.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TargetTextBox.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="ChooseTargetButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="ChooseTargetButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>213, 21</value>
-  </data>
-  <data name="ChooseTargetButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="ChooseTargetButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>25, 20</value>
-  </data>
-  <data name="ChooseTargetButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="ChooseTargetButton.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
-  <data name="&gt;&gt;ChooseTargetButton.Name" xml:space="preserve">
-    <value>ChooseTargetButton</value>
-  </data>
-  <data name="&gt;&gt;ChooseTargetButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ChooseTargetButton.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;ChooseTargetButton.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="StopProcessingOnFailureCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="StopProcessingOnFailureCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 97</value>
-  </data>
-  <data name="StopProcessingOnFailureCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="StopProcessingOnFailureCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 17</value>
-  </data>
-  <data name="StopProcessingOnFailureCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="StopProcessingOnFailureCheckBox.Text" xml:space="preserve">
-    <value>Stop processing on first failure</value>
-  </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>147, 17</value>
-  </metadata>
-  <data name="StopProcessingOnFailureCheckBox.ToolTip" xml:space="preserve">
-    <value>Stop the test process after a single failure.
-(recommended)</value>
-  </data>
-  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.Name" xml:space="preserve">
-    <value>StopProcessingOnFailureCheckBox</value>
-  </data>
-  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="TotalBytesToTestLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TotalBytesToTestLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 76</value>
-  </data>
-  <data name="TotalBytesToTestLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TotalBytesToTestLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>100, 13</value>
-  </data>
-  <data name="TotalBytesToTestLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="TotalBytesToTestLabel.Text" xml:space="preserve">
-    <value>Total Bytes To Test</value>
-  </data>
-  <data name="TotalBytesToTestLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="&gt;&gt;TotalBytesToTestLabel.Name" xml:space="preserve">
-    <value>TotalBytesToTestLabel</value>
-  </data>
-  <data name="&gt;&gt;TotalBytesToTestLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TotalBytesToTestLabel.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TotalBytesToTestLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="MaxBytesToTestComboBox.Items" xml:space="preserve">
-    <value>All Available Bytes</value>
-  </data>
-  <data name="MaxBytesToTestComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 74</value>
-  </data>
-  <data name="MaxBytesToTestComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="MaxBytesToTestComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>117, 21</value>
-  </data>
-  <data name="MaxBytesToTestComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;MaxBytesToTestComboBox.Name" xml:space="preserve">
-    <value>MaxBytesToTestComboBox</value>
-  </data>
-  <data name="&gt;&gt;MaxBytesToTestComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;MaxBytesToTestComboBox.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;MaxBytesToTestComboBox.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 116</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>234, 17</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.Text" xml:space="preserve">
-    <value>Quick test after writing each GiB of test data</value>
-  </data>
-  <data name="QuickTestAfterEachFileCheckBox.ToolTip" xml:space="preserve">
-    <value>Performs brief spot checks as data is written.
-Enabling this will detect common failures much faster.
-(recommended)</value>
+  <data name="AboutLinkLabel.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.Name" xml:space="preserve">
     <value>QuickTestAfterEachFileCheckBox</value>
   </data>
-  <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;TargetTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.AutoSize" type="System.Boolean, mscorlib">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ActivityLogTextBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 136</value>
+  <data name="&gt;&gt;ReadSpeedLabel.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="TestOptionsGgroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
-  </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 17</value>
-  </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.Text" xml:space="preserve">
-    <value>Quick find first failing byte</value>
-  </data>
-  <data name="QuickFirstFailingByteMethodCheckBox.ToolTip" xml:space="preserve">
-    <value>If a failure is encountered, skip testing all written files from the beginning.
-Search for the last successful byte in reverse instead.
-(recommended)</value>
-  </data>
-  <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.Name" xml:space="preserve">
-    <value>QuickFirstFailingByteMethodCheckBox</value>
   </data>
   <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.Parent" xml:space="preserve">
+  <data name="$this.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ChooseTargetButton.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="ElapsedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;WriteBytesPerSecondStatusLabel.Name" xml:space="preserve">
+    <value>WriteBytesPerSecondStatusLabel</value>
+  </data>
+  <data name="&gt;&gt;VerifyOnlyButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="TargetTotalBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="VerifyOnlyButton.Text" xml:space="preserve">
+    <value>Verify Only</value>
+  </data>
+  <data name="RemoveTempDataFilesButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>256, 188</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>107, 59</value>
+  </data>
+  <data name="StopProcessingOnFailureCheckBox.Text" xml:space="preserve">
+    <value>Stop processing on first failure</value>
+  </data>
+  <data name="VerifiedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="WriteSpeedLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <data name="TotalBytesToTestLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 13</value>
+  </data>
+  <data name="&gt;&gt;MaxBytesToTestComboBox.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;StatisticsGroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;WrittenLabel.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabel.Name" xml:space="preserve">
+    <value>TargetAvailableBytesLabel</value>
+  </data>
+  <data name="TargetTotalBytesLabelLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
+  </data>
+  <data name="RemainingLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrittenBytesLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <data name="ReadAverageLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;DefaultOptionsButton.Name" xml:space="preserve">
+    <value>DefaultOptionsButton</value>
+  </data>
+  <data name="VerifyOnlyButton.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.Parent" xml:space="preserve">
     <value>TestOptionsGgroupBox</value>
   </data>
-  <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="TargetTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="WriteAndVerifyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="VerifyOnlyButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>357, 222</value>
   </data>
-  <data name="WriteAndVerifyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 222</value>
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 154</value>
   </data>
-  <data name="WriteAndVerifyButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="StopProcessingOnFailureCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="WriteAndVerifyButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 28</value>
+  <data name="LanguageComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>368, 4</value>
   </data>
-  <data name="WriteAndVerifyButton.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+  <data name="ActivityLogTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
-  <data name="WriteAndVerifyButton.Text" xml:space="preserve">
-    <value>Write and Verify</value>
+  <data name="FailedBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 100</value>
+  </data>
+  <data name="&gt;&gt;AboutLinkLabel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="ChooseTargetButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="WriteAndVerifyButton.ToolTip" xml:space="preserve">
     <value>Write test data to media then read back to verify data was stored correctly.
 Only available space will be used.
 Non-destructive.</value>
   </data>
-  <data name="&gt;&gt;WriteAndVerifyButton.Name" xml:space="preserve">
-    <value>WriteAndVerifyButton</value>
+  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;WriteAndVerifyButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="FailedLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 100</value>
   </data>
-  <data name="&gt;&gt;WriteAndVerifyButton.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="ReadSpeedLabel.Text" xml:space="preserve">
+    <value>---</value>
   </data>
-  <data name="&gt;&gt;WriteAndVerifyButton.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="TargetTotalBytesLabelLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
-  <data name="VerifyOnlyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="TargetTextBox.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="VerifyOnlyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 222</value>
+  <data name="RemainingLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>57, 13</value>
   </data>
-  <data name="VerifyOnlyButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="&gt;&gt;MaxBytesToTestComboBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
   </data>
-  <data name="VerifyOnlyButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 28</value>
+  <data name="&gt;&gt;FailedBytesLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="VerifyOnlyButton.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+  <data name="StatusStrip.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
   </data>
-  <data name="VerifyOnlyButton.Text" xml:space="preserve">
-    <value>Verify Only</value>
+  <data name="VerifiedLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;TargetTextBox.Name" xml:space="preserve">
+    <value>TargetTextBox</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;TargetLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ElapsedLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SaveOptionsButton.Text" xml:space="preserve">
+    <value>Save Options</value>
+  </data>
+  <data name="ChooseTargetButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
   <data name="VerifyOnlyButton.ToolTip" xml:space="preserve">
     <value>Verify previous written test data.
 Will not write anything to media.</value>
   </data>
-  <data name="&gt;&gt;VerifyOnlyButton.Name" xml:space="preserve">
-    <value>VerifyOnlyButton</value>
-  </data>
-  <data name="&gt;&gt;VerifyOnlyButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;VerifyOnlyButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;VerifyOnlyButton.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="TestOptionsGgroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 173</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>184, 17</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.Text" xml:space="preserve">
-    <value>Save test results file to media root</value>
-  </data>
-  <data name="SaveTestResultsFileToMediaCheckBox.ToolTip" xml:space="preserve">
-    <value>Save test results file to media with full test log output.
-MediaTesterResults_YYYY-MM-DD_hh-mm-ss.txt
-Temp test data files will be removed, if necessary, to create space for the test results file.</value>
-  </data>
-  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.Name" xml:space="preserve">
-    <value>SaveTestResultsFileToMediaCheckBox</value>
-  </data>
-  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 154</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>218, 17</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.Text" xml:space="preserve">
-    <value>Remove temp data files upon completion</value>
-  </data>
-  <data name="RemoveTempDataFilesUponCompletionCheckBox.ToolTip" xml:space="preserve">
-    <value>Remove temporary data files after verification completion (pass or fail).</value>
-  </data>
-  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.Name" xml:space="preserve">
-    <value>RemoveTempDataFilesUponCompletionCheckBox</value>
-  </data>
-  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="TargetAvailableBytesLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TargetAvailableBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 59</value>
-  </data>
-  <data name="TargetAvailableBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TargetAvailableBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="TargetAvailableBytesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="TargetAvailableBytesLabel.Text" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabel.Name" xml:space="preserve">
-    <value>TargetAvailableBytesLabel</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabel.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="TargetTotalBytesLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TargetTotalBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>107, 44</value>
-  </data>
-  <data name="TargetTotalBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TargetTotalBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="TargetTotalBytesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="TargetTotalBytesLabel.Text" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabel.Name" xml:space="preserve">
-    <value>TargetTotalBytesLabel</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabel.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabel.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="TargetAvailableBytesLabelLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TargetAvailableBytesLabelLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 59</value>
-  </data>
-  <data name="TargetAvailableBytesLabelLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TargetAvailableBytesLabelLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>84, 13</value>
-  </data>
-  <data name="TargetAvailableBytesLabelLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="TargetAvailableBytesLabelLabel.Text" xml:space="preserve">
-    <value>Available Space</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.Name" xml:space="preserve">
-    <value>TargetAvailableBytesLabelLabel</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="TargetTotalBytesLabelLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TargetTotalBytesLabelLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 42</value>
-  </data>
-  <data name="TargetTotalBytesLabelLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TargetTotalBytesLabelLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
-  </data>
-  <data name="TargetTotalBytesLabelLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="TargetTotalBytesLabelLabel.Text" xml:space="preserve">
-    <value>Total Size</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabelLabel.Name" xml:space="preserve">
-    <value>TargetTotalBytesLabelLabel</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabelLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabelLabel.Parent" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TargetTotalBytesLabelLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="TestOptionsGgroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 24</value>
-  </data>
-  <data name="TestOptionsGgroupBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="TestOptionsGgroupBox.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="TestOptionsGgroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>242, 193</value>
-  </data>
-  <data name="TestOptionsGgroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="TestOptionsGgroupBox.Text" xml:space="preserve">
-    <value>Test Options</value>
-  </data>
-  <data name="&gt;&gt;TestOptionsGgroupBox.Name" xml:space="preserve">
-    <value>TestOptionsGgroupBox</value>
-  </data>
-  <data name="&gt;&gt;TestOptionsGgroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TestOptionsGgroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TestOptionsGgroupBox.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="ActivityLogTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="ActivityLogTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 254</value>
-  </data>
-  <data name="ActivityLogTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="ActivityLogTextBox.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ActivityLogTextBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Both</value>
-  </data>
-  <data name="ActivityLogTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>446, 112</value>
-  </data>
-  <data name="ActivityLogTextBox.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="ActivityLogTextBox.WordWrap" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
   <data name="&gt;&gt;ActivityLogTextBox.Name" xml:space="preserve">
     <value>ActivityLogTextBox</value>
-  </data>
-  <data name="&gt;&gt;ActivityLogTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ActivityLogTextBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ActivityLogTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <data name="ProgressBar.Size" type="System.Drawing.Size, System.Drawing">
-    <value>150, 16</value>
-  </data>
-  <data name="ReadBytesPerSecondStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 17</value>
-  </data>
-  <data name="ReadBytesPerSecondStatusLabel.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
-  <data name="WriteBytesPerSecondStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 17</value>
-  </data>
-  <data name="WriteBytesPerSecondStatusLabel.Text" xml:space="preserve">
-    <value>...</value>
-  </data>
-  <data name="StatusStrip.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 374</value>
-  </data>
-  <data name="StatusStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>1, 0, 10, 0</value>
-  </data>
-  <data name="StatusStrip.Size" type="System.Drawing.Size, System.Drawing">
-    <value>464, 22</value>
-  </data>
-  <data name="StatusStrip.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip.Name" xml:space="preserve">
-    <value>StatusStrip</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip.Type" xml:space="preserve">
-    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="AboutLinkLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="AboutLinkLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="AboutLinkLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>411, 7</value>
-  </data>
-  <data name="AboutLinkLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="AboutLinkLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 13</value>
-  </data>
-  <data name="AboutLinkLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="AboutLinkLabel.Text" xml:space="preserve">
-    <value>About...</value>
-  </data>
-  <data name="AboutLinkLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="&gt;&gt;AboutLinkLabel.Name" xml:space="preserve">
-    <value>AboutLinkLabel</value>
-  </data>
-  <data name="&gt;&gt;AboutLinkLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;AboutLinkLabel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;AboutLinkLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="SaveOptionsButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 222</value>
-  </data>
-  <data name="SaveOptionsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="SaveOptionsButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 28</value>
-  </data>
-  <data name="SaveOptionsButton.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="SaveOptionsButton.Text" xml:space="preserve">
-    <value>Save Options</value>
-  </data>
-  <data name="&gt;&gt;SaveOptionsButton.Name" xml:space="preserve">
-    <value>SaveOptionsButton</value>
-  </data>
-  <data name="&gt;&gt;SaveOptionsButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;SaveOptionsButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;SaveOptionsButton.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="DefaultOptionsButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 222</value>
-  </data>
-  <data name="DefaultOptionsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="DefaultOptionsButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 28</value>
-  </data>
-  <data name="DefaultOptionsButton.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
-  </data>
-  <data name="DefaultOptionsButton.Text" xml:space="preserve">
-    <value>Default Options</value>
-  </data>
-  <data name="&gt;&gt;DefaultOptionsButton.Name" xml:space="preserve">
-    <value>DefaultOptionsButton</value>
-  </data>
-  <data name="&gt;&gt;DefaultOptionsButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;DefaultOptionsButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;DefaultOptionsButton.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="AbortButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="AbortButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 222</value>
-  </data>
-  <data name="AbortButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="AbortButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 28</value>
-  </data>
-  <data name="AbortButton.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
-  </data>
-  <data name="AbortButton.Text" xml:space="preserve">
-    <value>Abort Operation</value>
-  </data>
-  <data name="AbortButton.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;AbortButton.Name" xml:space="preserve">
-    <value>AbortButton</value>
-  </data>
-  <data name="&gt;&gt;AbortButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;AbortButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;AbortButton.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="StatisticsGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="TotalTimeRemainingLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="TotalTimeRemainingLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 139</value>
-  </data>
-  <data name="TotalTimeRemainingLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="TotalTimeRemainingLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="TotalTimeRemainingLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="TotalTimeRemainingLabel.Text" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="&gt;&gt;TotalTimeRemainingLabel.Name" xml:space="preserve">
-    <value>TotalTimeRemainingLabel</value>
-  </data>
-  <data name="&gt;&gt;TotalTimeRemainingLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TotalTimeRemainingLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;TotalTimeRemainingLabel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="RemainingLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="RemainingLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 139</value>
-  </data>
-  <data name="RemainingLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="RemainingLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 13</value>
-  </data>
-  <data name="RemainingLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="RemainingLabel.Text" xml:space="preserve">
-    <value>Remaining</value>
-  </data>
-  <data name="&gt;&gt;RemainingLabel.Name" xml:space="preserve">
-    <value>RemainingLabel</value>
-  </data>
-  <data name="&gt;&gt;RemainingLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;RemainingLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;RemainingLabel.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="ElapsedTimeLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ElapsedTimeLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 119</value>
-  </data>
-  <data name="ElapsedTimeLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="ElapsedTimeLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="ElapsedTimeLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="ElapsedTimeLabel.Text" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="&gt;&gt;ElapsedTimeLabel.Name" xml:space="preserve">
-    <value>ElapsedTimeLabel</value>
-  </data>
-  <data name="&gt;&gt;ElapsedTimeLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ElapsedTimeLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;ElapsedTimeLabel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="ElapsedLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ElapsedLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 119</value>
-  </data>
-  <data name="ElapsedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="ElapsedLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 13</value>
-  </data>
-  <data name="ElapsedLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="ElapsedLabel.Text" xml:space="preserve">
-    <value>Elapsed</value>
-  </data>
-  <data name="&gt;&gt;ElapsedLabel.Name" xml:space="preserve">
-    <value>ElapsedLabel</value>
-  </data>
-  <data name="&gt;&gt;ElapsedLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ElapsedLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;ElapsedLabel.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="FailedBytesLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="FailedBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 100</value>
-  </data>
-  <data name="FailedBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="FailedBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="FailedBytesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="FailedBytesLabel.Text" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="&gt;&gt;FailedBytesLabel.Name" xml:space="preserve">
-    <value>FailedBytesLabel</value>
-  </data>
-  <data name="&gt;&gt;FailedBytesLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;FailedBytesLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;FailedBytesLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="VerifiedBytesLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="VerifiedBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 80</value>
   </data>
   <data name="VerifiedBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
   </data>
-  <data name="VerifiedBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
+  <data name="&gt;&gt;AboutLinkLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="VerifiedBytesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="TargetTotalBytesLabelLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
   </data>
-  <data name="VerifiedBytesLabel.Text" xml:space="preserve">
-    <value>---</value>
+  <data name="StatisticsGroupBox.Text" xml:space="preserve">
+    <value>Statistics</value>
   </data>
-  <data name="&gt;&gt;VerifiedBytesLabel.Name" xml:space="preserve">
-    <value>VerifiedBytesLabel</value>
+  <data name="ReadAverageLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>55, 13</value>
   </data>
-  <data name="&gt;&gt;VerifiedBytesLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="RemoveTempDataFilesButton.ToolTip" xml:space="preserve">
+    <value />
   </data>
-  <data name="&gt;&gt;VerifiedBytesLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;VerifiedBytesLabel.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="WrittenBytesLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="VerifiedBytesLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="WrittenBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 41</value>
+  <data name="RemoveTempDataFilesButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
-  <data name="WrittenBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="WrittenBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="WrittenBytesLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="WrittenBytesLabel.Text" xml:space="preserve">
-    <value>---</value>
-  </data>
-  <data name="&gt;&gt;WrittenBytesLabel.Name" xml:space="preserve">
-    <value>WrittenBytesLabel</value>
-  </data>
-  <data name="&gt;&gt;WrittenBytesLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WrittenBytesLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;WrittenBytesLabel.ZOrder" xml:space="preserve">
+  <data name="MaxBytesToTestComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="ReadSpeedLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;StatisticsGroupBox.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="ReadSpeedLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>59, 61</value>
+  <data name="&gt;&gt;AbortButton.Name" xml:space="preserve">
+    <value>AbortButton</value>
   </data>
-  <data name="ReadSpeedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
+  <data name="&gt;&gt;SaveOptionsButton.Name" xml:space="preserve">
+    <value>SaveOptionsButton</value>
   </data>
-  <data name="ReadSpeedLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
-  </data>
-  <data name="ReadSpeedLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="ReadSpeedLabel.Text" xml:space="preserve">
+  <data name="TotalTimeRemainingLabel.Text" xml:space="preserve">
     <value>---</value>
   </data>
-  <data name="&gt;&gt;ReadSpeedLabel.Name" xml:space="preserve">
-    <value>ReadSpeedLabel</value>
+  <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ReadSpeedLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="TargetTotalBytesLabelLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 42</value>
   </data>
-  <data name="&gt;&gt;ReadSpeedLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
+  <data name="ActivityLogTextBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Both</value>
   </data>
-  <data name="&gt;&gt;ReadSpeedLabel.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="WriteSpeedLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="TargetLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="StatisticsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>256, 24</value>
+  </data>
+  <data name="AboutLinkLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>411, 7</value>
+  </data>
+  <data name="WriteAverageLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 22</value>
+  </data>
+  <data name="AbortButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 28</value>
+  </data>
+  <data name="AboutLinkLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar.Name" xml:space="preserve">
+    <value>ProgressBar</value>
+  </data>
+  <data name="WriteAverageLabel.Text" xml:space="preserve">
+    <value>Write Avg</value>
+  </data>
+  <data name="TargetTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="ElapsedLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AbortButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ActivityLogTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="StopProcessingOnFailureCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.Text" xml:space="preserve">
+    <value>Save test results file to media root</value>
+  </data>
+  <data name="&gt;&gt;TotalBytesToTestLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;WriteAndVerifyButton.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
   <data name="WriteSpeedLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>59, 22</value>
   </data>
-  <data name="WriteSpeedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
+  <data name="&gt;&gt;ElapsedTimeLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="WriteSpeedLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>16, 13</value>
+  <data name="&gt;&gt;TotalBytesToTestLabel.Name" xml:space="preserve">
+    <value>TotalBytesToTestLabel</value>
+  </data>
+  <data name="AboutLinkLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;VerifyOnlyButton.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="RemoveTempDataFilesButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 28</value>
+  </data>
+  <data name="ElapsedLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabelLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.ToolTip" xml:space="preserve">
+    <value />
   </data>
   <data name="WriteSpeedLabel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="WriteSpeedLabel.Text" xml:space="preserve">
-    <value>---</value>
+  <data name="&gt;&gt;RemoveTempDataFilesButton.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="&gt;&gt;WriteSpeedLabel.Name" xml:space="preserve">
-    <value>WriteSpeedLabel</value>
+  <data name="ChooseTargetButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>25, 20</value>
   </data>
-  <data name="&gt;&gt;WriteSpeedLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WriteSpeedLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;WriteSpeedLabel.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="FailedLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="FailedLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 100</value>
-  </data>
-  <data name="FailedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="FailedLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 13</value>
-  </data>
-  <data name="FailedLabel.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;SaveOptionsButton.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="FailedLabel.Text" xml:space="preserve">
-    <value>Failed</value>
-  </data>
-  <data name="&gt;&gt;FailedLabel.Name" xml:space="preserve">
-    <value>FailedLabel</value>
-  </data>
-  <data name="&gt;&gt;FailedLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
   </data>
   <data name="&gt;&gt;FailedLabel.Parent" xml:space="preserve">
     <value>StatisticsGroupBox</value>
   </data>
-  <data name="&gt;&gt;FailedLabel.ZOrder" xml:space="preserve">
-    <value>9</value>
+  <data name="ChooseTargetButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
-  <data name="VerifiedLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MaxBytesToTestComboBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WrittenLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 42</value>
+  </data>
+  <data name="RemoveTempDataFilesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="MaxBytesToTestComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>117, 21</value>
+  </data>
+  <data name="ProgressBar.Size" type="System.Drawing.Size, System.Drawing">
+    <value>150, 16</value>
+  </data>
+  <data name="ReadBytesPerSecondStatusLabel.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="WriteSpeedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;RemainingLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="WrittenLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 13</value>
+  </data>
+  <data name="&gt;&gt;ChooseTargetButton.Name" xml:space="preserve">
+    <value>ChooseTargetButton</value>
+  </data>
+  <data name="&gt;&gt;FailedLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ProgressBar.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.Name" xml:space="preserve">
+    <value>StopProcessingOnFailureCheckBox</value>
+  </data>
+  <data name="TargetLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.Name" xml:space="preserve">
+    <value>SaveTestResultsFileToMediaCheckBox</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FailedLabel.Name" xml:space="preserve">
+    <value>FailedLabel</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;ReadAverageLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="VerifiedLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 80</value>
   </data>
-  <data name="VerifiedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
+  <data name="FailedLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 13</value>
   </data>
-  <data name="VerifiedLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 13</value>
+  <data name="&gt;&gt;SaveOptionsButton.Parent" xml:space="preserve">
+    <value>$this</value>
   </data>
-  <data name="VerifiedLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="VerifiedLabel.Text" xml:space="preserve">
-    <value>Verified</value>
-  </data>
-  <data name="&gt;&gt;VerifiedLabel.Name" xml:space="preserve">
-    <value>VerifiedLabel</value>
-  </data>
-  <data name="&gt;&gt;VerifiedLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;VerifiedLabel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;VerifiedBytesLabel.Parent" xml:space="preserve">
     <value>StatisticsGroupBox</value>
   </data>
-  <data name="&gt;&gt;VerifiedLabel.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="WrittenLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="WrittenLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 42</value>
-  </data>
-  <data name="WrittenLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="WrittenLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 13</value>
-  </data>
-  <data name="WrittenLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="WrittenLabel.Text" xml:space="preserve">
-    <value>Written</value>
-  </data>
-  <data name="&gt;&gt;WrittenLabel.Name" xml:space="preserve">
-    <value>WrittenLabel</value>
-  </data>
-  <data name="&gt;&gt;WrittenLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WrittenLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
-  </data>
-  <data name="&gt;&gt;WrittenLabel.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="ReadAverageLabel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ReadAverageLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 62</value>
-  </data>
-  <data name="ReadAverageLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 0, 2, 0</value>
-  </data>
-  <data name="ReadAverageLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>55, 13</value>
-  </data>
-  <data name="ReadAverageLabel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ReadAverageLabel.Text" xml:space="preserve">
-    <value>Read Avg</value>
-  </data>
-  <data name="&gt;&gt;ReadAverageLabel.Name" xml:space="preserve">
-    <value>ReadAverageLabel</value>
-  </data>
-  <data name="&gt;&gt;ReadAverageLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ReadAverageLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
+  <data name="StatusStrip.Size" type="System.Drawing.Size, System.Drawing">
+    <value>464, 22</value>
   </data>
   <data name="&gt;&gt;ReadAverageLabel.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="WriteAverageLabel.AutoSize" type="System.Boolean, mscorlib">
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="WriteAverageLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 22</value>
+  <data name="&gt;&gt;VerifiedBytesLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
-  <data name="WriteAverageLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="&gt;&gt;TotalTimeRemainingLabel.Name" xml:space="preserve">
+    <value>TotalTimeRemainingLabel</value>
+  </data>
+  <data name="DefaultOptionsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;ElapsedTimeLabel.Name" xml:space="preserve">
+    <value>ElapsedTimeLabel</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;RemainingLabel.Name" xml:space="preserve">
+    <value>RemainingLabel</value>
+  </data>
+  <data name="AbortButton.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="TestOptionsGgroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;DefaultOptionsButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;WrittenLabel.Name" xml:space="preserve">
+    <value>WrittenLabel</value>
+  </data>
+  <data name="&gt;&gt;TargetTextBox.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="ElapsedLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>45, 13</value>
+  </data>
+  <data name="StatisticsGroupBox.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="ReadAverageLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.Text" xml:space="preserve">
+    <value>Remove temp data files upon completion</value>
+  </data>
+  <data name="TargetTotalBytesLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ElapsedLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="TestOptionsGgroupBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 24</value>
+  </data>
+  <data name="WriteAndVerifyButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>256, 222</value>
+  </data>
+  <data name="WrittenLabel.Text" xml:space="preserve">
+    <value>Written</value>
+  </data>
+  <data name="FailedBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
   </data>
-  <data name="WriteAverageLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
+    <value>480, 371</value>
+  </data>
+  <data name="&gt;&gt;RemoveTempDataFilesButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabel.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="RemainingLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 139</value>
+  </data>
+  <data name="TotalTimeRemainingLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 139</value>
+  </data>
+  <data name="TargetLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ChooseTargetButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;AbortButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DefaultOptionsButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="WriteBytesPerSecondStatusLabel.Text" xml:space="preserve">
+    <value>...</value>
+  </data>
+  <data name="ChooseTargetButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>213, 21</value>
+  </data>
+  <data name="TotalBytesToTestLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>MediaTester</value>
+  </data>
+  <data name="AbortButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="&gt;&gt;AboutLinkLabel.Name" xml:space="preserve">
+    <value>AboutLinkLabel</value>
+  </data>
+  <data name="WriteAndVerifyButton.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.Text" xml:space="preserve">
+    <value>Quick test after writing each GiB of test data</value>
+  </data>
+  <data name="RemainingLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="ReadAverageLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="VerifiedBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 80</value>
+  </data>
+  <data name="AbortButton.Text" xml:space="preserve">
+    <value>Abort Operation</value>
+  </data>
+  <data name="LanguageComboBox.TabIndex" type="System.Int32, mscorlib">
+    <value>21</value>
+  </data>
+  <data name="&gt;&gt;WriteAndVerifyButton.Name" xml:space="preserve">
+    <value>WriteAndVerifyButton</value>
+  </data>
+  <data name="&gt;&gt;StatisticsGroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="WriteBytesPerSecondStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="&gt;&gt;WrittenBytesLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TotalTimeRemainingLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ElapsedTimeLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabelLabel.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="ActivityLogTextBox.WordWrap" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>218, 17</value>
+  </data>
+  <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.Name" xml:space="preserve">
+    <value>QuickFirstFailingByteMethodCheckBox</value>
+  </data>
+  <data name="&gt;&gt;SaveOptionsButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="StatusStrip.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 374</value>
+  </data>
+  <data name="FailedBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="TargetTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="DefaultOptionsButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 222</value>
+  </data>
+  <data name="&gt;&gt;ActivityLogTextBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="ElapsedTimeLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VerifiedLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="StopProcessingOnFailureCheckBox.ToolTip" xml:space="preserve">
+    <value>Stop the test process after a single failure.
+(recommended)</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TargetLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="RemainingLabel.Text" xml:space="preserve">
+    <value>Remaining</value>
+  </data>
+  <data name="WriteAndVerifyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>84, 13</value>
+  </data>
+  <data name="&gt;&gt;TotalTimeRemainingLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.Name" xml:space="preserve">
+    <value>LanguageComboBox</value>
+  </data>
+  <data name="TotalBytesToTestLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReadAverageLabel.Text" xml:space="preserve">
+    <value>Read Avg</value>
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;TestOptionsGgroupBox.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="StatisticsGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="&gt;&gt;MaxBytesToTestComboBox.Name" xml:space="preserve">
+    <value>MaxBytesToTestComboBox</value>
+  </data>
+  <data name="TotalTimeRemainingLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;ActivityLogTextBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="RemoveTempDataFilesButton.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
   </data>
   <data name="WriteAverageLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="WriteAverageLabel.Text" xml:space="preserve">
-    <value>Write Avg</value>
+  <data name="RemainingLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="WrittenBytesLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="StatisticsGroupBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="TargetTotalBytesLabelLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 17</value>
+  </data>
+  <data name="FailedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;ChooseTargetButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="StatisticsGroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>198, 160</value>
+  </data>
+  <data name="TotalBytesToTestLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="ReadBytesPerSecondStatusLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 17</value>
+  </data>
+  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.Name" xml:space="preserve">
+    <value>TargetAvailableBytesLabelLabel</value>
+  </data>
+  <data name="StatisticsGroupBox.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;RemainingLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TargetLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 23</value>
+  </data>
+  <data name="StopProcessingOnFailureCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 17</value>
+  </data>
+  <data name="&gt;&gt;ElapsedLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;ReadAverageLabel.Name" xml:space="preserve">
+    <value>ReadAverageLabel</value>
+  </data>
+  <data name="&gt;&gt;TestOptionsGgroupBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AboutLinkLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FailedBytesLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="ReadSpeedLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="WrittenBytesLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FailedLabel.Text" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TargetTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>46, 22</value>
+  </data>
+  <data name="&gt;&gt;WriteSpeedLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="VerifyOnlyButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 28</value>
+  </data>
+  <data name="StopProcessingOnFailureCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 97</value>
+  </data>
+  <data name="&gt;&gt;TargetTextBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="&gt;&gt;ReadAverageLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="DefaultOptionsButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 28</value>
+  </data>
+  <data name="WrittenBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="&gt;&gt;TargetLabel.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FailedBytesLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.Name" xml:space="preserve">
+    <value>RemoveTempDataFilesUponCompletionCheckBox</value>
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 173</value>
+  </data>
+  <data name="TestOptionsGgroupBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TargetTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>163, 20</value>
+  </data>
+  <data name="&gt;&gt;RemoveTempDataFilesButton.Name" xml:space="preserve">
+    <value>RemoveTempDataFilesButton</value>
+  </data>
+  <data name="&gt;&gt;WrittenLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="WrittenBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;TestOptionsGgroupBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="TotalTimeRemainingLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;RemainingLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="SaveOptionsButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>97, 28</value>
+  </data>
+  <data name="TargetLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;ReadSpeedLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;TargetAvailableBytesLabelLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="StatusStrip.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>1, 0, 10, 0</value>
+  </data>
+  <data name="TargetTotalBytesLabelLabel.Text" xml:space="preserve">
+    <value>Total Size</value>
+  </data>
+  <data name="&gt;&gt;ElapsedTimeLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.ToolTip" xml:space="preserve">
+    <value>If a failure is encountered, skip testing all written files from the beginning.
+Search for the last successful byte in reverse instead.
+(recommended)</value>
+  </data>
+  <data name="AbortButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>256, 222</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>234, 17</value>
+  </data>
+  <data name="DefaultOptionsButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TargetTotalBytesLabelLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="WrittenLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;VerifiedBytesLabel.Name" xml:space="preserve">
+    <value>VerifiedBytesLabel</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;TotalTimeRemainingLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="WriteAverageLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>54, 13</value>
+  </data>
+  <data name="&gt;&gt;VerifiedLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="WriteAverageLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ActivityLogTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>446, 112</value>
+  </data>
+  <data name="WrittenLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="TargetTotalBytesLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AbortButton.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;ElapsedTimeLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="SaveOptionsButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 222</value>
+  </data>
+  <data name="ReadSpeedLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="RemainingLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabelLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="ElapsedTimeLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;TargetLabel.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="TotalTimeRemainingLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WriteSpeedLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WriteAndVerifyButton.Text" xml:space="preserve">
+    <value>Write and Verify</value>
+  </data>
+  <data name="&gt;&gt;ChooseTargetButton.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabel.Name" xml:space="preserve">
+    <value>TargetTotalBytesLabel</value>
+  </data>
+  <data name="SaveOptionsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 59</value>
+  </data>
+  <data name="ActivityLogTextBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ElapsedLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 119</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="&gt;&gt;TotalBytesToTestLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TargetAvailableBytesLabelLabel.Text" xml:space="preserve">
+    <value>Available Space</value>
+  </data>
+  <data name="&gt;&gt;SaveTestResultsFileToMediaCheckBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="ReadAverageLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="VerifiedLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ElapsedTimeLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 119</value>
+  </data>
+  <data name="ElapsedLabel.Text" xml:space="preserve">
+    <value>Elapsed</value>
+  </data>
+  <data name="&gt;&gt;FailedBytesLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="ElapsedTimeLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="VerifiedLabel.Text" xml:space="preserve">
+    <value>Verified</value>
+  </data>
+  <data name="SaveOptionsButton.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="FailedLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
   </data>
   <data name="&gt;&gt;WriteAverageLabel.Name" xml:space="preserve">
     <value>WriteAverageLabel</value>
@@ -1285,142 +1128,398 @@ Temp test data files will be removed, if necessary, to create space for the test
   <data name="&gt;&gt;WriteAverageLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;WriteAverageLabel.Parent" xml:space="preserve">
-    <value>StatisticsGroupBox</value>
+  <data name="VerifiedLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>42, 13</value>
   </data>
-  <data name="&gt;&gt;WriteAverageLabel.ZOrder" xml:space="preserve">
-    <value>13</value>
+  <data name="MaxBytesToTestComboBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 74</value>
   </data>
-  <data name="StatisticsGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 24</value>
-  </data>
-  <data name="StatisticsGroupBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="WriteAndVerifyButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="StatisticsGroupBox.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
+  <data name="TotalBytesToTestLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 76</value>
   </data>
-  <data name="StatisticsGroupBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 160</value>
-  </data>
-  <data name="StatisticsGroupBox.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="StatisticsGroupBox.Text" xml:space="preserve">
-    <value>Statistics</value>
+  <data name="VerifyOnlyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="&gt;&gt;StatisticsGroupBox.Name" xml:space="preserve">
     <value>StatisticsGroupBox</value>
   </data>
-  <data name="&gt;&gt;StatisticsGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;WrittenLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
   </data>
-  <data name="&gt;&gt;StatisticsGroupBox.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="ElapsedTimeLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
   </data>
-  <data name="&gt;&gt;StatisticsGroupBox.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="ActivityLogTextBox.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
-  <data name="LanguageComboBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>368, 4</value>
+  <data name="&gt;&gt;WriteSpeedLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
   </data>
-  <data name="LanguageComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 21</value>
+  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
   </data>
-  <data name="LanguageComboBox.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+  <data name="FailedBytesLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="LanguageComboBox.ToolTip" xml:space="preserve">
-    <value>Language</value>
+  <data name="&gt;&gt;QuickTestAfterEachFileCheckBox.ZOrder" xml:space="preserve">
+    <value>13</value>
   </data>
-  <data name="&gt;&gt;LanguageComboBox.Name" xml:space="preserve">
-    <value>LanguageComboBox</value>
-  </data>
-  <data name="&gt;&gt;LanguageComboBox.Type" xml:space="preserve">
+  <data name="&gt;&gt;MaxBytesToTestComboBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;LanguageComboBox.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="TargetTotalBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>107, 44</value>
   </data>
-  <data name="&gt;&gt;LanguageComboBox.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="RemoveTempDataFilesButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="RemoveTempDataFilesButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 188</value>
-  </data>
-  <data name="RemoveTempDataFilesButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="RemoveTempDataFilesButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>198, 28</value>
-  </data>
-  <data name="RemoveTempDataFilesButton.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
   </data>
   <data name="RemoveTempDataFilesButton.Text" xml:space="preserve">
     <value>Remove temp data files</value>
   </data>
-  <data name="&gt;&gt;RemoveTempDataFilesButton.Name" xml:space="preserve">
-    <value>RemoveTempDataFilesButton</value>
+  <data name="&gt;&gt;VerifiedLabel.ZOrder" xml:space="preserve">
+    <value>10</value>
   </data>
-  <data name="&gt;&gt;RemoveTempDataFilesButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;WriteSpeedLabel.ZOrder" xml:space="preserve">
+    <value>8</value>
   </data>
-  <data name="&gt;&gt;RemoveTempDataFilesButton.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="VerifiedBytesLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
   </data>
-  <data name="&gt;&gt;RemoveTempDataFilesButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;VerifiedBytesLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+  <data name="&gt;&gt;WrittenBytesLabel.Name" xml:space="preserve">
+    <value>WrittenBytesLabel</value>
   </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>464, 396</value>
-  </data>
-  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>480, 371</value>
-  </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>MediaTester</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar.Name" xml:space="preserve">
-    <value>ProgressBar</value>
-  </data>
-  <data name="&gt;&gt;ProgressBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripProgressBar, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ReadBytesPerSecondStatusLabel.Name" xml:space="preserve">
-    <value>ReadBytesPerSecondStatusLabel</value>
-  </data>
-  <data name="&gt;&gt;ReadBytesPerSecondStatusLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;WriteBytesPerSecondStatusLabel.Name" xml:space="preserve">
-    <value>WriteBytesPerSecondStatusLabel</value>
-  </data>
-  <data name="&gt;&gt;WriteBytesPerSecondStatusLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
-    <value>toolTip1</value>
+  <data name="TestOptionsGgroupBox.Text" xml:space="preserve">
+    <value>Test Options</value>
   </data>
   <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;AbortButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;ReadSpeedLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ElapsedTimeLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="VerifiedBytesLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>184, 17</value>
+  </data>
+  <data name="&gt;&gt;VerifyOnlyButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="TargetLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 13</value>
+  </data>
+  <data name="&gt;&gt;VerifiedLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="ActivityLogTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 254</value>
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 136</value>
+  </data>
+  <data name="&gt;&gt;TotalTimeRemainingLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;QuickFirstFailingByteMethodCheckBox.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;FailedLabel.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="StatusStrip.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;WriteSpeedLabel.Name" xml:space="preserve">
+    <value>WriteSpeedLabel</value>
+  </data>
+  <data name="ReadSpeedLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FailedLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;RemoveTempDataFilesUponCompletionCheckBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="WrittenLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;WrittenBytesLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="WriteSpeedLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.Name" xml:space="preserve">
+    <value>StatusStrip</value>
+  </data>
+  <data name="WriteAverageLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;WriteAndVerifyButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Main</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;ElapsedLabel.Name" xml:space="preserve">
+    <value>ElapsedLabel</value>
   </data>
+  <data name="TotalBytesToTestLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="FailedLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;ChooseTargetButton.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="&gt;&gt;VerifiedLabel.Name" xml:space="preserve">
+    <value>VerifiedLabel</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 116</value>
+  </data>
+  <data name="FailedBytesLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LanguageComboBox.ToolTip" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="&gt;&gt;DefaultOptionsButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TotalBytesToTestLabel.Text" xml:space="preserve">
+    <value>Total Bytes To Test</value>
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.Text" xml:space="preserve">
+    <value>Quick find first failing byte</value>
+  </data>
+  <data name="ReadSpeedLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="&gt;&gt;AboutLinkLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="AboutLinkLabel.Text" xml:space="preserve">
+    <value>About...</value>
+  </data>
+  <data name="AboutLinkLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>44, 13</value>
+  </data>
+  <data name="&gt;&gt;WriteAverageLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="&gt;&gt;TargetLabel.Name" xml:space="preserve">
+    <value>TargetLabel</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>464, 396</value>
+  </data>
+  <data name="WrittenBytesLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.ToolTip" xml:space="preserve">
+    <value>Remove temporary data files after verification completion (pass or fail).</value>
+  </data>
+  <data name="TestOptionsGgroupBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>242, 193</value>
+  </data>
+  <data name="TestOptionsGgroupBox.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="AbortButton.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="WriteSpeedLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TotalBytesToTestLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;ActivityLogTextBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="VerifiedBytesLabel.Text" xml:space="preserve">
+    <value>---</value>
+  </data>
+  <data name="ReadSpeedLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="RemoveTempDataFilesUponCompletionCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;WriteAndVerifyButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="MaxBytesToTestComboBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="QuickTestAfterEachFileCheckBox.ToolTip" xml:space="preserve">
+    <value>Performs brief spot checks as data is written.
+Enabling this will detect common failures much faster.
+(recommended)</value>
+  </data>
+  <data name="AboutLinkLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="StopProcessingOnFailureCheckBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="TestOptionsGgroupBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;FailedBytesLabel.Name" xml:space="preserve">
+    <value>FailedBytesLabel</value>
+  </data>
+  <data name="SaveOptionsButton.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="MaxBytesToTestComboBox.Items" xml:space="preserve">
+    <value>All Available Bytes</value>
+  </data>
+  <data name="&gt;&gt;VerifyOnlyButton.Name" xml:space="preserve">
+    <value>VerifyOnlyButton</value>
+  </data>
+  <data name="WrittenLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="ReadAverageLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 62</value>
+  </data>
+  <data name="&gt;&gt;WriteBytesPerSecondStatusLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="AbortButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="&gt;&gt;RemoveTempDataFilesButton.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;WriteAverageLabel.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="ElapsedLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="TargetTotalBytesLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="VerifiedBytesLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>16, 13</value>
+  </data>
+  <data name="AboutLinkLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="WrittenBytesLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 41</value>
+  </data>
+  <data name="&gt;&gt;TargetTotalBytesLabel.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="WriteAverageLabel.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ReadSpeedLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>59, 61</value>
+  </data>
+  <data name="DefaultOptionsButton.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="&gt;&gt;StatusStrip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.StatusStrip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FailedBytesLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LanguageComboBox.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;TestOptionsGgroupBox.Name" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="TargetTotalBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="TargetTotalBytesLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TotalTimeRemainingLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="VerifyOnlyButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="DefaultOptionsButton.Text" xml:space="preserve">
+    <value>Default Options</value>
+  </data>
+  <data name="StatisticsGroupBox.ToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="&gt;&gt;ReadBytesPerSecondStatusLabel.Name" xml:space="preserve">
+    <value>ReadBytesPerSecondStatusLabel</value>
+  </data>
+  <data name="&gt;&gt;StopProcessingOnFailureCheckBox.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;TotalBytesToTestLabel.Parent" xml:space="preserve">
+    <value>TestOptionsGgroupBox</value>
+  </data>
+  <data name="LanguageComboBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 21</value>
+  </data>
+  <data name="SaveTestResultsFileToMediaCheckBox.ToolTip" xml:space="preserve">
+    <value>Save test results file to media with full test log output.
+MediaTesterResults_YYYY-MM-DD_hh-mm-ss.txt
+Temp test data files will be removed, if necessary, to create space for the test results file.</value>
+  </data>
+  <data name="&gt;&gt;WrittenBytesLabel.Parent" xml:space="preserve">
+    <value>StatisticsGroupBox</value>
+  </data>
+  <data name="TargetAvailableBytesLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="&gt;&gt;ReadSpeedLabel.Name" xml:space="preserve">
+    <value>ReadSpeedLabel</value>
+  </data>
+  <data name="&gt;&gt;ReadBytesPerSecondStatusLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripStatusLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="QuickFirstFailingByteMethodCheckBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>147, 17</value>
+  </metadata>
+  <metadata name="StatusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>
