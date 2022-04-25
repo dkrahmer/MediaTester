@@ -57,7 +57,6 @@ namespace KrahmerSoft.MediaTesterGui
 			LanguageComboBox.Items.AddRange(Languages.Options);
 			SelectCurrentLanguageCode();
 
-
 			UpdateTargetInformation();
 		}
 
@@ -619,7 +618,12 @@ namespace KrahmerSoft.MediaTesterGui
 			if (languageCode == Thread.CurrentThread.CurrentCulture.Name)
 				return;
 
-			if (MessageBox.Show(Strings.ChangeLanguageRestartDetails, Strings.ChangeLanguageRestart, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+			var requestedCulture = new System.Globalization.CultureInfo(languageCode);
+			string changeLanguageRestartDetails = Strings.ResourceManager.GetString(nameof(Strings.ChangeLanguageRestartDetails), requestedCulture)
+				+ $"\n\n{Strings.ChangeLanguageRestartDetails}";
+			string changeLanguageRestart = Strings.ResourceManager.GetString(nameof(Strings.ChangeLanguageRestart), requestedCulture);
+
+			if (MessageBox.Show(changeLanguageRestartDetails, changeLanguageRestart, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
 			{
 				_mediaTesterOptions.LanguageCode = languageCode;
 
