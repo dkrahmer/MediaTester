@@ -10,7 +10,7 @@
 		<Company>KrahmerSoft</Company>
 		<Copyright>GNU GPL, Copyright Doug Krahmer 2022</Copyright>
 		<PackageProjectUrl>https://github.com/dkrahmer/MediaTester</PackageProjectUrl>
-		<Version>0.5.1</Version>
+		<Version>0.5.2</Version>
 		<ApplicationIcon>MediaTesterLogo.ico</ApplicationIcon>
 	</PropertyGroup>
 
