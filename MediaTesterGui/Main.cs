@@ -2,6 +2,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -21,6 +22,7 @@ namespace KrahmerSoft.MediaTester
 
 		public Main()
 		{
+			Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 			InitializeComponent();
 			UpdateUiFromOptions();
 			EnableControls();
