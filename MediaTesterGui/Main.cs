@@ -29,11 +29,20 @@ namespace KrahmerSoft.MediaTesterGui
 
 			Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 			InitializeComponent();
+			InitializeValues();
 			UpdateUiFromOptions();
 			EnableControls();
 
 			FormClosing += Main_FormClosing;
 			_isInitializing = false;
+		}
+
+		private void InitializeValues()
+		{
+			_languageComboBoxOpenFont = LanguageComboBox.Font;
+			_languageComboBoxClosedFont = new Font("Courier New", _languageComboBoxOpenFont.Size, FontStyle.Regular);
+			LanguageComboBox.Font = _languageComboBoxClosedFont;
+			LanguageComboBox.Items.AddRange(Languages.Options);
 		}
 
 		private void UpdateUiFromOptions()
@@ -52,10 +61,6 @@ namespace KrahmerSoft.MediaTesterGui
 			QuickFirstFailingByteMethodCheckBox.Checked = _mediaTesterOptions.QuickFirstFailingByteMethod;
 			RemoveTempDataFilesUponCompletionCheckBox.Checked = _mediaTesterOptions.RemoveTempDataFilesUponCompletion;
 			SaveTestResultsFileToMediaCheckBox.Checked = _mediaTesterOptions.SaveTestResultsFileToMedia;
-			_languageComboBoxOpenFont = LanguageComboBox.Font;
-			_languageComboBoxClosedFont = new Font("Courier New", _languageComboBoxOpenFont.Size, FontStyle.Regular);
-			LanguageComboBox.Font = _languageComboBoxClosedFont;
-			LanguageComboBox.Items.AddRange(Languages.Options);
 			SelectCurrentLanguageCode();
 
 			UpdateTargetInformation();
