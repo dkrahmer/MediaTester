@@ -622,12 +622,9 @@ namespace KrahmerSoft.MediaTesterGui
 		{
 			try
 			{
-				_mediaTesterThread?.Interrupt();
-				_mediaTesterThread?.Join();
+				_mediaTesterThread?.Abort();
 			}
-			catch
-			{
-			}
+			catch { }
 		}
 
 		private void LanguageComboBox_SelectedValueChanged(object sender, EventArgs e)
