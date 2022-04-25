@@ -55,6 +55,11 @@ namespace KrahmerSoft.MediaTesterGui
 					MessageBox.Show(invalidLanguageDetails, Strings.InvalidLanguage, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 
+				MessageBoxManager.OK = Strings.ButtonOk;
+				MessageBoxManager.Yes = Strings.ButtonYes;
+				MessageBoxManager.No = Strings.ButtonNo;
+				MessageBoxManager.Register();
+
 				restartAfterClose[0] = false;
 				Application.Run(new Main(mediaTesterOptions, restartAfterClose));
 			} while (restartAfterClose[0]);
