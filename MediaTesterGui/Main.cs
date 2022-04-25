@@ -254,10 +254,10 @@ namespace KrahmerSoft.MediaTester
 		private void LogTestCompletion(bool success)
 		{
 			if (_averageWriteBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog(_mediaTester, $"Average write speed: {_averageWriteBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_averageReadBytesPerSecond > 0)
-				WriteLog(_mediaTester, $"Averge read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
+				WriteLog(_mediaTester, $"Average read speed: {_averageReadBytesPerSecond.ToString("#,##0")}{BYTES_PER_SECOND}");
 
 			if (_mediaTesterOptions.RemoveTempDataFilesUponCompletion)
 			{
@@ -525,16 +525,30 @@ namespace KrahmerSoft.MediaTester
 
 		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			string aboutMessage = $"MediaTester can test any media (SD, microSD, thumb, etc) \n"
-								+ $"and verify it stores the expected number of bytes. \n"
-								+ $"If you buy any storage media, you should use MediaTester \n"
-								+ $"to verify it or risk losing your data.\n"
-								+ $"\n"
-								+ $"Written by Doug Krahmer\n"
-								+ $"Released as plublic domain open source.\n"
-								+ $"https://github.com/dkrahmer/MediaTester (Click Help to view)\n\n"
-								+ $"\n"
-								+ $"Version: v{Assembly.GetEntryAssembly().GetName().Version}";
+			string aboutMessage = string.Join("\n",
+				$"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}",
+				$"Copyright © 2022  Doug Krahmer",
+				$"",
+				$"MediaTester can test any media (SD, microSD, thumb, etc)",
+				$"and verify it stores the expected number of bytes.",
+				$"If you buy any storage media, you should use MediaTester",
+				$"to verify it or risk losing your data.",
+				$"",
+				$"https://github.com/dkrahmer/MediaTester (Click 'Help' button to view)",
+				$"",
+				$"This program is free software: you can redistribute it and/or modify",
+				$"it under the terms of the GNU General Public License as published by",
+				$"the Free Software Foundation, either version 3 of the License, or",
+				$"(at your option) any later version.",
+				$"",
+				$"This program is distributed in the hope that it will be useful,",
+				$"but WITHOUT ANY WARRANTY; without even the implied warranty of",
+				$"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the",
+				$"GNU General Public License for more details.",
+				$"",
+				$"You should have received a copy of the GNU General Public License",
+				$"along with this program.  If not, see <http://www.gnu.org/licenses/>."
+			);
 
 			MessageBox.Show(aboutMessage, "About MediaTester", MessageBoxButtons.OK, MessageBoxIcon.None, MessageBoxDefaultButton.Button1, 0, "https://github.com/dkrahmer/MediaTester/releases");
 		}

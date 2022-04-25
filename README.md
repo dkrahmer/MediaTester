@@ -5,7 +5,7 @@ Fake media sales have reached epidemic proportions. Fake media is being falsely 
 
 MediaTester is released as a free public service to help stop counterfeiters and fraudsters. If you buy any storage media, use MediaTester to verify it or risk losing your data.
 
-The MediaTester library, Windows GUI, and CLI is released with a generous public domain open source license with no restrictions.
+The MediaTester library, Windows GUI, and CLI are released with a GNU GPL license.
 
 Enjoy!
 

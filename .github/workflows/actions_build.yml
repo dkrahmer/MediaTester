@@ -27,9 +27,6 @@ jobs:
 #      with:
 #        dotnet-version: 5.0.x
 
-    - name: Setup Nuget
-      uses: nuget/setup-nuget@v1
-
     - name: Restore nuget packages
       run:  |
         cd "$GITHUB_WORKSPACE"

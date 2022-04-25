@@ -59,25 +59,17 @@ Initialize()
 
 	SlnFile="MediaTester.sln"
 
-	if [[ "$NUGET" == "" ]]; then
-		# The nuget/setup-nuget build step sets $NUGET
-		NUGET=nuget.exe
-	fi
-
 	if [[ "$IS_BUILD" == "true" ]] && [[ "$MSBuildPath" == "" ]]; then
 		# List of MSBuild paths. Preferred paths listed first.
 		MSBuildPath=$(GetFirstFile \
 					"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\MSBuild\Current\Bin\MSBuild.exe" \
 					"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" \
 					"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild.exe" \
-					"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\MSBuild\15.0\Bin\MSBuild.exe" \
-					"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\MSBuild\15.0\Bin\MSBuild.exe" \
-					"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe" \
 					)
 
 		if [[ "${MSBuildPath}" == "" ]]; then
 			echo "Could not find MSBuild.exe in any expected paths."
-			echo "Ensure MS Build Tools or Visual Studio Professional is installed. (MSBuild 15-16.* required / VS2017-VS2019)"
+			echo "Ensure MS Build Tools or Visual Studio Professional is installed. (MSBuild 16.* required / VS2019)"
 			exit 1
 		fi
 
@@ -90,9 +82,6 @@ Initialize()
 					"C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" \
 					"C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" \
 					"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" \
-					"C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" \
-					"C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" \
-					"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" \
 					)
 
 		if [[ "${VsTestPath}" == "" ]]; then
@@ -143,7 +132,9 @@ fi
 
 POSITIONAL=()
 dateStr=$(date '+%Y-%m-%d_%H%M%S')
-BUILD_LOG_FILE="build-output_${dateStr}.log"
+OUTPUT_DIRECTORY="_output/"
+mkdir -p "$OUTPUT_DIRECTORY"
+BUILD_LOG_FILE="${OUTPUT_DIRECTORY}build-output_${dateStr}.log"
 SHOW_EXTRA_INFO=true
 #ENABLE_UNIT_TESTS=true
 ENABLE_ANSI=true
@@ -286,20 +277,23 @@ fi
 	fi
 
 	if [[ "$RESTORE" == "true" ]]; then
-		#RunSolutionTarget "${SlnFile}" "Restore" "${MSBuildPath}"
-		"$NUGET" restore "${SlnFile}"
+		RunSolutionTarget "${SlnFile}" "Restore" "${MSBuildPath}"
 	fi
 
 	if [[ "$BUILD" == "true" ]]; then
 		RunSolutionTarget "${SlnFile}" "Build" "${MSBuildPath}"
 		
-		mkdir -p _output/MediaTesterGui
-		mkdir -p _output/MediaTesterCli
-		mkdir -p _output/MediaTesterLib
+		mkdir -p ${OUTPUT_DIRECTORY}MediaTesterGui
+		mkdir -p ${OUTPUT_DIRECTORY}MediaTesterCli
+		mkdir -p ${OUTPUT_DIRECTORY}MediaTesterLib
 		
-		cp MediaTester/bin/Release/MediaTester.exe _output/MediaTesterGui/MediaTesterGui.exe
-		cp MediaTesterCli/bin/Release/MediaTesterCli.exe _output/MediaTesterCli/MediaTester.exe
-		cp MediaTesterLib/bin/Release/*.dll _output/MediaTesterLib/
+		rm -f ${OUTPUT_DIRECTORY}MediaTesterGui/*
+		rm -f ${OUTPUT_DIRECTORY}MediaTesterCli/*
+		rm -f ${OUTPUT_DIRECTORY}MediaTesterLib/*
+		
+		cp MediaTesterGui/bin/Release/net462/MediaTesterGui.exe ${OUTPUT_DIRECTORY}MediaTesterGui/
+		cp MediaTesterCli/bin/Release/net462/MediaTester.exe ${OUTPUT_DIRECTORY}MediaTesterCli/
+		cp MediaTesterLib/bin/Release/netstandard2.0/*.dll ${OUTPUT_DIRECTORY}MediaTesterLib/
 	fi
 
 	#if [[ "$ENABLE_UNIT_TESTS" == "true" ]]; then
@@ -321,11 +315,11 @@ fi
 	fi
 
 	if [[ "$LIST_OUTPUT" == "true" ]] && [[ "$ENABLE_LIST_OUTPUT" == "true" ]]; then
-		EchoInColor "Build output can be found in the '_output' directory:" "1;32"
-		if [ -d "_output" ]; then
+		EchoInColor "Build output can be found in the '${OUTPUT_DIRECTORY}' directory:" "1;32"
+		if [ -d "${OUTPUT_DIRECTORY}" ]; then
 			echo ""
-			EchoInColor "_output:"
-			ls -hoRg "_output"
+			EchoInColor "${OUTPUT_DIRECTORY}:"
+			ls -hoRg ${OUTPUT_DIRECTORY}*/*
 		fi
 	fi
 } 2>&1 | tee "${BUILD_LOG_FILE}"
