@@ -21,6 +21,7 @@ namespace KrahmerSoft.MediaTester
 
 		public Main()
 		{
+			Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 			InitializeComponent();
 			UpdateUiFromOptions();
 			EnableControls();
