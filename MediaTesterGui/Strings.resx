@@ -129,17 +129,21 @@
   <data name="BeSureToDeleteTemporaryDirectory" xml:space="preserve">
     <value>Notice: Be sure to delete the temporary directory before using the media.</value>
   </data>
+  <data name="ButtonHelp" xml:space="preserve">
+    <value>&amp;Help</value>
+    <comment>Pop-up messagebox button text. Ampersand (&amp;) before the desired hotkey character. (About)</comment>
+  </data>
   <data name="ButtonNo" xml:space="preserve">
-    <value>No</value>
-    <comment>Button text on pop-up messagebox</comment>
+    <value>&amp;No</value>
+    <comment>Pop-up messagebox button text. Ampersand (&amp;) before the desired hotkey character.</comment>
   </data>
   <data name="ButtonOk" xml:space="preserve">
-    <value>OK</value>
-    <comment>Button text on pop-up messagebox</comment>
+    <value>&amp;OK</value>
+    <comment>Pop-up messagebox button text. Ampersand (&amp;) before the desired hotkey character.</comment>
   </data>
   <data name="ButtonYes" xml:space="preserve">
-    <value>Yes</value>
-    <comment>Button text on pop-up messagebox</comment>
+    <value>&amp;Yes</value>
+    <comment>Pop-up messagebox button text. Ampersand (&amp;) before the desired hotkey character.</comment>
   </data>
   <data name="Bytes" xml:space="preserve">
     <value>Bytes</value>

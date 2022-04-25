@@ -13,19 +13,7 @@ namespace System.Windows.Forms
 		private delegate bool EnumChildProc(IntPtr hWnd, IntPtr lParam);
 
 		private const int WH_CALLWNDPROCRET = 12;
-		private const int WM_DESTROY = 0x0002;
 		private const int WM_INITDIALOG = 0x0110;
-		private const int WM_TIMER = 0x0113;
-		private const int WM_USER = 0x400;
-		private const int DM_GETDEFID = WM_USER + 0;
-
-		private const int MBOK = 1;
-		private const int MBCancel = 2;
-		private const int MBAbort = 3;
-		private const int MBRetry = 4;
-		private const int MBIgnore = 5;
-		private const int MBYes = 6;
-		private const int MBNo = 7;
 
 		[DllImport("user32.dll")]
 		private static extern IntPtr SendMessage(IntPtr hWnd, int Msg, IntPtr wParam, IntPtr lParam);
@@ -74,13 +62,15 @@ namespace System.Windows.Forms
 			public IntPtr hwnd;
 		};
 
-		private static HookProc hookProc;
-		private static EnumChildProc enumProc;
+		private static HookProc _hookProc;
+		private static EnumChildProc _enumProc;
 		[ThreadStatic]
-		private static IntPtr hHook;
+		private static IntPtr _hHook;
 		[ThreadStatic]
-		private static int nButton;
-
+		private static int _nButton;
+		[ThreadStatic]
+		private static int _extraButtons;
+		
 		/// <summary>
 		/// OK text
 		/// </summary>
@@ -109,12 +99,16 @@ namespace System.Windows.Forms
 		/// No text
 		/// </summary>
 		public static string No = "&No";
+		/// <summary>
+		/// Help text
+		/// </summary>
+		public static string Help = "&Help";
 
 		static MessageBoxManager()
 		{
-			hookProc = new HookProc(MessageBoxHookProc);
-			enumProc = new EnumChildProc(MessageBoxEnumProc);
-			hHook = IntPtr.Zero;
+			_hookProc = new HookProc(MessageBoxHookProc);
+			_enumProc = new EnumChildProc(MessageBoxEnumProc);
+			_hHook = IntPtr.Zero;
 		}
 
 		/// <summary>
@@ -126,9 +120,9 @@ namespace System.Windows.Forms
 		/// </remarks>
 		public static void Register()
 		{
-			if (hHook != IntPtr.Zero)
+			if (_hHook != IntPtr.Zero)
 				throw new NotSupportedException("One hook per thread allowed.");
-			hHook = SetWindowsHookEx(WH_CALLWNDPROCRET, hookProc, IntPtr.Zero, AppDomain.GetCurrentThreadId());
+			_hHook = SetWindowsHookEx(WH_CALLWNDPROCRET, _hookProc, IntPtr.Zero, AppDomain.GetCurrentThreadId());
 		}
 
 		/// <summary>
@@ -139,20 +133,20 @@ namespace System.Windows.Forms
 		/// </remarks>
 		public static void Unregister()
 		{
-			if (hHook != IntPtr.Zero)
+			if (_hHook != IntPtr.Zero)
 			{
-				UnhookWindowsHookEx(hHook);
-				hHook = IntPtr.Zero;
+				UnhookWindowsHookEx(_hHook);
+				_hHook = IntPtr.Zero;
 			}
 		}
 
 		private static IntPtr MessageBoxHookProc(int nCode, IntPtr wParam, IntPtr lParam)
 		{
 			if (nCode < 0)
-				return CallNextHookEx(hHook, nCode, wParam, lParam);
+				return CallNextHookEx(_hHook, nCode, wParam, lParam);
 
 			CWPRETSTRUCT msg = (CWPRETSTRUCT) Marshal.PtrToStructure(lParam, typeof(CWPRETSTRUCT));
-			IntPtr hook = hHook;
+			IntPtr hook = _hHook;
 
 			if (msg.message == WM_INITDIALOG)
 			{
@@ -161,11 +155,13 @@ namespace System.Windows.Forms
 				GetClassName(msg.hwnd, className, className.Capacity);
 				if (className.ToString() == "#32770")
 				{
-					nButton = 0;
-					EnumChildWindows(msg.hwnd, enumProc, IntPtr.Zero);
-					if (nButton == 1)
+					_extraButtons = 0;
+					_nButton = 0;
+					EnumChildWindows(msg.hwnd, _enumProc, IntPtr.Zero);
+					if (_nButton == (int) DialogResult.OK + _extraButtons)
 					{
-						IntPtr hButton = GetDlgItem(msg.hwnd, MBCancel);
+						// Special handling for stand along OK button
+						IntPtr hButton = GetDlgItem(msg.hwnd, (int) DialogResult.Cancel);
 						if (hButton != IntPtr.Zero)
 							SetWindowText(hButton, OK);
 					}
@@ -182,32 +178,36 @@ namespace System.Windows.Forms
 			if (className.ToString() == "Button")
 			{
 				int ctlId = GetDlgCtrlID(hWnd);
-				switch (ctlId)
+				switch ((DialogResult) ctlId)
 				{
-					case MBOK:
+					case DialogResult.OK:
 						SetWindowText(hWnd, OK);
 						break;
-					case MBCancel:
+					case DialogResult.Cancel:
 						SetWindowText(hWnd, Cancel);
 						break;
-					case MBAbort:
+					case DialogResult.Abort:
 						SetWindowText(hWnd, Abort);
 						break;
-					case MBRetry:
+					case DialogResult.Retry:
 						SetWindowText(hWnd, Retry);
 						break;
-					case MBIgnore:
+					case DialogResult.Ignore:
 						SetWindowText(hWnd, Ignore);
 						break;
-					case MBYes:
+					case DialogResult.Yes:
 						SetWindowText(hWnd, Yes);
 						break;
-					case MBNo:
+					case DialogResult.No:
 						SetWindowText(hWnd, No);
+						break;
+					case (DialogResult) 9: // Help
+						SetWindowText(hWnd, Help);
+						_extraButtons++;
 						break;
 
 				}
-				nButton++;
+				_nButton++;
 			}
 
 			return true;

@@ -97,7 +97,16 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No.
+        ///   Looks up a localized string similar to &amp;Help.
+        /// </summary>
+        internal static string ButtonHelp {
+            get {
+                return ResourceManager.GetString("ButtonHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &amp;No.
         /// </summary>
         internal static string ButtonNo {
             get {
@@ -106,7 +115,7 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OK.
+        ///   Looks up a localized string similar to &amp;OK.
         /// </summary>
         internal static string ButtonOk {
             get {
@@ -115,7 +124,7 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Yes.
+        ///   Looks up a localized string similar to &amp;Yes.
         /// </summary>
         internal static string ButtonYes {
             get {

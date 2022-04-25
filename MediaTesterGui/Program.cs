@@ -55,13 +55,22 @@ namespace KrahmerSoft.MediaTesterGui
 					MessageBox.Show(invalidLanguageDetails, Strings.InvalidLanguage, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 				}
 
-				MessageBoxManager.OK = Strings.ButtonOk;
-				MessageBoxManager.Yes = Strings.ButtonYes;
-				MessageBoxManager.No = Strings.ButtonNo;
-				MessageBoxManager.Register();
+				try
+				{
+					// Apply dialog button translations
+					MessageBoxManager.OK = Strings.ButtonOk;
+					MessageBoxManager.Yes = Strings.ButtonYes;
+					MessageBoxManager.No = Strings.ButtonNo;
+					MessageBoxManager.Help = Strings.ButtonHelp;
+					MessageBoxManager.Register();
 
-				restartAfterClose[0] = false;
-				Application.Run(new Main(mediaTesterOptions, restartAfterClose));
+					restartAfterClose[0] = false;
+					Application.Run(new Main(mediaTesterOptions, restartAfterClose));
+				}
+				finally
+				{
+					MessageBoxManager.Unregister();
+				}
 			} while (restartAfterClose[0]);
 		}
 	}
