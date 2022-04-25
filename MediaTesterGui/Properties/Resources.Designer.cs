@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KrahmerSoft.MediaTester.Properties {
+namespace KrahmerSoft.MediaTesterGui.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace KrahmerSoft.MediaTester.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KrahmerSoft.MediaTester.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KrahmerSoft.MediaTesterGui.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

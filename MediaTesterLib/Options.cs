@@ -12,6 +12,7 @@ namespace KrahmerSoft.MediaTesterLib
 		public bool RemoveTempDataFilesUponCompletion { get; set; } = true;
 		public bool SaveTestResultsFileToMedia { get; set; } = true;
 		public long MaxBytesToTest { get; set; } = -1;
+		public string LanguageCode { get; set; }
 
 		public const string CONFIG_FILENAME = "MediaTesterOptions.json";
 
