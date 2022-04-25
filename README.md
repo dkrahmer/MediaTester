@@ -4,7 +4,7 @@ and verify it stores the expected number of bytes. The testing method is similar
 to h2testw but MediaTester can detect fake or defective media much faster by
 performing quick reads as data is written.
 
-[Download the latest MediaTester for Windows](https://github.com/dkrahmer/MediaTester/releases/latest/download/MediaTester.exe)(Standalone executable - no install required)
+[Download the latest MediaTester for Windows](https://github.com/dkrahmer/MediaTester/releases/latest/download/MediaTester.exe) (Standalone executable - no install required)
 
 [See past releases of MediaTester](https://github.com/dkrahmer/MediaTester/releases)
 
