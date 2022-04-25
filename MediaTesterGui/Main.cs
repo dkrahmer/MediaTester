@@ -27,6 +27,7 @@ namespace KrahmerSoft.MediaTesterGui
 			_mediaTesterOptions = mediaTesterOptions ?? Options.Deserialize();
 			_restartAfterClose = restartAfterClose;
 
+			Icon = System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
 			InitializeComponent();
 			UpdateUiFromOptions();
 			EnableControls();
