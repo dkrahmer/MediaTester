@@ -584,7 +584,7 @@ namespace KrahmerSoft.MediaTesterGui
 			}
 		}
 
-		private void AboutLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		private void AboutButton_Click(object sender, EventArgs e)
 		{
 			string aboutMessage = string.Join("\n",
 				$"MediaTester v{Assembly.GetEntryAssembly().GetName().Version}",
