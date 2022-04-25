@@ -17,6 +17,7 @@ namespace KrahmerSoft.MediaTesterLib
 		public const int DATA_BLOCKS_PER_FILE = 1 * 1024 / 8;
 		public const int FILE_SIZE = DATA_BLOCK_SIZE * DATA_BLOCKS_PER_FILE; // 1 GiB == 1024 * 1024 * 1024 == 1,073,741,824
 		public const string TempSubDirectoryName = "MediaTester";
+		public const string TEMP_FILE_EXTENSION = "MediaTester";
 
 		public WriteBlockCompleteHandler AfterWriteBlock;
 		public VerifyBlockCompleteHandler AfterQuickTest;
@@ -96,7 +97,10 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				success = false;
 				IsSuccess &= false;
-				OnException(this, new Exception($"Total bytes verified does not match total bytes written. Total Bytes Written: {TotalGeneratedTestFileBytes.ToString("#,##0")} ; Total Bytes Verified: {TotalBytesVerified.ToString("#,##0")}"));
+				string message = Strings.TotalBytesVerifiedMismatch
+					.Replace("{TotalBytesVerified}", $"{TotalGeneratedTestFileBytes:n0}")
+					.Replace("{TotalBytesVerified}", $"{TotalBytesVerified:n0}");
+				OnException(this, new Exception(message));
 			}
 			if (Options.StopProcessingOnFailure && !success)
 				return success;
@@ -162,7 +166,7 @@ namespace KrahmerSoft.MediaTesterLib
 			catch (Exception ex)
 			{
 				IsSuccess = false;
-				OnException?.Invoke(this, new Exception("An unexpected exception occurred while writing test data.", ex));
+				OnException?.Invoke(this, new Exception(Strings.UnexpectedExceptionWhileWriting, ex));
 				return false;
 			}
 		}
@@ -200,7 +204,7 @@ namespace KrahmerSoft.MediaTesterLib
 						// File already exists but needs to be bigger.
 						if (freeSpace < FILE_SIZE)
 						{
-							actualTestFileSize = actualTestFileSize + (int) freeSpace;
+							actualTestFileSize += (int) freeSpace;
 							if (actualTestFileSize > FILE_SIZE)
 								actualTestFileSize = FILE_SIZE;
 						}
@@ -260,7 +264,7 @@ namespace KrahmerSoft.MediaTesterLib
 						{
 							IsSuccess = false;
 							AfterWriteBlock?.Invoke(this, absoluteDataBlockIndex, absoluteDataByteIndex, testFilePath, 0, 0, dataBlockSize);
-							OnException?.Invoke(this, new Exception($"Unable to write block to file '{testFilePath}'.", ex));
+							OnException?.Invoke(this, new Exception(Strings.UnableToWriteBlockToFile.Replace("{testFilePath}", testFilePath), ex));
 							return testFilePath;
 						}
 					}
@@ -270,7 +274,7 @@ namespace KrahmerSoft.MediaTesterLib
 			{
 				testFilePath = null;
 				IsSuccess = false;
-				OnException?.Invoke(this, new Exception($"Unable to open file '{testFilePath}' for writing.", ex));
+				OnException?.Invoke(this, new Exception(Strings.UnableToOpenFileForWriting.Replace("{testFilePath}", testFilePath), ex));
 			}
 
 			return testFilePath;
@@ -478,7 +482,7 @@ namespace KrahmerSoft.MediaTesterLib
 			}
 			catch (Exception ex)
 			{
-				OnException?.Invoke(this, new Exception($"Unable to open '{testFilePath}' for reading.", ex));
+				OnException?.Invoke(this, new Exception(Strings.UnableToOpenFileForReading.Replace("{testFilePath}", testFilePath), ex));
 				success = false;
 				IsSuccess &= success;
 			}
@@ -605,7 +609,7 @@ namespace KrahmerSoft.MediaTesterLib
 
 		private static string GetTestFilePath(string testDirectory, int fileIndex)
 		{
-			return Path.Combine(testDirectory, (fileIndex + 1).ToString("D8") + ".MediaTester");
+			return Path.Combine(testDirectory, (fileIndex + 1).ToString("D8") + $".{TEMP_FILE_EXTENSION}");
 		}
 
 		private static long GetAbsoluteDataBlockIndex(int fileIndex, int fileDataBlockIndex)
