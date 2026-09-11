@@ -227,7 +227,7 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FAILED block {AbsoluteDataBlockIndex}! Byte index: {AbsoluteDataByteIndex}.
+        ///   Looks up a localized string similar to FAILED block {DataBlockIndex}! Byte index: {DataByteIndex}.
         /// </summary>
         internal static string FailedBlockByteIndex {
             get {
@@ -236,7 +236,7 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FAILED writing block {AbsoluteDataBlockIndex}. Byte index: {AbsoluteDataByteIndex}..
+        ///   Looks up a localized string similar to FAILED writing block {DataBlockIndex}. Byte index: {DataByteIndex}..
         /// </summary>
         internal static string FailedWritingBlock {
             get {
@@ -435,7 +435,7 @@ namespace KrahmerSoft.MediaTesterGui {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verified block {AbsoluteDataBlockIndex}. Byte index: {AbsoluteDataByteIndex}.
+        ///   Looks up a localized string similar to Verified block {DataBlockIndex}. Byte index: {DataByteIndex}.
         /// </summary>
         internal static string VerifiedBlockByteIndex {
             get {

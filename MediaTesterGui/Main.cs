@@ -406,8 +406,8 @@ namespace KrahmerSoft.MediaTesterGui
 			else
 			{
 				WriteLog(_mediaTester, Strings.FailedWritingBlock
-					.Replace("{AbsoluteDataBlockIndex}", $"{absoluteDataBlockIndex:n0}")
-					.Replace("{AbsoluteDataByteIndex}", $"{absoluteDataByteIndex:n0}"));
+					.Replace("{DataBlockIndex}", $"{absoluteDataBlockIndex:n0}")
+					.Replace("{DataByteIndex}", $"{absoluteDataByteIndex:n0}"));
 			}
 		}
 
@@ -428,13 +428,13 @@ namespace KrahmerSoft.MediaTesterGui
 			{
 				if (isQuickTest)
 				{
-					string verifiedBlockByteIndex = Strings.VerifiedBlockByteIndex.Replace("{AbsoluteDataBlockIndex}", $"{absoluteDataBlockIndex:n0}").Replace("{AbsoluteDataByteIndex}", $"{absoluteDataByteIndex:n0}");
+					string verifiedBlockByteIndex = Strings.VerifiedBlockByteIndex.Replace("{DataBlockIndex}", $"{absoluteDataBlockIndex:n0}").Replace("{DataByteIndex}", $"{absoluteDataByteIndex:n0}");
 					WriteLog(mediaTester, $"{(isQuickTest ? $"{Strings.QuickTest}: " : string.Empty)}{verifiedBlockByteIndex}");
 				}
 			}
 			else
 			{
-				string failedBlockByteIndex = Strings.FailedBlockByteIndex.Replace("{AbsoluteDataBlockIndex}", $"{absoluteDataBlockIndex:n0}").Replace("{AbsoluteDataByteIndex}", $"{absoluteDataByteIndex:n0}");
+				string failedBlockByteIndex = Strings.FailedBlockByteIndex.Replace("{DataBlockIndex}", $"{absoluteDataBlockIndex:n0}").Replace("{DataByteIndex}", $"{absoluteDataByteIndex:n0}");
 				WriteLog(mediaTester, $"{(isQuickTest ? $"{Strings.QuickTest}: " : string.Empty)}{failedBlockByteIndex}");
 				if (isQuickTest)
 				{
@@ -616,7 +616,7 @@ namespace KrahmerSoft.MediaTesterGui
 
 		private void Main_Load(object sender, EventArgs e)
 		{
-			Text += $" v{Assembly.GetEntryAssembly().GetName().Version}";
+			Text += $" v{Assembly.GetEntryAssembly().GetName().Version} (lib v{Assembly.GetAssembly(typeof(MediaTester)).GetName().Version})";
 		}
 		private void Main_FormClosing(object sender, FormClosingEventArgs e)
 		{

@@ -182,10 +182,10 @@ Continuing with defaults.</value>
     <comment>Used in results filename</comment>
   </data>
   <data name="FailedBlockByteIndex" xml:space="preserve">
-    <value>FAILED block {AbsoluteDataBlockIndex}! Byte index: {AbsoluteDataByteIndex}</value>
+    <value>FAILED block {DataBlockIndex}! Byte index: {DataByteIndex}</value>
   </data>
   <data name="FailedWritingBlock" xml:space="preserve">
-    <value>FAILED writing block {AbsoluteDataBlockIndex}. Byte index: {AbsoluteDataByteIndex}.</value>
+    <value>FAILED writing block {DataBlockIndex}. Byte index: {DataByteIndex}.</value>
   </data>
   <data name="IdentifyingFirstFailingByte" xml:space="preserve">
     <value>Identifying first failing byte...</value>
@@ -257,7 +257,7 @@ The system default will be used: {DefaultLanguageName}</value>
     <value>Total reported media size</value>
   </data>
   <data name="VerifiedBlockByteIndex" xml:space="preserve">
-    <value>Verified block {AbsoluteDataBlockIndex}. Byte index: {AbsoluteDataByteIndex}</value>
+    <value>Verified block {DataBlockIndex}. Byte index: {DataByteIndex}</value>
   </data>
   <data name="VerifiedXBytesOfXTotal" xml:space="preserve">
     <value>Verified {TotalBytesVerified} Bytes of {TargetTotalBytes} Bytes total.</value>
